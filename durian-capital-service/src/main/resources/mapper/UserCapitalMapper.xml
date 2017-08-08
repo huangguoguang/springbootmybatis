@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.durian.user.capital.mapper.UserCapitalMapper">
+    <insert id="addUserCapitalAccount" parameterType="com.durian.user.capital.domain.po.UserCapitalAccount">
+        insert into t_user_wallet (
+        <trim suffix="" suffixOverrides=",">
+            <if test="id         != null">wallet_id,</if>
+            <if test="userId     != null">user_id,</if>
+            <if test="balance    != null">user_money,</if>
+            <if test="isUse      != null">is_use,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="modifyDate != null">update_date,</if>
+        </trim>
+        ) values (
+        <trim suffix="" suffixOverrides=",">
+            <if test="id         != null">#{id},</if>
+            <if test="userId     != null">#{userId},</if>
+            <if test="balance    != null">#{balance},</if>
+            <if test="isUse      != null">#{isUse},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="modifyDate != null">#{modifyDate},</if>
+        </trim>
+        )
+    </insert>
+    <select id="getUserCapitalAccount" parameterType="java.lang.String" resultType="com.durian.user.capital.domain.po.UserCapitalAccount">
+        select
+            wallet_id as id,
+            user_id as userId,
+            user_money as balance,
+            is_use as isUse,
+            create_date as createDate,
+            update_date as modifyDate
+        from t_user_wallet where user_id = #{userId}
+    </select>
+    <update id="updateUserCapitalAccount" parameterType="map">
+        update t_user_wallet
+        set
+            <trim suffix="" suffixOverrides=",">
+                <if test="operate == 'add'">      user_money  = user_money + #{amount},</if>
+                <if test="operate == 'subtract'">user_money  = user_money - #{amount},</if>
+                <if test="isUse   != null">       is_use  = #{isUse},</if>
+                <if test="modifyDate != null">    update_date = #{modifyDate},</if>
+            </trim>
+        where user_id = #{userId}
+    </update>
+    <insert id="addUserBilling" parameterType="com.durian.user.capital.domain.po.UserBilling">
+        insert into t_user_profitloss (
+        <trim suffix="" suffixOverrides=",">
+            <if test="id            != null">profitloss_id,</if>
+            <if test="userId        != null">user_id,</if>
+            <if test="beforeBalance != null">user_money_before,</if>
+            <if test="amount        != null">user_money,</if>
+            <if test="afterBalance  != null">user_money_after,</if>
+            <if test="useType       != null">money_type,</if>
+            <if test="isUse         != null">is_use,</if>
+            <if test="desc          != null">order_id,</if>
+            <if test="createDate    != null">create_date,</if>
+        </trim>
+        ) values (
+        <trim suffix="" suffixOverrides=",">
+            <if test="id            != null">#{id},</if>
+            <if test="userId        != null">#{userId},</if>
+            <if test="beforeBalance != null">#{beforeBalance},</if>
+            <if test="amount        != null">#{amount},</if>
+            <if test="afterBalance  != null">#{afterBalance},</if>
+            <if test="useType       != null">#{useType},</if>
+            <if test="isUse         != null">#{isUse},</if>
+            <if test="desc          != null">#{desc},</if>
+            <if test="createDate    != null">#{createDate},</if>
+        </trim>
+        )
+    </insert>
+</mapper>

@@ -1,0 +1,220 @@
+package com.durian.user.dao.impl;
+
+
+import java.math.BigDecimal;
+import java.text.MessageFormat;
+import java.util.Date;
+import java.util.List;
+
+import com.durian.user.domain.enums.AccountTypeEnum;
+import com.durian.user.mapper.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.durian.user.dao.UserAccountDao;
+import com.durian.user.domain.enums.UserExceptionEnum;
+import com.durian.user.domain.enums.UserSmsEnum;
+import com.durian.user.domain.enums.UserStatusEnum;
+import com.durian.user.domain.po.UserAccount;
+import com.durian.user.domain.po.UserBusiness;
+import com.durian.user.domain.po.UserInfo;
+import com.durian.user.domain.po.UserLogin;
+import com.durian.user.domain.po.UserRelation;
+import com.durian.user.domain.to.FindPwd;
+import com.durian.user.domain.to.RegisterUser;
+import com.durian.user.domain.to.UserAllInfo;
+import com.durian.user.utils.date.DateFormatUtil;
+import com.durian.user.utils.date.IdentificationUtil;
+import com.durian.user.utils.encrypt.MD5Utils;
+import com.platform.common.domain.exception.CustomException;
+import com.platform.common.service.redis.util.JsonSerializerUtils;
+
+import com.durian.user.capital.domain.po.UserCapitalAccount;
+import com.durian.user.capital.mapper.UserCapitalMapper;
+import com.durian.user.capital.domain.enums.CapitalRedisKeyEnums;
+
+
+/**
+ * Created by hufeng on 2017/6/9.
+ */
+@Service("userAccountDao")
+@Transactional
+public class UserAccountDaoImpl implements UserAccountDao {
+
+    @Autowired
+    private UserAccountMapper userAccountMapper ;
+
+    @Autowired
+    private UserInfoMapper userInfoMapper ;
+
+    @Autowired
+    private UserBusinessMapper userBusinessMapper;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    @Autowired
+    private UserLoginMapper userLoginMapper;
+
+    @Autowired
+    private UserCapitalMapper userCapitalMapper;
+
+    @Autowired
+    private UserRelationMapper userRelationMapper;
+
+    @Override
+    public UserAllInfo saveUser(RegisterUser registerUser) {
+
+
+        UserAccount userAccount = new UserAccount();
+        userAccount.setId(IdentificationUtil.generateTimestamp16());
+        userAccount.setAccountType(AccountTypeEnum.NORMAL.getCode());
+        userAccount.setCreateTime(new Date().getTime());
+        userAccount.setStatus(UserStatusEnum.Enable.getCode());
+        userAccountMapper.insert(userAccount);
+
+
+        //用户基础信息
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserId(userAccount.getId());
+        userInfo.setCreateTime(new Date().getTime());
+        userInfo.setNickName(registerUser.getNickName());
+        userInfoMapper.insert(userInfo);
+
+        //用户敏感信息
+        UserBusiness userBusiness = new UserBusiness();
+        userBusiness.setMobile(registerUser.getMobile());
+        //userBusiness.setPassword(MD5Utils.sign(registerUser.getPassword(), MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET));
+        userBusiness.setPassword(MD5Utils.sign(registerUser.getMobile().substring(5), MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET));
+        userBusiness.setUserId(userAccount.getId());
+        userBusiness.setCreateTime(new Date().getTime());
+
+        //设置redis内存对象
+        UserAllInfo userAllInfo = new UserAllInfo();
+        userAllInfo.setId(userAccount.getId());
+        userAllInfo.setMobile(registerUser.getMobile());
+        userAllInfo.setAccountType(userAccount.getAccountType());
+        userAllInfo.setStatus(userAccount.getStatus());
+        userBusinessMapper.insert(userBusiness);
+
+
+
+        //新增用户关系
+        UserRelation userRelation = new UserRelation();
+
+        userRelation.setInviterId(registerUser.getInviterId());
+        userRelation.setDeptId(registerUser.getDeptId());
+        userRelation.setDeptCode(registerUser.getDeptId());
+        userRelation.setInviteeId(userAccount.getId());
+        userRelationMapper.insert(userRelation);
+
+        //新增用户MYSQL钱包账号及REDIS钱包账号
+        UserCapitalAccount userCapitalAccount = new UserCapitalAccount();
+        userCapitalAccount.setId(userAccount.getId());
+        userCapitalAccount.setUserId(userAccount.getId());
+        userCapitalAccount.setMobile(registerUser.getMobile());
+        userCapitalAccount.setCreateDate(new Date());
+        userCapitalAccount.setBalance(BigDecimal.valueOf(0));
+        userCapitalMapper.addUserCapitalAccount(userCapitalAccount);
+        redisTemplate.opsForValue().set(MessageFormat.format(CapitalRedisKeyEnums.OLD_CAPITAL_USER_PREFIX.getCode(), userAccount.getId()) , "0.00");
+
+        redisTemplate.opsForValue().set("userAllInfo:"+userAllInfo.getId(),JsonSerializerUtils.seriazile(userAllInfo));
+        redisTemplate.delete("mobilecode:"+registerUser.getMobile()+":"+ UserSmsEnum.REGISTER.getCode());
+
+        return userAllInfo;
+
+    }
+
+    @Override
+    public UserAllInfo getUserInfoByMoblie(String moblie) {
+/*        UserBusiness userBusiness = userBusinessMapper.selectByMoblie(moblie);
+        if(userBusiness ==null) {
+            return null ;
+        }
+         UserAllInfo userAllInfo = new UserAllInfo();
+        userAllInfo.setId(userBusiness.getUserId());
+        userAllInfo.setMoblie(moblie);
+        userAllInfo.setPassword(userBusiness.getPassword());
+        //userAllInfo.setAccountType(userBusiness.get);
+        //userAllInfo.setStatus(userAccount.getStatus());
+        userAccountMapper.selectByMoblie(moblie);
+        */
+        UserAllInfo userAllInfo = userAccountMapper.selectByMoblie(moblie);
+        return userAllInfo;
+    }
+
+    @Override
+    public UserAllInfo getUserInfoById(String id) {
+        return  JsonSerializerUtils.deserialize(redisTemplate.opsForValue().get("userAllInfo:"+id),UserAllInfo.class);
+    }
+
+    @Override
+    public void updatePwd(FindPwd findPwd) {
+        UserBusiness userBusiness = new UserBusiness();
+        userBusiness.setMobile(findPwd.getMobile());
+        userBusiness.setPassword(MD5Utils.sign(findPwd.getPassword(), MD5Utils.PWD_KEY ,MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET));
+        userBusiness.setUpdateTime(new Date().getTime());
+        userBusinessMapper.updateByMobile(userBusiness);
+        //密码更新成功.
+    }
+
+    @Override
+    public int saveLogin(UserLogin userLogin) {
+        return userLoginMapper.insert(userLogin);
+    }
+
+	@Override
+	public int updateUserStatus(String id,Integer status) throws Exception {
+		UserAllInfo userAllInfo = getUserInfoById(id);
+		if(userAllInfo == null ){
+            throw new CustomException(UserExceptionEnum.USER_NOT_EXIST);
+        }
+		UserAccount record = new UserAccount();
+		record.setStatus(status);
+		record.setUpdateTime(new Date().getTime());
+		record.setId(id);
+		int count = userAccountMapper.updateStatusById(record);
+		userAllInfo.setStatus(status);
+		redisTemplate.opsForValue().set("userAllInfo:"+userAllInfo.getId(),JsonSerializerUtils.seriazile(userAllInfo));
+		return count;
+	}
+
+    @Override
+    public int updateUserAllInfo(UserAllInfo userAllInfo) throws Exception {
+        //用户基础信息
+        UserInfo userInfo = userInfoMapper.selectByUserId(userAllInfo.getId());
+        if (userInfo == null) {
+            throw new CustomException(UserExceptionEnum.USER_NOT_EXIST);
+        }
+        userInfo.setNickIcon(userAllInfo.getNickIcon());
+        userInfo.setNickName(userAllInfo.getNickName());
+        userInfo.setGender(userAllInfo.getGender());
+        userInfo.setProvince(userAllInfo.getProvince());
+        userInfo.setCity(userAllInfo.getCity());
+        userInfo.setArea(userAllInfo.getArea());
+        userInfo.setStreet(userAllInfo.getStreet());
+        userInfo.setAddress(userAllInfo.getAddress());
+        userInfo.setUpdateTime(new Date().getTime());
+        int userInfoCount = userInfoMapper.updateByPrimaryKeySelective(userInfo);
+
+        //用户敏感信息
+        UserBusiness userBusiness = userBusinessMapper.selectByUserId(userAllInfo.getId());
+        if (userBusiness == null) {
+            throw new CustomException(UserExceptionEnum.USER_NOT_EXIST);
+        }
+        userBusiness.setName(userAllInfo.getName());
+        userBusiness.setIdCard(userAllInfo.getIdCard());
+        userBusiness.setEducation(userAllInfo.getEducation());
+        userBusiness.setUpdateTime(new Date().getTime());
+        userBusiness.setBirthday(userAllInfo.getBirthday() == null ? null :DateFormatUtil.convertDate(userAllInfo.getBirthday(), "yyyyMMdd"));
+        int userBusinessCount = userBusinessMapper.updateByPrimaryKeySelective(userBusiness);
+        return (userInfoCount == 1 && userBusinessCount == 1) ? 1 : 0;
+    }
+
+    @Override
+    public List<UserAllInfo> selectUserInfoList(UserAllInfo userAllInfo) throws Exception {
+        return userAccountMapper.selectUserInfoList(userAllInfo);
+    }
+}

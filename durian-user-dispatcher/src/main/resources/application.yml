@@ -1,0 +1,39 @@
+debug: false
+
+server:
+  port: 8088
+
+spring:
+  application:
+    name: durian-user
+  http:
+    encoding:
+      charset: utf-8
+      force: true
+  # 启用AOP
+  aop:
+    auto: true
+    proxy-target-class: false
+  # 控制台以ANSI彩色输出
+  output:
+    ansi:
+      enabled: ALWAYS
+  # 包含其它配置文件
+  profiles:
+    include: cloud,config,properties
+
+# LogBack配置文件
+logging:
+  config: classpath:logback-spring.xml
+
+
+endpoints:
+  shutdown:
+    enabled: true
+    sensitive: false
+
+tfs:
+  client:
+    nsip: 192.168.1.62:9945
+    timeout: 2000
+    maxWaitThread: 100

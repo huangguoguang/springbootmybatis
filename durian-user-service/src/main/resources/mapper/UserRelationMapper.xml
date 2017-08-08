@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.durian.user.mapper.UserRelationMapper">
+  <resultMap id="BaseResultMap" type="com.durian.user.domain.po.UserRelation">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
+    <result column="dept_id" jdbcType="VARCHAR" property="dept_id" />
+    <result column="inviter_id" jdbcType="VARCHAR" property="inviterId" />
+    <result column="invitee_id" jdbcType="VARCHAR" property="inviteeId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="del_tag" jdbcType="CHAR" property="delTag" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, dept_code,dept_id,inviter_id, invitee_id, status,del_tag
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_relation
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_user_relation
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.durian.user.domain.po.UserRelation">
+    insert into t_user_relation (id, dept_code,dept_id, inviter_id, invitee_id,status,del_tag)
+    values (#{id,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR},#{deptId,jdbcType=VARCHAR},#{inviterId,jdbcType=VARCHAR}, #{inviteeId,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{delTag,jdbcType=CHAR}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.durian.user.domain.po.UserRelation">
+    insert into t_user_relation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="deptCode != null">
+        dept_code,
+      </if>
+      <if test="deptId != null">
+        dept_id,
+      </if>
+      <if test="inviterId != null">
+        inviter_id,
+      </if>
+      <if test="inviteeId != null">
+        invitee_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="delTag != null">
+        del_tag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="deptCode != null">
+        #{deptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null">
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="inviterId != null">
+        #{inviterId,jdbcType=VARCHAR},
+      </if>
+      <if test="inviteeId != null">
+        #{inviteeId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="delTag != null">
+        #{delTag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.durian.user.domain.po.UserRelation">
+    update t_user_relation
+    <set>
+      <if test="deptCode != null">
+        dept_code = #{deptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null">
+        dept_id = #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="inviterId != null">
+        inviter_id = #{inviterId,jdbcType=VARCHAR},
+      </if>
+      <if test="inviteeId != null">
+        invitee_id = #{inviteeId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="delTag != null">
+        del_tag = #{delTag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.durian.user.domain.po.UserRelation">
+    update t_user_relation
+    set inviter_id = #{inviterId,jdbcType=VARCHAR},
+      invitee_id = #{inviteeId,jdbcType=VARCHAR},
+      del_tag = #{delTag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateRelationInfo" parameterType="com.durian.user.domain.po.UserRelation">
+    update t_user_relation
+    set status = '1'
+    where inviter_Id = #{inviterId,jdbcType=VARCHAR}
+  </update>
+</mapper>
