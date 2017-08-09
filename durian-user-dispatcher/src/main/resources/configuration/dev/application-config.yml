@@ -60,3 +60,7 @@ spring:
     port: 5672
     username: guest
     password: guest
+
+  redisson:
+    url: redis://192.168.1.15:9648
+    password: 123456

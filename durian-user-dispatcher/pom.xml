@@ -3,10 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.platform</groupId>
-        <artifactId>platform-dispatcher-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-        <relativePath></relativePath>
+        <groupId>com.durian.user</groupId>
+        <artifactId>durian-user</artifactId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
     <groupId>com.durian.user</groupId>
@@ -34,51 +33,6 @@
             <groupId>com.durian.user</groupId>
             <artifactId>durian-capital-service</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.platform</groupId>
-            <artifactId>platform-common-thrift-service</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.platform</groupId>
-            <artifactId>platform-common-dispatcher</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
         </dependency>
     </dependencies>
 

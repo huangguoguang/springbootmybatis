@@ -5,7 +5,6 @@ import com.durian.user.capital.domain.enums.*;
 import com.durian.user.capital.mapper.UserCapitalMapper;
 import com.durian.user.capital.service.UserCapitalService;
 import com.platform.common.domain.exception.CustomException;
-import com.anchol.common.component.distributedlock.DistributedLock;
 import com.durian.user.capital.domain.po.UserBilling;
 import com.durian.user.capital.domain.po.UserCapitalAccount;
 
@@ -35,8 +34,6 @@ public class UserCapitalServiceImpl implements UserCapitalService {
     @Resource
     private UserCapitalMapper userCapitalMapper;
 
-    @Resource
-    private DistributedLock distributedLock;
 
     @Resource
     private ApplicationContext applicationContext;
@@ -68,7 +65,7 @@ return true;
     @Override
     public boolean changeUserCapitalToRedis(String userId, BigDecimal amount, CapitalOperateEnums capitalOperateEnums) throws Exception {
         // add capital lock
-        String capitalLock = distributedLock.getLock(CapitalLockEnums.LOCK_WALLET.getCode(), userId); // 资金锁
+        String capitalLock =""; //distributedLock.(CapitalLockEnums.LOCK_WALLET.getCode(), userId); // 资金锁
         if (capitalLock == null) {
             throw new CustomException(CapitalExceptionCodeEnums.CHANGE_CAPITAL_FAIL);
         }
@@ -82,7 +79,7 @@ return true;
             // set user amount
             userCapitalDao.setUserCapitalToRedis(userId, newBalance);
         } finally {
-            distributedLock.releaseLock(CapitalLockEnums.LOCK_WALLET.getCode(), userId, capitalLock);
+            //distributedLock.releaseLock(CapitalLockEnums.LOCK_WALLET.getCode(), userId, capitalLock);
         }
         return true;
     }
@@ -90,7 +87,7 @@ return true;
     @Override
     public boolean changeUserCapital(String userId, BigDecimal amount, CapitalOperateEnums capitalOperateEnums, CapitalUseTypeEnums capitalUseTypeEnums, String desc, boolean setRedis) throws Exception{
         // add capital lock
-        String capitalLock = distributedLock.getLock(CapitalLockEnums.LOCK_MYSQL_WALLET.getCode(), userId);
+        String capitalLock =""; //distributedLock.getLock(CapitalLockEnums.LOCK_MYSQL_WALLET.getCode(), userId);
         if (capitalLock == null) {
             throw new CustomException(CapitalExceptionCodeEnums.CHANGE_CAPITAL_FAIL);
         }
@@ -143,7 +140,7 @@ return true;
             }
 
         } finally {
-            distributedLock.releaseLock(CapitalLockEnums.LOCK_MYSQL_WALLET.getCode(), userId, capitalLock);
+            //distributedLock.releaseLock(CapitalLockEnums.LOCK_MYSQL_WALLET.getCode(), userId, capitalLock);
         }
         return true;
     }
