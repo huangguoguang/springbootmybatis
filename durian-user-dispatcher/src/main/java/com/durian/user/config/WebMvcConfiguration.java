@@ -2,8 +2,6 @@ package com.durian.user.config;
 
 
 
-import com.durian.user.interceptor.AuthHandlerInterceptor;
-import com.durian.user.interceptor.FunctionHandlerInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -14,7 +12,9 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistration
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.durian.user.interceptor.AuthHandlerInterceptor;
 import com.durian.user.interceptor.CustomCallableProcessingInterceptor;
+import com.durian.user.interceptor.FunctionHandlerInterceptor;
 
 /**
  * 拦截器注册
@@ -61,7 +61,7 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         // 配置拦截的路径
         authInterceptor.addPathPatterns("/**");
         // 配置不拦截的路径
-        authInterceptor.excludePathPatterns("/user/**");
+        authInterceptor.excludePathPatterns("/test/**");
 
         // 权限拦截器
         InterceptorRegistration functionInterceptor = registry.addInterceptor(functionHandlerInterceptor);
@@ -80,4 +80,5 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
                 .allowCredentials(true);
         super.addCorsMappings(registry);
     }
+    
 }

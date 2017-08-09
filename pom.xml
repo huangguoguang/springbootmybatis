@@ -10,14 +10,6 @@
     <name>durian-user Maven</name>
     <url>http://maven.apache.org</url>
 
-    <repositories>
-        <repository>
-            <id>local-repo</id>
-            <name>Internal Repository</name>
-            <url>http://192.168.1.39:8888/nexus/content/groups/public</url>
-        </repository>
-    </repositories>
-
     <modules>
         <module>durian-user-service</module>
         <module>durian-user-dispatcher</module>
@@ -34,6 +26,21 @@
         <version>0.0.1-SNAPSHOT</version>
         <relativePath></relativePath>
     </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <platform.3th.dependencies.version>0.0.1-SNAPSHOT</platform.3th.dependencies.version>
+        <platform.common.dependencies.version>0.0.1-SNAPSHOT</platform.common.dependencies.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>local-repo</id>
+            <name>Internal Repository</name>
+            <url>http://192.168.1.39:8888/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+
 
     <dependencies>
         <dependency>

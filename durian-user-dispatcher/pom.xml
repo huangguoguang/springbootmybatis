@@ -8,19 +8,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.durian.user</groupId>
     <artifactId>durian-user-dispatcher</artifactId>
-    <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
 
     <name>durian-user-dispatcher</name>
     <url>http://maven.apache.org</url>
-
-	<properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <platform.3th.dependencies.version>0.0.1-SNAPSHOT</platform.3th.dependencies.version>
-        <platform.common.dependencies.version>0.0.1-SNAPSHOT</platform.common.dependencies.version>
-    </properties>
 
     <dependencies>
         <dependency>
