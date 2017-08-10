@@ -16,10 +16,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.durian.user.domain.annotation.NoLoginAuth;
-import com.durian.user.domain.enums.TokenExceptionEnum;
 import com.durian.user.utils.token.Token;
 import com.durian.user.utils.token.TokenGenerator;
-import com.platform.common.domain.exception.CustomException;
 
 /**
  * 认证拦截器
@@ -36,6 +34,10 @@ public class AuthHandlerInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     	boolean result = true;
+    	System.out.println("qingqiu:"+request.getRequestURI());
+    	if(request.getRequestURI().equals("/error")) {
+    		return true;
+    	}
         LOGGER.info("AuthenticationInterceptor parameter[{}] :"+request2Map(request).toString());
         //加入了忽略登录标签,则不进行拦截.其他的都进行拦截
         boolean noLogin = isLoginAuthentication(handler);
@@ -49,7 +51,8 @@ public class AuthHandlerInterceptor implements HandlerInterceptor {
     		Token token = TokenGenerator.validateToken(accessToken);
 			if(token == null ) {
 				LOGGER.info("服务器模拟accessToken异常,请传入Header token参数!");
-				 throw new CustomException(TokenExceptionEnum.TOKEN_EXPIRES_CODE);
+				// throw new CustomException(TokenExceptionEnum.TOKEN_EXPIRES_CODE);
+				result = false;
 			}
         }
         LOGGER.info("***** AuthenticationInterceptor: path[{}]  result[{}] ******", request.getRequestURI(), result ? "Success" : "Failure");

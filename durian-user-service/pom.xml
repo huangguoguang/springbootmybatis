@@ -3,19 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.platform</groupId>
-        <artifactId>platform-service-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-        <relativePath></relativePath>
+        <groupId>com.durian.user</groupId>
+    	<artifactId>durian-user</artifactId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.durian.user</groupId>
     <artifactId>durian-user-service</artifactId>
-    <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
-
-    <name>durian-user-service</name>
-    <url>http://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
