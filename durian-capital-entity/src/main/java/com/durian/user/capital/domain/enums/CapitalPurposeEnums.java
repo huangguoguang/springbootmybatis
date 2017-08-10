@@ -1,15 +1,22 @@
 package com.durian.user.capital.domain.enums;
 
 /**
- * Created by lj on 2017/4/14.
+ * 资金用途
+ *
+ * Created by lj on 2017/4/11.
  */
-public enum RecordStatusEnums {
-    INVALID("0", "无效"), VALID("1", "有效");
+public enum CapitalPurposeEnums {
+    RECHARGE("01", "充值"),
+    WITHDRAW("02","提现"),
+    SHOPPING("03", "购物"),
+    REFUND("04", "退款"),
+    BROKERAGE("05", "佣金");
+
 
     private String code;
     private String desc;
 
-    RecordStatusEnums(String code, String desc){
+    CapitalPurposeEnums(String code, String desc){
         this.code = code;
         this.desc = desc;
     }

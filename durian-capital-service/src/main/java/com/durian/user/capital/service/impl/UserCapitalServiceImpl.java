@@ -1,157 +1,89 @@
 package com.durian.user.capital.service.impl;
 
 import com.durian.user.capital.dao.UserCapitalDao;
-import com.durian.user.capital.domain.enums.*;
-import com.durian.user.capital.mapper.UserCapitalMapper;
+import com.durian.user.capital.domain.enums.CapitalStatusEnums;
+import com.durian.user.capital.domain.po.UserCapital;
+import com.durian.user.capital.event.UserCapitalSyncEvent;
 import com.durian.user.capital.service.UserCapitalService;
-import com.platform.common.domain.exception.CustomException;
 import com.durian.user.capital.domain.po.UserBilling;
-import com.durian.user.capital.domain.po.UserCapitalAccount;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.text.MessageFormat;
+import java.util.*;
 
 /**
  * 用户资金服务接口实现
  *
  * Created by lj on 2017/4/11.
  */
-@Service
+@Service("userCapitalService")
 public class UserCapitalServiceImpl implements UserCapitalService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserCapitalServiceImpl.class);
 
     @Resource
     private UserCapitalDao userCapitalDao;
-
-    @Resource
-    private UserCapitalMapper userCapitalMapper;
-
-
     @Resource
     private ApplicationContext applicationContext;
 
     @Override
-    public BigDecimal getUserCapitalAccount(String userId) throws Exception{
-        // get user capital account by redis
-        return userCapitalDao.getUserCapitalByRedis(userId);
-    }
-
-/*
-@Override
-public boolean setUserCapitalAccount(String userId,BigDecimal amount) throws Exception{
-// add capital lock
-String capitalLock = distributedLock.getLock(CapitalLockEnums.CAPITAL.getCode(), userId); // 资金锁
-if (capitalLock == null) {
-throw new CustomException(CapitalExceptionCodeEnums.CHANGE_CAPITAL_FAIL); // TODO
-}
-try {
-// set user amount
-userCapitalDao.setUserCapitalToRedis(userId, amount);
-} finally {
-distributedLock.releaseLock(CapitalLockEnums.CAPITAL.getCode(), userId, capitalLock);
-}
-return true;
-}
-*/
-
-    @Override
-    public boolean changeUserCapitalToRedis(String userId, BigDecimal amount, CapitalOperateEnums capitalOperateEnums) throws Exception {
-        // add capital lock
-        String capitalLock =""; //distributedLock.(CapitalLockEnums.LOCK_WALLET.getCode(), userId); // 资金锁
-        if (capitalLock == null) {
-            throw new CustomException(CapitalExceptionCodeEnums.CHANGE_CAPITAL_FAIL);
-        }
-        try {
-            BigDecimal currentBalance = userCapitalDao.getUserCapitalByRedis(userId);
-            BigDecimal newBalance = calculate(currentBalance, amount, capitalOperateEnums);
-            if(BigDecimal.ZERO.compareTo(newBalance) == 1){
-                // 不可以小于零
-                throw new CustomException(CapitalExceptionCodeEnums.CAPITAL_SCARCITY);
-            }
-            // set user amount
-            userCapitalDao.setUserCapitalToRedis(userId, newBalance);
-        } finally {
-            //distributedLock.releaseLock(CapitalLockEnums.LOCK_WALLET.getCode(), userId, capitalLock);
-        }
-        return true;
+    public void createUserCapital(String userId) throws Exception {
+        UserCapital userCapital = new UserCapital();
+        userCapital.setUserId(userId);
+        userCapital.setAmount(BigDecimal.ZERO);
+        userCapital.setStatus(CapitalStatusEnums.ENABLE.getCode());
+        userCapital.setCreateTime(System.currentTimeMillis());
+        userCapitalDao.insertUserCapital(userCapital);
     }
 
     @Override
-    public boolean changeUserCapital(String userId, BigDecimal amount, CapitalOperateEnums capitalOperateEnums, CapitalUseTypeEnums capitalUseTypeEnums, String desc, boolean setRedis) throws Exception{
-        // add capital lock
-        String capitalLock =""; //distributedLock.getLock(CapitalLockEnums.LOCK_MYSQL_WALLET.getCode(), userId);
-        if (capitalLock == null) {
-            throw new CustomException(CapitalExceptionCodeEnums.CHANGE_CAPITAL_FAIL);
-        }
-        try {
-
-            // get user capital account by mysql
-            UserCapitalAccount vUserCapitalAccount = userCapitalMapper.getUserCapitalAccount(userId);
-            if (vUserCapitalAccount == null) {
-                throw new CustomException(CapitalExceptionCodeEnums.ACCOUNT_NOT_EXISTS);
-            }
-            BigDecimal newBalance = calculate(vUserCapitalAccount.getBalance(), amount, capitalOperateEnums);
-            if(BigDecimal.ZERO.compareTo(newBalance) == 1){
-                // 不可以小于零
-                throw new CustomException(CapitalExceptionCodeEnums.CAPITAL_SCARCITY);
-            }
-
-            Date currentDate = new Date();
-            // user billing
-            UserBilling userBilling = new UserBilling();
-            userBilling.setId(UUID.randomUUID().toString().replaceAll("-", ""));
-            userBilling.setUserId(userId);
-            userBilling.setBeforeBalance(vUserCapitalAccount.getBalance());
-            userBilling.setAmount(amount);
-            userBilling.setAfterBalance(newBalance);
-            userBilling.setOperate(capitalOperateEnums.getCode());
-            userBilling.setUseType(capitalUseTypeEnums.getCode());
-            userBilling.setDesc(desc);
-            userBilling.setIsUse(RecordStatusEnums.VALID.getCode());
-            userBilling.setCreateDate(currentDate);
-
-            // to mysql
-            Map<String, Object> paramMap = new HashMap<String, Object>();
-            paramMap.put("userId", userBilling.getUserId());
-            paramMap.put("amount", userBilling.getAmount());
-            paramMap.put("operate", userBilling.getOperate());
-            paramMap.put("modifyDate", new Date());
-            userCapitalMapper.updateUserCapitalAccount(paramMap); // change capital
-            userCapitalMapper.addUserBilling(userBilling); // save billing
-
-            // balance to redis
-            if(setRedis){
-                BigDecimal currentBalance = userCapitalDao.getUserCapitalByRedis(userId);
-                BigDecimal rnewBalance = calculate(currentBalance, amount, capitalOperateEnums);
-//                if(BigDecimal.ZERO.compareTo(newBalance) == 1){
-//                    // 不可以小于零
-//                    throw new CustomException(CapitalExceptionCodeEnums.CAPITAL_SCARCITY);
-//                }
-                // set user amount
-                userCapitalDao.setUserCapitalToRedis(userId, rnewBalance);
-            }
-
-        } finally {
-            //distributedLock.releaseLock(CapitalLockEnums.LOCK_MYSQL_WALLET.getCode(), userId, capitalLock);
-        }
-        return true;
-    }
-
-    private BigDecimal calculate(BigDecimal currentBalance,BigDecimal amount, CapitalOperateEnums capitalOperateEnums){
-        return CapitalOperateEnums.ADD == capitalOperateEnums ? currentBalance.add(amount) : currentBalance.subtract(amount);
+    public void freezeUserCapital(String userId) throws Exception {
+        userCapitalDao.changeUserCapitalStatus(userId, CapitalStatusEnums.FREEZE);
     }
 
     @Override
-    public boolean addUserBillingToMysql(UserBilling userBilling) {
-        userCapitalDao.addUserBillingToMysql(userBilling);
-        return true;
+    public void disableUserCapital(String userId) throws Exception {
+        userCapitalDao.changeUserCapitalStatus(userId, CapitalStatusEnums.DISABLE);
+    }
+
+    @Override
+    public BigDecimal getUserBalance(String userId) throws Exception {
+        return userCapitalDao.getUserCapital(userId).getAmount();
+    }
+
+    @Override
+    public void changeUserBalance(UserBilling userBilling) throws Exception {
+        userCapitalDao.changeUserBalance(userBilling);
+
+        applicationContext.publishEvent(new UserCapitalSyncEvent(userBilling.getUserId()));
+    }
+
+    @Override
+    public void addUserBalance(List<UserBilling> userBillings) throws Exception {
+        userCapitalDao.addUserBalance(userBillings);
+
+        for (int i=0; i<userBillings.size(); i++){
+            UserBilling userBilling = userBillings.get(i);
+            applicationContext.publishEvent(new UserCapitalSyncEvent(userBilling.getUserId()));
+        }
+    }
+
+    @Override
+    public void syncUserCapital(String userId){
+        applicationContext.publishEvent(new UserCapitalSyncEvent(userId));
+        LOGGER.info(MessageFormat.format("同步用户资金：{0}", userId));
+    }
+
+    @Override
+    public List<UserBilling> getUserBilling(Map<String, Object> queryParam, int pageNum, int perPageRow) {
+        return null;
     }
 }

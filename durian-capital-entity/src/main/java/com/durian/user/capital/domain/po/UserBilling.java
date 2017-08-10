@@ -1,5 +1,8 @@
 package com.durian.user.capital.domain.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -8,17 +11,20 @@ import java.util.Date;
  *
  * Created by lj on 2017/4/11.
  */
-public class UserBilling {
+public class UserBilling implements Serializable{
+    @JsonIgnore
     private String id;
     private String userId; // 用户ID *
-    private BigDecimal beforeBalance; // 变动前余额
     private BigDecimal amount; // 变动金额 *
-    private BigDecimal afterBalance; // 变动后余额
+    @JsonIgnore
+    private BigDecimal balance; // 变动后余额
     private String operate; // 加|减 *
-    private String useType; // 使用类型 *
-    private String desc; // 说明
-    private String isUse; // 是否有效
-    private Date createDate; // 创建时间
+    private String purpose; // 使用类型 *
+    private String correlation; // 关联
+    private String description; // 说明
+    @JsonIgnore
+    private String delTag; // 是否有效
+    private Long createTime; // 创建时间
 
     public String getId() {
         return id;
@@ -36,14 +42,6 @@ public class UserBilling {
         this.userId = userId;
     }
 
-    public BigDecimal getBeforeBalance() {
-        return beforeBalance;
-    }
-
-    public void setBeforeBalance(BigDecimal beforeBalance) {
-        this.beforeBalance = beforeBalance;
-    }
-
     public BigDecimal getAmount() {
         return amount;
     }
@@ -52,12 +50,12 @@ public class UserBilling {
         this.amount = amount;
     }
 
-    public BigDecimal getAfterBalance() {
-        return afterBalance;
+    public BigDecimal getBalance() {
+        return balance;
     }
 
-    public void setAfterBalance(BigDecimal afterBalance) {
-        this.afterBalance = afterBalance;
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 
     public String getOperate() {
@@ -68,35 +66,43 @@ public class UserBilling {
         this.operate = operate;
     }
 
-    public String getUseType() {
-        return useType;
+    public String getPurpose() {
+        return purpose;
     }
 
-    public void setUseType(String useType) {
-        this.useType = useType;
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getCorrelation() {
+        return correlation;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setCorrelation(String correlation) {
+        this.correlation = correlation;
     }
 
-    public String getIsUse() {
-        return isUse;
+    public String getDescription() {
+        return description;
     }
 
-    public void setIsUse(String isUse) {
-        this.isUse = isUse;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public String getDelTag() {
+        return delTag;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setDelTag(String delTag) {
+        this.delTag = delTag;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 }

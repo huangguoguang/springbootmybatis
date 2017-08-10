@@ -1,18 +1,15 @@
 package com.durian.user.capital.domain.enums;
 
 /**
- * 资金流向类型
- *
- * Created by lj on 2017/4/11.
+ * Created by lj on 2017/4/14.
  */
-public enum CapitalUseTypeEnums {
-    SHOPPING("26", "购物"),
-    REFUND("27", "退款");
+public enum CapitalStatusEnums {
+    DISABLE("0", "不可用"), ENABLE("1", "可用"), FREEZE("2", "冻结");
 
     private String code;
     private String desc;
 
-    CapitalUseTypeEnums(String code, String desc){
+    CapitalStatusEnums(String code, String desc){
         this.code = code;
         this.desc = desc;
     }

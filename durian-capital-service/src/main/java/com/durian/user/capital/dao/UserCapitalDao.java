@@ -1,10 +1,11 @@
 package com.durian.user.capital.dao;
 
 
+import com.durian.user.capital.domain.enums.CapitalStatusEnums;
 import com.durian.user.capital.domain.po.UserBilling;
-import com.durian.user.capital.domain.po.UserCapitalAccount;
+import com.durian.user.capital.domain.po.UserCapital;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 用户资金操作
@@ -14,27 +15,50 @@ import java.math.BigDecimal;
 public interface UserCapitalDao {
 
     /**
-     * 取用户资金信息
+     * 取用户资金账户
      *
      * @param userId 用户ID
-     * @return 金额
+     * @return UserCapital
      * */
-    BigDecimal getUserCapitalByRedis(String userId) throws Exception;
+    UserCapital getUserCapital(String userId) throws Exception;
 
     /**
-     * 设置用户资金信息
+     * 取用户资金余额
      *
-     * @param userId 用户ID
-     * @param amount 金额
+     * @param userCapital 用户资金信息
+     * @return UserCapital
      * */
-    void setUserCapitalToRedis(String userId, BigDecimal amount);
+    void insertUserCapital(UserCapital userCapital) throws Exception;
 
     /**
-     * 增加用户流水
+     * 用户资金变化
      *
-     * @param userBilling 流水信息
+     * @param userBilling 流水
      * */
-    void addUserBillingToMysql(UserBilling userBilling);
+    void changeUserBalance(UserBilling userBilling) throws Exception;
 
-    int addUserCapitalAccount(UserCapitalAccount userCapitalAccount);
+    /**
+     * 批量增加用户资金变化
+     *
+     * @param userBillings 流水
+     * */
+    void addUserBalance(List<UserBilling> userBillings) throws Exception;
+
+
+    /**
+     * 资金账户状态变化
+     *
+     * @param userId
+     * @param capitalStatus
+     * */
+    void changeUserCapitalStatus(String userId, CapitalStatusEnums capitalStatus) throws Exception;
+
+
+    /**
+     * 同步用户资金
+     *
+     * @param userId
+     * */
+    UserCapital syncUserCapital(String userId);
+
 }

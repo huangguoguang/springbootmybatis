@@ -1,13 +1,10 @@
 package com.durian.user.capital.service;
 
-import com.durian.user.capital.domain.enums.CapitalOperateEnums;
-import com.durian.user.capital.domain.enums.CapitalUseTypeEnums;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.durian.user.capital.domain.po.UserBilling;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户资金服务接口定义
@@ -17,54 +14,59 @@ import java.math.BigDecimal;
 public interface UserCapitalService {
 
     /**
-     * 获取用户资金信息 redis
+     * 创建用户资金账户
      *
-     * @param userId 用户Id
-     * @return 用户资金账户信息
+     * @param userId
      * */
-    BigDecimal  getUserCapitalAccount(String userId) throws Exception;
-
-
-//    /**
-//     * 设置用户资金信息 redis
-//     *
-//     * @param userId 用户Id
-//     * @param amount 金额
-//     * @return 用户资金账户信息
-//     * */
-//    public boolean setUserCapitalAccount(String userId, BigDecimal amount) throws Exception;
+    void  createUserCapital(String userId) throws Exception;
 
     /**
-     * 设置用户资金信息 redis
+     * 冻结用户资金账户
      *
-     * @param userId 用户Id
-     * @param amount 金额
-     * @return 用户资金账户信息
+     * @param userId
      * */
-    boolean changeUserCapitalToRedis(String userId, BigDecimal amount, CapitalOperateEnums capitalOperateEnums)throws Exception;
+    void freezeUserCapital(String userId) throws Exception;
 
     /**
-     * 用户资金变动
+     * 禁用用户资金账户
+     *
+     * @param userId
+     * */
+    void disableUserCapital(String userId) throws Exception;
+
+    /**
+     * 取用户资金余额
      *
      * @param userId 用户ID
-     * @param amount 变动金额
-     * @param capitalOperateEnums 操作方向
-     * @param capitalUseTypeEnums 使用类型
-     * @param desc 描述
-     * @param setRedis
-     * @return 是否成功
+     * @return balance
      * */
-    @Transactional(propagation= Propagation.REQUIRES_NEW)
-    boolean changeUserCapital(String userId, BigDecimal amount, CapitalOperateEnums capitalOperateEnums, CapitalUseTypeEnums capitalUseTypeEnums, String desc, boolean setRedis) throws Exception;
+    BigDecimal getUserBalance(String userId) throws Exception;
+
+    /**
+     * 用户余额变化
+     *
+     * @param userBilling
+     * */
+    void changeUserBalance(UserBilling userBilling) throws Exception;
+
+    /**
+     * 用户余额增加
+     *
+     * @param userBillings
+     * */
+    void addUserBalance(List<UserBilling> userBillings) throws Exception;
+
+    /**
+     * 同步用户余额
+     *
+     * @param userId
+     * */
+    void syncUserCapital(String userId);
 
 
     /**
-     * 保存用户流水to mongodb
+     * 获取用户流水
      *
-     * @param userBilling 用户流水
-     *
-     * @return 是否成功
      * */
-    boolean addUserBillingToMysql(UserBilling userBilling);
-
+    List<UserBilling> getUserBilling(Map<String, Object> queryParam, int pageNum, int perPageRow);
 }
