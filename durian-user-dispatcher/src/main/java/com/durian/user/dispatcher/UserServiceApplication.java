@@ -1,5 +1,7 @@
 package com.durian.user.dispatcher;
 
+import com.platform.common.dispatcher.CommonDispatcherConfig;
+import com.platform.common.service.redis.config.DistributedLockConfig;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
@@ -12,15 +14,13 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-import com.platform.common.dispatcher.CommonDispatcherConfig;
-
 /**
  * 用户服务启动类
  * <p>
  * Created by wangyang on 2017/5/11.
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, TransactionAutoConfiguration.class, MybatisAutoConfiguration.class})
-@Import(CommonDispatcherConfig.class)
+@Import({CommonDispatcherConfig.class, DistributedLockConfig.class})
 @ComponentScan("com.durian")
 @EnableAspectJAutoProxy
 @EnableAsync

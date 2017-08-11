@@ -15,12 +15,12 @@ import org.springframework.context.annotation.Scope;
 @Import(HttpThriftClientAutoConfiguration.class)
 public class UserClientConfig {
 
-    @ThriftLoadBalancerClient(serviceId = "capital", url = "/api/user")
+    @ThriftLoadBalancerClient(serviceId = "user", url = "/api/user")
     private UserServiceApi.Iface userServiceApi;
 
     @Bean
     @Scope("prototype")
-    public UserServiceApi.Iface userCapitalServiceApi() {
+    public UserServiceApi.Iface userServiceApi() {
         return this.userServiceApi;
     }
 
