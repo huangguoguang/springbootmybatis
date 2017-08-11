@@ -10,7 +10,6 @@ import com.durian.user.capital.domain.po.UserBilling;
 import com.durian.user.capital.domain.po.UserCapital;
 import com.durian.user.capital.mapper.UserCapitalMapper;
 import com.platform.common.domain.exception.CustomException;
-import com.platform.common.util.lock.RedissonDistributedLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -33,8 +32,8 @@ public class UserCapitalDaoImpl implements UserCapitalDao {
     private UserCapitalMapper userCapitalMapper;
     @Resource
     private StringRedisTemplate stringRedisTemplate;
-    @Resource
-    private RedissonDistributedLock redissonDistributedLock;
+   /* @Autowired
+    private RedissonDistributedLock redissonDistributedLock;*/
 
     @Override
     public UserCapital getUserCapital(String userId) throws Exception {
@@ -58,35 +57,31 @@ public class UserCapitalDaoImpl implements UserCapitalDao {
     public void changeUserBalance(UserBilling userBilling) throws Exception {
 
         String lockKey  = MessageFormat.format(CapitalRedisKeyEnums.CAPITAL_LOCK.getCode(), userBilling.getUserId());
-        redissonDistributedLock.synchronize(lockKey, () ->
-                {
-                    UserCapital userCapital = userCapitalMapper.selectUserCapital(userBilling.getUserId());
 
-                    String userCapitalStatus = userCapital.getStatus();
-                    if(CapitalStatusEnums.DISABLE.getCode().equals(userCapitalStatus)){
-                        throw new CustomException(CapitalExceptionEnums.ACCOUNT_DISABLE);
-                    }
+            UserCapital userCapital = userCapitalMapper.selectUserCapital(userBilling.getUserId());
 
-                    if(CapitalOperateEnums.SUBTRACT.getCode().equals(userBilling.getOperate())){
-                        if(CapitalStatusEnums.FREEZE.getCode().equals(userCapitalStatus)){
-                            throw new CustomException(CapitalExceptionEnums.ACCOUNT_FREEZE);
-                        }
+            String userCapitalStatus = userCapital.getStatus();
+            if(CapitalStatusEnums.DISABLE.getCode().equals(userCapitalStatus)){
+                throw new CustomException(CapitalExceptionEnums.ACCOUNT_DISABLE);
+            }
 
-                        // 减
-                        if(userCapital.getAmount().compareTo(userBilling.getAmount()) == -1){
-                            throw new CustomException(CapitalExceptionEnums.CAPITAL_SCARCITY);
-                        }
-                    }
-                    userBilling.setCreateTime(System.currentTimeMillis());
-
-                    // 更新余额
-                    userCapitalMapper.updateUserCapital(userBilling);
-                    // 写流水
-                    userCapitalMapper.insertUserBilling(userBilling);
-
-                    return false;
+            if(CapitalOperateEnums.SUBTRACT.getCode().equals(userBilling.getOperate())){
+                if(CapitalStatusEnums.FREEZE.getCode().equals(userCapitalStatus)){
+                    throw new CustomException(CapitalExceptionEnums.ACCOUNT_FREEZE);
                 }
-        );
+
+                // 减
+                if(userCapital.getAmount().compareTo(userBilling.getAmount()) == -1){
+                    throw new CustomException(CapitalExceptionEnums.CAPITAL_SCARCITY);
+                }
+            }
+            userBilling.setCreateTime(System.currentTimeMillis());
+
+            // 更新余额
+            userCapitalMapper.updateUserBilling(userBilling);
+            // 写流水
+            userCapitalMapper.insertUserBilling(userBilling);
+
 
     }
 
@@ -107,9 +102,9 @@ public class UserCapitalDaoImpl implements UserCapitalDao {
             doitList.add(userBilling);
         }
         // 更新余额
-        userCapitalMapper.updateUserCapital(doitList);
+        userCapitalMapper.updateUserCapitalList(doitList);
         // 写流水
-        userCapitalMapper.insertUserBilling(doitList);
+        userCapitalMapper.insertUserBillingList(doitList);
     }
 
     @Override

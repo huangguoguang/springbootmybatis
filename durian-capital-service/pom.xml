@@ -17,6 +17,9 @@
             <artifactId>durian-capital-entity</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        
+        <dependency>
+            <groupId>com.platform</groupId>
+            <artifactId>platform-common-service</artifactId>
+        </dependency>
     </dependencies>
 </project>

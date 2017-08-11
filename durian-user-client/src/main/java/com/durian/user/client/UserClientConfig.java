@@ -1,18 +1,27 @@
 package com.durian.user.client;
 
-import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
-import org.springframework.context.annotation.ComponentScan;
+import com.durian.user.thrift.api.service.UserServiceApi;
+import com.platform.common.thrift.client.annotation.ThriftLoadBalancerClient;
+import com.platform.common.thrift.client.config.HttpThriftClientAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Scope;
 
 /**
  * Created by wangyang on 2017/5/24.
  */
 @Configuration
-@ComponentScan
-@EnableDiscoveryClient
-@EnableCircuitBreaker
-@EnableFeignClients
+@Import(HttpThriftClientAutoConfiguration.class)
 public class UserClientConfig {
+
+    @ThriftLoadBalancerClient(serviceId = "capital", url = "/api/user")
+    private UserServiceApi.Iface userServiceApi;
+
+    @Bean
+    @Scope("prototype")
+    public UserServiceApi.Iface userCapitalServiceApi() {
+        return this.userServiceApi;
+    }
+
 }

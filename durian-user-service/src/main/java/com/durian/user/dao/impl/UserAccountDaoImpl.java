@@ -1,7 +1,6 @@
 package com.durian.user.dao.impl;
 
 
-import com.durian.user.capital.mapper.UserCapitalMapper;
 import com.durian.user.dao.UserAccountDao;
 import com.durian.user.domain.enums.AccountTypeEnum;
 import com.durian.user.domain.enums.UserExceptionEnum;
@@ -47,9 +46,6 @@ public class UserAccountDaoImpl implements UserAccountDao {
 
     @Autowired
     private UserLoginMapper userLoginMapper;
-
-    @Autowired
-    private UserCapitalMapper userCapitalMapper;
 
     @Autowired
     private UserRelationMapper userRelationMapper;

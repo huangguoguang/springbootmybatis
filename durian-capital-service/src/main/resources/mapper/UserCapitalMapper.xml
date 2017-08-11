@@ -35,7 +35,7 @@
     </select>
 
     <!-- 批量查询用户资金-->
-    <select id="selectUserCapital" parameterType="java.util.List" resultType="com.durian.user.capital.domain.po.UserCapital">
+    <select id="selectUserCapitalList" parameterType="java.util.List" resultType="com.durian.user.capital.domain.po.UserCapital">
         select
         id as id,
         user_id as userId,
@@ -58,7 +58,7 @@
         where user_id = #{userId}
     </update>
 
-    <update id="updateUserCapital" parameterType="com.durian.user.capital.domain.po.UserBilling">
+    <update id="updateUserBilling" parameterType="com.durian.user.capital.domain.po.UserBilling">
         update t_user_capital
         set
         <trim suffix="" suffixOverrides=",">
@@ -70,7 +70,7 @@
     </update>
 
     <!-- 批量更新用户资金-->
-    <update id="updateUserCapital" parameterType="java.util.List">
+    <update id="updateUserCapitalList" parameterType="java.util.List">
         <foreach collection="list" index="index" item="item" separator=",">
             update t_user_capital set
             <trim suffix="" suffixOverrides=",">
@@ -91,7 +91,7 @@
     </insert>
 
     <!-- 批量插入用户流水-->
-    <insert id="insertUserBilling" parameterType="java.util.List">
+    <insert id="insertUserBillingList" parameterType="java.util.List">
         insert into t_user_capital_billing (user_id,amount,balance,operate,purpose,correlation,description,create_time)
         values
           <foreach collection="list" index="index" item="item" separator=",">

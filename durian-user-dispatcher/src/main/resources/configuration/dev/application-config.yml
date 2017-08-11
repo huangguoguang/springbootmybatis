@@ -61,6 +61,6 @@ spring:
     username: guest
     password: guest
 
-  redisson:
+redisson:
     url: redis://192.168.1.15:9648
     password: 123456

@@ -1,11 +1,9 @@
 package com.durian.user.capital.mapper;
 
-import com.durian.user.capital.domain.po.UserCapital;
-import com.platform.common.domain.annotation.EnableDataSource;
-import org.springframework.stereotype.Repository;
 import com.durian.user.capital.domain.po.UserBilling;
+import com.durian.user.capital.domain.po.UserCapital;
+import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -49,14 +47,14 @@ public interface UserCapitalMapper {
      *
      * @param userBilling
      * */
-    int updateUserCapital(UserBilling userBilling);
+    int updateUserBilling(UserBilling userBilling);
 
     /**
      * 用户资金变动
      *
      * @param userBillings
      * */
-    int updateUserCapital(List<UserBilling> userBillings);
+    int updateUserCapitalList(List<UserBilling> userBillings);
 
     /**
      * 增加用户流水
@@ -70,7 +68,7 @@ public interface UserCapitalMapper {
      *
      * @param userBillings 流水信息
      * */
-    int insertUserBilling(List<UserBilling> userBillings);
+    int insertUserBillingList(List<UserBilling> userBillings);
 
     /**
      * 用户流水
