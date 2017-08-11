@@ -5,7 +5,7 @@ server:
 
 spring:
   application:
-    name: durian-user
+    name: user
   http:
     encoding:
       charset: utf-8
