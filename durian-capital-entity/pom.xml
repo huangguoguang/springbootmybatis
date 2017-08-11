@@ -7,4 +7,26 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>durian-capital-entity</artifactId>
+
+    <repositories>
+        <repository>
+            <id>nexus-private</id>
+            <name>Nexus private</name>
+            <url>http://192.168.1.39:8888/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-private</id>
+            <name>Nexus Snapshot Repository</name>
+            <url> http://192.168.1.39:8888/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
