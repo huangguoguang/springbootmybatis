@@ -12,11 +12,13 @@ import com.durian.user.capital.domain.po.UserCapital;
 import com.durian.user.capital.domain.po.UserBilling;
 import com.durian.user.capital.mapper.UserCapitalMapper;
 import com.platform.common.domain.exception.CustomException;
+import com.platform.common.util.lock.RedissonDistributedLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import sun.plugin2.message.Message;
 
 
 import javax.annotation.Resource;
@@ -36,6 +38,8 @@ public class UserCapitalDaoImpl implements UserCapitalDao {
     private UserCapitalMapper userCapitalMapper;
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+    @Resource
+    private RedissonDistributedLock redissonDistributedLock;
 
     @Override
     public UserCapital getUserCapital(String userId) throws Exception {
@@ -58,36 +62,41 @@ public class UserCapitalDaoImpl implements UserCapitalDao {
     @Override
     public void changeUserBalance(UserBilling userBilling) throws Exception {
 
-        // TODO set lock
-        UserCapital userCapital = userCapitalMapper.selectUserCapital(userBilling.getUserId());
+        String lockKey  = MessageFormat.format(CapitalRedisKeyEnums.CAPITAL_LOCK.getCode(), userBilling.getUserId());
+        redissonDistributedLock.synchronize(lockKey, () ->
+                {
+                    UserCapital userCapital = userCapitalMapper.selectUserCapital(userBilling.getUserId());
 
-        String userCapitalStatus = userCapital.getStatus();
-        if(CapitalStatusEnums.DISABLE.getCode().equals(userCapitalStatus)){
-            throw new CustomException(CapitalExceptionEnums.ACCOUNT_DISABLE);
-        }
+                    String userCapitalStatus = userCapital.getStatus();
+                    if(CapitalStatusEnums.DISABLE.getCode().equals(userCapitalStatus)){
+                        throw new CustomException(CapitalExceptionEnums.ACCOUNT_DISABLE);
+                    }
 
-        if(CapitalOperateEnums.SUBTRACT.getCode().equals(userBilling.getOperate())){
-            if(CapitalStatusEnums.FREEZE.getCode().equals(userCapitalStatus)){
-                throw new CustomException(CapitalExceptionEnums.ACCOUNT_FREEZE);
-            }
+                    if(CapitalOperateEnums.SUBTRACT.getCode().equals(userBilling.getOperate())){
+                        if(CapitalStatusEnums.FREEZE.getCode().equals(userCapitalStatus)){
+                            throw new CustomException(CapitalExceptionEnums.ACCOUNT_FREEZE);
+                        }
 
-            // 减
-            if(userCapital.getAmount().compareTo(userBilling.getAmount()) == -1){
-                throw new CustomException(CapitalExceptionEnums.CAPITAL_SCARCITY);
-            }
-        }
-        userBilling.setCreateTime(System.currentTimeMillis());
+                        // 减
+                        if(userCapital.getAmount().compareTo(userBilling.getAmount()) == -1){
+                            throw new CustomException(CapitalExceptionEnums.CAPITAL_SCARCITY);
+                        }
+                    }
+                    userBilling.setCreateTime(System.currentTimeMillis());
 
-        // 更新余额
-        userCapitalMapper.updateUserCapital(userBilling);
-        // 写流水
-        userCapitalMapper.insertUserBilling(userBilling);
-        // TODO release lock
+                    // 更新余额
+                    userCapitalMapper.updateUserCapital(userBilling);
+                    // 写流水
+                    userCapitalMapper.insertUserBilling(userBilling);
+
+                    return false;
+                }
+        );
+
     }
 
     @Override
     public void addUserBalance(List<UserBilling> userBillings) throws Exception {
-        // TODO set lock
         List<UserCapital> userCapitalList = userCapitalMapper.selectUserCapital(userBillings);
 
         List<UserBilling> doitList = new ArrayList<UserBilling>();
@@ -106,7 +115,6 @@ public class UserCapitalDaoImpl implements UserCapitalDao {
         userCapitalMapper.updateUserCapital(doitList);
         // 写流水
         userCapitalMapper.insertUserBilling(doitList);
-        // TODO release lock
     }
 
     @Override

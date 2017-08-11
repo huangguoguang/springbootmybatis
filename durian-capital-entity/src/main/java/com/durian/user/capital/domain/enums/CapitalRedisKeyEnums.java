@@ -4,7 +4,8 @@ package com.durian.user.capital.domain.enums;
  * Created by lj on 2017/4/12.
  */
 public enum CapitalRedisKeyEnums {
-    CAPITAL_ACCOUNT("user.{0}.capital", "用户资金账户");
+    CAPITAL_ACCOUNT("user.{0}.capital", "用户资金账户"),
+    CAPITAL_LOCK("lock.{0}.capital","资金锁");
     private String code;
     private String desc;
 
