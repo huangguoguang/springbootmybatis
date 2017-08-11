@@ -3,10 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.platform</groupId>
-        <artifactId>platform-client-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-        <relativePath></relativePath>
+        <groupId>com.durian.user</groupId>
+        <artifactId>durian-user</artifactId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>durian-user-client</artifactId>
@@ -16,11 +15,7 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>com.durian.user</groupId>
-            <artifactId>durian-user-entity</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -47,6 +42,16 @@
         <!-- user capital -->
         <dependency>
             <groupId>com.durian.user</groupId>
+            <artifactId>durian-user-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.durian.user</groupId>
+            <artifactId>durian-user-entity</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.durian.user</groupId>
             <artifactId>durian-capital-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
@@ -55,5 +60,6 @@
             <artifactId>durian-capital-entity</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
     </dependencies>
 </project>
