@@ -1,27 +1,12 @@
 package com.durian.user.service.impl;
 
 
-import java.text.MessageFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
 import com.durian.user.dao.*;
-import com.durian.user.domain.po.*;
-import com.durian.user.utils.token.Token;
-import com.durian.user.utils.token.TokenGenerator;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Service;
-
 import com.durian.user.domain.enums.TokenExceptionEnum;
 import com.durian.user.domain.enums.UserExceptionEnum;
 import com.durian.user.domain.enums.UserSmsEnum;
 import com.durian.user.domain.enums.UserStatusEnum;
+import com.durian.user.domain.po.*;
 import com.durian.user.domain.to.FindPwd;
 import com.durian.user.domain.to.RegisterUser;
 import com.durian.user.domain.to.UserAllInfo;
@@ -29,9 +14,23 @@ import com.durian.user.service.UserService;
 import com.durian.user.utils.code.RandomValidateCode;
 import com.durian.user.utils.encrypt.MD5Utils;
 import com.durian.user.utils.sms.SmsUtil;
+import com.durian.user.utils.token.Token;
+import com.durian.user.utils.token.TokenGenerator;
 import com.durian.user.utils.validate.RegexValidateUtil;
 import com.platform.common.domain.exception.CustomException;
 import com.platform.common.service.redis.util.JsonSerializerUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Service;
+
+import java.text.MessageFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -66,7 +65,7 @@ public class UserServiceImpl implements UserService {
     private UserInfoDao userInfoDao;
 
     @Override
-    public void register(RegisterUser registerUser) throws Exception {
+    public UserAllInfo register(RegisterUser registerUser) throws Exception {
         //手机号码格式不正确
         if(StringUtils.isBlank(registerUser.getMobile())){
             throw new CustomException(UserExceptionEnum.USER_MOBILE_NULL);
@@ -94,7 +93,7 @@ public class UserServiceImpl implements UserService {
         if(userAllInfo !=null){
             throw new CustomException(UserExceptionEnum.USER_EXIST);
         }
-       userAccountDao.saveUser(registerUser);
+        return userAccountDao.saveUser(registerUser);
     }
 
     @Override

@@ -1,27 +1,6 @@
 package com.durian.user.controller;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.Callable;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
+import com.durian.user.capital.service.UserCapitalService;
 import com.durian.user.domain.annotation.NoLoginAuth;
 import com.durian.user.domain.enums.UserExceptionEnum;
 import com.durian.user.domain.po.UserLogin;
@@ -33,6 +12,21 @@ import com.durian.user.utils.code.RandomValidateCode;
 import com.durian.user.utils.image.ImageUtil;
 import com.platform.common.domain.exception.CustomException;
 import com.platform.common.util.tfsclient.TfsClientService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 @RestController
 @RequestMapping("/user")
@@ -45,6 +39,9 @@ public class UserController {
 
     @Autowired
     private TfsClientService tfsClientService;
+
+    @Autowired
+    private UserCapitalService userCapitalService;
 
     /**
      * 新增用户
@@ -60,7 +57,8 @@ public class UserController {
         if(!registerUser.getImgCode().equalsIgnoreCase(imageCode)){
             throw new CustomException(UserExceptionEnum.USER_IMAGE_CODE);
         }*/
-        userService.register(registerUser);
+        UserAllInfo userAllInfo =  userService.register(registerUser);
+        userCapitalService.createUserCapital(userAllInfo.getId());
     }
 
     /**

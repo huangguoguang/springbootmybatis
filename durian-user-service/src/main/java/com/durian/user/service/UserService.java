@@ -19,7 +19,7 @@ public interface UserService {
      * 注册用户
      * @param registerUser
      */
-    void register(RegisterUser registerUser) throws Exception ;
+	UserAllInfo register(RegisterUser registerUser) throws Exception ;
 
 
 	/**

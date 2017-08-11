@@ -19,7 +19,6 @@
         <module>durian-capital-service</module>
         <module>durian-capital-entity</module>
         <module>durian-capital-api</module>
-        <module>durian-capital-dispatcher</module>
     </modules>
 
     <parent>

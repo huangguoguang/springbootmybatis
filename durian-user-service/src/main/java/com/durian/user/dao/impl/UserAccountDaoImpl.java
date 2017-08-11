@@ -1,39 +1,29 @@
 package com.durian.user.dao.impl;
 
 
-import java.math.BigDecimal;
-import java.text.MessageFormat;
-import java.util.Date;
-import java.util.List;
-
-import com.durian.user.domain.enums.AccountTypeEnum;
-import com.durian.user.mapper.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.durian.user.capital.mapper.UserCapitalMapper;
 import com.durian.user.dao.UserAccountDao;
+import com.durian.user.domain.enums.AccountTypeEnum;
 import com.durian.user.domain.enums.UserExceptionEnum;
 import com.durian.user.domain.enums.UserSmsEnum;
 import com.durian.user.domain.enums.UserStatusEnum;
-import com.durian.user.domain.po.UserAccount;
-import com.durian.user.domain.po.UserBusiness;
-import com.durian.user.domain.po.UserInfo;
-import com.durian.user.domain.po.UserLogin;
-import com.durian.user.domain.po.UserRelation;
+import com.durian.user.domain.po.*;
 import com.durian.user.domain.to.FindPwd;
 import com.durian.user.domain.to.RegisterUser;
 import com.durian.user.domain.to.UserAllInfo;
+import com.durian.user.mapper.*;
 import com.durian.user.utils.date.DateFormatUtil;
 import com.durian.user.utils.date.IdentificationUtil;
 import com.durian.user.utils.encrypt.MD5Utils;
 import com.platform.common.domain.exception.CustomException;
 import com.platform.common.service.redis.util.JsonSerializerUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.durian.user.capital.domain.po.UserCapitalAccount;
-import com.durian.user.capital.mapper.UserCapitalMapper;
-import com.durian.user.capital.domain.enums.CapitalRedisKeyEnums;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -110,15 +100,6 @@ public class UserAccountDaoImpl implements UserAccountDao {
         userRelation.setInviteeId(userAccount.getId());
         userRelationMapper.insert(userRelation);
 
-        //新增用户MYSQL钱包账号及REDIS钱包账号
-        UserCapitalAccount userCapitalAccount = new UserCapitalAccount();
-        userCapitalAccount.setId(userAccount.getId());
-        userCapitalAccount.setUserId(userAccount.getId());
-        userCapitalAccount.setMobile(registerUser.getMobile());
-        userCapitalAccount.setCreateDate(new Date());
-        userCapitalAccount.setBalance(BigDecimal.valueOf(0));
-        userCapitalMapper.addUserCapitalAccount(userCapitalAccount);
-        redisTemplate.opsForValue().set(MessageFormat.format(CapitalRedisKeyEnums.OLD_CAPITAL_USER_PREFIX.getCode(), userAccount.getId()) , "0.00");
 
         redisTemplate.opsForValue().set("userAllInfo:"+userAllInfo.getId(),JsonSerializerUtils.seriazile(userAllInfo));
         redisTemplate.delete("mobilecode:"+registerUser.getMobile()+":"+ UserSmsEnum.REGISTER.getCode());
