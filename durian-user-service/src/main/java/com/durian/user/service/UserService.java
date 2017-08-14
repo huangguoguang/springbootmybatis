@@ -1,12 +1,12 @@
 package com.durian.user.service;
 
 
-import java.util.List;
-
 import com.durian.user.domain.po.UserLogin;
 import com.durian.user.domain.to.FindPwd;
 import com.durian.user.domain.to.RegisterUser;
 import com.durian.user.domain.to.UserAllInfo;
+
+import java.util.List;
 
 /**
  * 用户服务接口定义
@@ -19,7 +19,7 @@ public interface UserService {
      * 注册用户
      * @param registerUser
      */
-	UserAllInfo register(RegisterUser registerUser) throws Exception ;
+	UserAllInfo registerUser(RegisterUser registerUser) throws Exception ;
 
 
 	/**

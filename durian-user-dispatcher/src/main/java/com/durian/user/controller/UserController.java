@@ -5,7 +5,6 @@ import com.durian.user.domain.annotation.NoLoginAuth;
 import com.durian.user.domain.enums.UserExceptionEnum;
 import com.durian.user.domain.po.UserLogin;
 import com.durian.user.domain.to.FindPwd;
-import com.durian.user.domain.to.RegisterUser;
 import com.durian.user.domain.to.UserAllInfo;
 import com.durian.user.service.UserService;
 import com.durian.user.utils.code.RandomValidateCode;
@@ -43,36 +42,7 @@ public class UserController {
     @Autowired
     private UserCapitalService userCapitalService;
 
-    /**
-     * 新增用户
-     * @param registerUser
-     * @throws Exception
-     */
-    @NoLoginAuth
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public void register(@ModelAttribute RegisterUser registerUser, HttpServletRequest request, HttpServletResponse response) throws Exception {
-       /* HttpSession session = request.getSession();
-        String imageCode = (String)session.getAttribute(ImageUtil.WEB_IMAGE_CODE);
-        //判断图形验证码,
-        if(!registerUser.getImgCode().equalsIgnoreCase(imageCode)){
-            throw new CustomException(UserExceptionEnum.USER_IMAGE_CODE);
-        }*/
-        UserAllInfo userAllInfo =  userService.register(registerUser);
-        userCapitalService.createUserCapital(userAllInfo.getId());
-    }
 
-    /**
-     * 注册代理用户
-     * @param userId
-     * @param nickName
-     * @throws Exception
-     */
-    @NoLoginAuth
-    @RequestMapping(value = "/registerAgentUser", method = RequestMethod.POST)
-    public void registerAgentUser(@RequestParam String userId, @RequestParam String nickName,HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-        userService.registerAgentUser(userId,nickName);
-    }
 
     /**
      * 获取web验证码
@@ -98,24 +68,6 @@ public class UserController {
         ImageIO.write(bufferedImage, "JPEG", response.getOutputStream());
     }
 
-    /**
-     * 发送短信验证码
-     *
-     * @param registerUser
-     * @throws Exception
-     */
-    @NoLoginAuth
-    @RequestMapping(value = "/verify/code", method = RequestMethod.POST)
-    public void registerMobileCode(@ModelAttribute RegisterUser registerUser,HttpServletRequest request, HttpServletResponse response) throws Exception {
-        /*HttpSession session = request.getSession();
-        String imageCode = (String)session.getAttribute(ImageUtil.WEB_IMAGE_CODE);
-        LOGGER.info("服务器图片验证码:"+imageCode +" 客户提交的验证码:"+registerUser.getImgCode());
-        //判断图形验证码,
-        if(!registerUser.getImgCode().equalsIgnoreCase(imageCode)){
-            throw new CustomException(UserExceptionEnum.USER_IMAGE_CODE);
-        }*/
-        userService.registerMobileCode(registerUser);
-    }
 
     /**
      * 找回密码
@@ -246,24 +198,6 @@ public class UserController {
         return () -> userService.userLoginHistory(userId);
     }
 
-    @RequestMapping(value = "password/update", method = RequestMethod.PUT)
-    public Callable<String> modifyPwd(String userId, String oldPwd, String newPwd) throws Exception {
-        LOGGER.info("修改密码: " + userId);
-        return () -> userService.modifyPwd(userId, oldPwd, newPwd);
-    }
-    
-    
-    /**
-     * token 转 用户对象
-     *
-     * @return
-     * @throws Exception
-     */
-    @NoLoginAuth
-    @RequestMapping(value = "info/token", method = RequestMethod.GET)
-    public UserAllInfo userInfoByToken(String accessToken) throws Exception {
-        LOGGER.info("用户token:"+ accessToken);
-        UserAllInfo userAllInfo = userService.userInfoByToken(accessToken);
-        return userAllInfo;
-    }
+
+
 }

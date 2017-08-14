@@ -17,6 +17,7 @@ public enum UserExceptionEnum implements CustomExceptionCode {
     USER_MOBLLE_CODE_ERROR(602, "手机短信验证码错误", 500),
     USER_NIKENAME_NULL(603, "昵称不能为空", 500),
     USER_MOBILE_NULL(604, "手机号码不能为空", 500),
+    USER_PASSWORD_NULL(604, "用户密码不能为空", 500),
     USER_MOBILE_FORMAT(605, "手机号码格式不正确", 500),
     USER_MOBILE_PASSWORD(606, "用户名或密码错误", 500),
     USER_MOBILE_DISABLE(607, "用户名已经禁用", 500),
@@ -40,31 +41,31 @@ public enum UserExceptionEnum implements CustomExceptionCode {
 
     @Override
     public Integer getCode() {
-        return null;
+        return this.code;
     }
 
     @Override
-    public void setCode(Integer integer) {
-
+    public void setCode(Integer code) {
+        this.code = code;
     }
 
     @Override
     public String getMsg() {
-        return null;
+        return this.msg;
     }
 
     @Override
-    public void setMsg(String s) {
-
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     @Override
     public Integer getHttpCode() {
-        return null;
+        return this.httpCode;
     }
 
     @Override
-    public void setHttpCode(Integer integer) {
-
+    public void setHttpCode(Integer httpCode) {
+        this.httpCode = httpCode;
     }
 }

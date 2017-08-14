@@ -6,7 +6,9 @@ import com.durian.user.domain.enums.TokenExceptionEnum;
 import com.durian.user.domain.enums.UserExceptionEnum;
 import com.durian.user.domain.enums.UserSmsEnum;
 import com.durian.user.domain.enums.UserStatusEnum;
-import com.durian.user.domain.po.*;
+import com.durian.user.domain.po.UserBusiness;
+import com.durian.user.domain.po.UserLogin;
+import com.durian.user.domain.po.UserSms;
 import com.durian.user.domain.to.FindPwd;
 import com.durian.user.domain.to.RegisterUser;
 import com.durian.user.domain.to.UserAllInfo;
@@ -58,14 +60,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserLoginDao userLoginDao;
 
-    @Autowired
-    private UserRelationDao userRelationDao;
 
     @Autowired
     private UserInfoDao userInfoDao;
 
     @Override
-    public UserAllInfo register(RegisterUser registerUser) throws Exception {
+    public UserAllInfo registerUser(RegisterUser registerUser) throws Exception {
         //手机号码格式不正确
         if(StringUtils.isBlank(registerUser.getMobile())){
             throw new CustomException(UserExceptionEnum.USER_MOBILE_NULL);
@@ -74,6 +74,11 @@ public class UserServiceImpl implements UserService {
         //手机号码格式不正确
         if(!RegexValidateUtil.checkMobile(registerUser.getMobile())){
             throw new CustomException(UserExceptionEnum.USER_MOBILE_FORMAT);
+        }
+
+        //手机密码不能为空
+        if(StringUtils.isBlank(registerUser.getPassword())){
+            throw new CustomException(UserExceptionEnum.USER_PASSWORD_NULL);
         }
 
         //手机号码格式不正确
@@ -99,7 +104,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void registerAgentUser(String userId,String nickName) throws Exception {
 
-        UserInfo userInfo = new UserInfo();
+ /*       UserInfo userInfo = new UserInfo();
         UserRelation userRelation = new UserRelation();
 
         userInfo.setUserId(userId);
@@ -108,7 +113,7 @@ public class UserServiceImpl implements UserService {
         userRelation.setInviterId(userId);
 
         userInfoDao.updateNickName(userInfo);
-        userRelationDao.updateRelationInfo(userRelation);
+        userRelationDao.updateRelationInfo(userRelation);*/
     }
 
     @Override
@@ -159,12 +164,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String findPwdMobileCode(FindPwd findPwd) throws Exception {
-        String id = redisTemplate.opsForValue().get(findPwd.getToken()) ;
-        if(StringUtils.isBlank(id)){
-            throw new CustomException(UserExceptionEnum.USER_MOBILE_FORMAT);
-        }
-        UserAllInfo userAllInfo = userAccountDao.getUserInfoById(id);
-        findPwd.setMobile(userAllInfo.getMobile());
+        findPwd.setMobile(findPwd.getMobile());
         String mobileCode = RandomValidateCode.getRandomNumber(4);
         String content = MessageFormat.format(UserSmsEnum.FINDPWD_CONTENT.getDesc(), mobileCode);
         UserSms userSms = new UserSms();
@@ -187,12 +187,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void resetPwd(FindPwd findPwd) throws Exception {
-        String id = redisTemplate.opsForValue().get(findPwd.getToken()) ;
-        if(StringUtils.isBlank(id)){
-            throw new CustomException(UserExceptionEnum.USER_MOBILE_FORMAT);
-        }
-        UserAllInfo userAllInfo = userAccountDao.getUserInfoById(id);
-        findPwd.setMobile(userAllInfo.getMobile());
         //判断手机短信
         if(!findPwd.getMobileCode().equalsIgnoreCase(redisTemplate.opsForValue().get("mobilecode:"+findPwd.getMobile()+":"+UserSmsEnum.FIND_PWD.getCode()))){
             throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);

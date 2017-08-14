@@ -1,28 +1,27 @@
 package com.durian.user.service.impl;
 
 
-import java.util.Date;
-
-import com.durian.user.dao.UserAccountDao;
-import com.durian.user.service.LoginService;
-import com.durian.user.utils.token.Token;
-import com.durian.user.utils.token.TokenGenerator;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.alibaba.fastjson.JSONObject;
+import com.durian.user.dao.UserAccountDao;
 import com.durian.user.domain.enums.TokenExceptionEnum;
 import com.durian.user.domain.enums.UserExceptionEnum;
 import com.durian.user.domain.enums.UserStatusEnum;
 import com.durian.user.domain.po.UserLogin;
 import com.durian.user.domain.to.LoginUser;
 import com.durian.user.domain.to.UserAllInfo;
+import com.durian.user.service.LoginService;
 import com.durian.user.utils.encrypt.MD5Utils;
+import com.durian.user.utils.token.Token;
+import com.durian.user.utils.token.TokenGenerator;
 import com.durian.user.utils.validate.RegexValidateUtil;
 import com.platform.common.domain.exception.CustomException;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * 登录验证功能.
@@ -114,10 +113,12 @@ public class LoginServiceImpl implements LoginService {
         Integer expires = 60 * 1;
         String accessToken = TokenGenerator.generatorToken(userAllInfo.getMobile(),userAllInfo.getId(),type,expires);
         userAllInfo.setAccessToken(accessToken);
+        userAllInfo.setCreateTime(new Date().getTime());
         userAllInfo.setRefreshToken(refreshToken);
         userAllInfo.setExpires(expires);
         //设置登录时间
         userAllInfo.setLoginTime(new Date().getTime());
+
         userAllInfo.setPassword(null);
         userAllInfo.setMobile(null);
         return userAllInfo;

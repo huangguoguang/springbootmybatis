@@ -16,7 +16,7 @@ import java.security.SignatureException;
 
 public class MD5Utils {
     public static  String DEFAULT_UTF_8_INPUT_CHARSET ="UTF-8";
-    public static String PWD_KEY = "anchol";
+    public static String PWD_KEY = "12345678";
 
     /**
      * 签名字符串

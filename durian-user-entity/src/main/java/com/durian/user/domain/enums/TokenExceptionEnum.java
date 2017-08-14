@@ -25,33 +25,34 @@ public enum TokenExceptionEnum implements CustomExceptionCode {
         this.httpCode = httpCode;
     }
 
+
     @Override
     public Integer getCode() {
-        return null;
+        return this.code;
     }
 
     @Override
-    public void setCode(Integer integer) {
-
+    public void setCode(Integer code) {
+        this.code = code;
     }
 
     @Override
     public String getMsg() {
-        return null;
+        return this.msg;
     }
 
     @Override
-    public void setMsg(String s) {
-
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     @Override
     public Integer getHttpCode() {
-        return null;
+        return this.httpCode;
     }
 
     @Override
-    public void setHttpCode(Integer integer) {
-
+    public void setHttpCode(Integer httpCode) {
+        this.httpCode = httpCode;
     }
 }

@@ -47,9 +47,6 @@ public class UserAccountDaoImpl implements UserAccountDao {
     @Autowired
     private UserLoginMapper userLoginMapper;
 
-    @Autowired
-    private UserRelationMapper userRelationMapper;
-
     @Override
     public UserAllInfo saveUser(RegisterUser registerUser) {
 
@@ -84,17 +81,6 @@ public class UserAccountDaoImpl implements UserAccountDao {
         userAllInfo.setAccountType(userAccount.getAccountType());
         userAllInfo.setStatus(userAccount.getStatus());
         userBusinessMapper.insert(userBusiness);
-
-
-
-        //新增用户关系
-        UserRelation userRelation = new UserRelation();
-
-        userRelation.setInviterId(registerUser.getInviterId());
-        userRelation.setDeptId(registerUser.getDeptId());
-        userRelation.setDeptCode(registerUser.getDeptId());
-        userRelation.setInviteeId(userAccount.getId());
-        userRelationMapper.insert(userRelation);
 
 
         redisTemplate.opsForValue().set("userAllInfo:"+userAllInfo.getId(),JsonSerializerUtils.seriazile(userAllInfo));
