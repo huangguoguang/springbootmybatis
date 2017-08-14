@@ -29,6 +29,7 @@ public class UserServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(UserServiceApplication.class);
+        app.setWebEnvironment(true);
         app.setBannerMode(Banner.Mode.CONSOLE);
         app.run(args);
     }

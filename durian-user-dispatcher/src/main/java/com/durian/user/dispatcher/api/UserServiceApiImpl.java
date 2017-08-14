@@ -36,6 +36,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             return userAllInfoTo ;
         } catch (Exception e) {
             e.printStackTrace();
+
             throw new TException(e);
         }
     }

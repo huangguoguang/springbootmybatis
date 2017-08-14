@@ -4,12 +4,10 @@ import com.durian.user.capital.domain.po.UserBilling;
 import com.durian.user.capital.service.UserCapitalService;
 import com.durian.user.capital.thrift.api.domain.UserBillingTo;
 import com.durian.user.capital.thrift.api.service.UserCapitalServiceApi;
-import com.platform.common.thrift.service.annotation.EnableThriftService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -18,8 +16,8 @@ import java.util.List;
 /**
  * Created by lj on 2017/8/10.
  */
-@EnableThriftService(path = "/api/capital")
-@Service
+/*@EnableThriftService(path = "/api/capital")
+@Service*/
 public class UserCapitalServiceApiImpl implements UserCapitalServiceApi.Iface {
 		private final static Logger LOGGER = LoggerFactory.getLogger(UserCapitalServiceApiImpl.class);
 
