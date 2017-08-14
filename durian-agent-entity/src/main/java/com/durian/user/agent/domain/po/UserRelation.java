@@ -1,4 +1,4 @@
-package com.durian.user.domain.po;
+package com.durian.user.agent.domain.po;
 
 /**
  * Created by wangzhe on 2017/8/3.

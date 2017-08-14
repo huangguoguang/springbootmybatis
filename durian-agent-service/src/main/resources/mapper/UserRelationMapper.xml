@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.durian.user.mapper.UserRelationMapper">
-  <resultMap id="BaseResultMap" type="com.durian.user.domain.po.UserRelation">
+<mapper namespace="com.durian.user.agent.mapper.UserRelationMapper">
+  <resultMap id="BaseResultMap" type="com.durian.user.agent.domain.po.UserRelation">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
     <result column="dept_id" jdbcType="VARCHAR" property="dept_id" />
@@ -23,12 +23,12 @@
     delete from t_user_relation
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.durian.user.domain.po.UserRelation">
+  <insert id="insert" parameterType="com.durian.user.agent.domain.po.UserRelation">
     insert into t_user_relation (id, dept_code,dept_id, inviter_id, invitee_id,status,del_tag)
     values (#{id,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR},#{deptId,jdbcType=VARCHAR},#{inviterId,jdbcType=VARCHAR}, #{inviteeId,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{delTag,jdbcType=CHAR}
     )
   </insert>
-  <insert id="insertSelective" parameterType="com.durian.user.domain.po.UserRelation">
+  <insert id="insertSelective" parameterType="com.durian.user.agent.domain.po.UserRelation">
     insert into t_user_relation
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -77,7 +77,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.durian.user.domain.po.UserRelation">
+  <update id="updateByPrimaryKeySelective" parameterType="com.durian.user.agent.domain.po.UserRelation">
     update t_user_relation
     <set>
       <if test="deptCode != null">
@@ -101,7 +101,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.durian.user.domain.po.UserRelation">
+  <update id="updateByPrimaryKey" parameterType="com.durian.user.agent.domain.po.UserRelation">
     update t_user_relation
     set inviter_id = #{inviterId,jdbcType=VARCHAR},
       invitee_id = #{inviteeId,jdbcType=VARCHAR},
@@ -109,9 +109,39 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <update id="updateRelationInfo" parameterType="com.durian.user.domain.po.UserRelation">
+  <update id="updateRelationInfo" parameterType="com.durian.user.agent.domain.po.UserRelation">
     update t_user_relation
     set status = '1'
     where inviter_Id = #{inviterId,jdbcType=VARCHAR}
   </update>
+
+  <select id="selectUserAgentInfo" parameterType="java.lang.String" resultType="map">
+        select * from t_user_relation where inviter_id in(#{userId})
+  </select>
+
+  <select id="selectUserAgent2Info" parameterType="java.lang.String" resultType="map">
+      select *  from t_user_relation where inviter_id in(
+      select invitee_id from t_user_relation where inviter_id in(#{userId}))
+  </select>
+
+  <select id="selectUserAgent3Info" parameterType="java.lang.String" resultType="map">
+    select * from t_user_relation where inviter_id in(
+        select invitee_id  from t_user_relation where inviter_id in(
+            select invitee_id from t_user_relation where inviter_id in(#{userId})))
+  </select>
+
+  <select id="selectBrokerageInfo" parameterType="java.lang.String" resultMap="com.durian.user.agent.domain.po.UserRelation">
+      select * from t_user_relation where invitee_id in(#{userId})
+  </select>
+
+  <select id="selectBrokerage2Info" parameterType="java.lang.String" resultMap="com.durian.user.agent.domain.po.UserRelation">
+    select *  from t_user_relation where invitee_id in(
+      select inviter_id from t_user_relation where invitee_id in(#{userId}))
+  </select>
+
+  <select id="selectBrokerage3Info" parameterType="java.lang.String" resultMap="com.durian.user.agent.domain.po.UserRelation">
+    select * from t_user_relation where invitee_id in(
+      select inviter_id  from t_user_relation where invitee_id in(
+        select inviter_id from t_user_relation where invitee_id in(#{userId})))
+  </select>
 </mapper>
