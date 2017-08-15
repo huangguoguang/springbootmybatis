@@ -1,6 +1,9 @@
 package com.durian.user.service.impl;
 
 
+import com.durian.user.agent.domain.po.UserRelation;
+import com.durian.user.agent.service.UserRelationService;
+import com.durian.user.capital.service.UserCapitalService;
 import com.durian.user.dao.*;
 import com.durian.user.domain.enums.TokenExceptionEnum;
 import com.durian.user.domain.enums.UserExceptionEnum;
@@ -64,6 +67,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserInfoDao userInfoDao;
 
+    @Autowired
+    private UserCapitalService userCapitalService ;
+
+    @Autowired
+    private UserRelationService userRelationService ;
+
     @Override
     public UserAllInfo registerUser(RegisterUser registerUser) throws Exception {
         //手机号码格式不正确
@@ -98,7 +107,23 @@ public class UserServiceImpl implements UserService {
         if(userAllInfo !=null){
             throw new CustomException(UserExceptionEnum.USER_EXIST);
         }
-        return userAccountDao.saveUser(registerUser);
+        userAllInfo = userAccountDao.saveUser(registerUser);
+        //创建资金账户
+        userCapitalService.createUserCapital(userAllInfo.getId());
+        //创建代理关系
+
+
+        //新增用户关系
+        UserRelation userRelation = new UserRelation();
+        userRelation.setDeptId(registerUser.getDeptId());
+        userRelation.setDeptCode(registerUser.getDeptId());
+        //
+        userRelation.setInviteeId(userAllInfo.getId());
+        //
+        userRelation.setInviterId(registerUser.getInviterId());
+        userRelationService.inviteUser(userRelation);
+        return userAllInfo;
+
     }
 
     @Override
