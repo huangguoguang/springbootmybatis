@@ -1,16 +1,25 @@
 package com.durian.user.dao.impl;
 
 
+import com.durian.user.agent.domain.po.UserRelation;
+import com.durian.user.agent.service.UserRelationService;
+import com.durian.user.capital.service.UserCapitalService;
 import com.durian.user.dao.UserAccountDao;
 import com.durian.user.domain.enums.AccountTypeEnum;
 import com.durian.user.domain.enums.UserExceptionEnum;
 import com.durian.user.domain.enums.UserSmsEnum;
 import com.durian.user.domain.enums.UserStatusEnum;
-import com.durian.user.domain.po.*;
+import com.durian.user.domain.po.UserAccount;
+import com.durian.user.domain.po.UserBusiness;
+import com.durian.user.domain.po.UserInfo;
+import com.durian.user.domain.po.UserLogin;
 import com.durian.user.domain.to.FindPwd;
 import com.durian.user.domain.to.RegisterUser;
 import com.durian.user.domain.to.UserAllInfo;
-import com.durian.user.mapper.*;
+import com.durian.user.mapper.UserAccountMapper;
+import com.durian.user.mapper.UserBusinessMapper;
+import com.durian.user.mapper.UserInfoMapper;
+import com.durian.user.mapper.UserLoginMapper;
 import com.durian.user.utils.date.DateFormatUtil;
 import com.durian.user.utils.date.IdentificationUtil;
 import com.durian.user.utils.encrypt.MD5Utils;
@@ -47,8 +56,14 @@ public class UserAccountDaoImpl implements UserAccountDao {
     @Autowired
     private UserLoginMapper userLoginMapper;
 
+    @Autowired
+    private UserCapitalService userCapitalService ;
+
+    @Autowired
+    private UserRelationService userRelationService ;
+
     @Override
-    public UserAllInfo saveUser(RegisterUser registerUser) {
+    public UserAllInfo saveUser(RegisterUser registerUser) throws Exception {
 
 
         UserAccount userAccount = new UserAccount();
@@ -82,9 +97,24 @@ public class UserAccountDaoImpl implements UserAccountDao {
         userAllInfo.setStatus(userAccount.getStatus());
         userBusinessMapper.insert(userBusiness);
 
+        //创建资金账户
+        userCapitalService.createUserCapital(userAllInfo.getId());
+        //创建代理关系
+
+
+        //新增用户关系
+        UserRelation userRelation = new UserRelation();
+        userRelation.setDeptId(registerUser.getDeptId());
+        userRelation.setDeptCode(registerUser.getDeptId());
+        //
+        userRelation.setInviteeId(userAllInfo.getId());
+        //
+        userRelation.setInviterId(registerUser.getInviterId());
+        //userRelationService.inviteUser(userRelation);
 
         redisTemplate.opsForValue().set("userAllInfo:"+userAllInfo.getId(),JsonSerializerUtils.seriazile(userAllInfo));
         redisTemplate.delete("mobilecode:"+registerUser.getMobile()+":"+ UserSmsEnum.REGISTER.getCode());
+
 
         return userAllInfo;
 

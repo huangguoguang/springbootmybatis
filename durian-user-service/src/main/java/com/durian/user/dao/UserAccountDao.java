@@ -23,7 +23,7 @@ public interface UserAccountDao {
      * @param registerUser
      * @return
      */
-    UserAllInfo saveUser(RegisterUser registerUser);
+    UserAllInfo saveUser(RegisterUser registerUser)throws Exception ;
 
 
     /**
