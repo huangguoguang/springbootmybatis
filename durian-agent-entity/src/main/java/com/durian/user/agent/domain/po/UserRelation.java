@@ -11,6 +11,8 @@ public class UserRelation {
 
     private String deptId;
 
+    private String agentName;  //代理商名称
+
     private String inviterId; //邀请人ID
 
     private String inviteeId; //被邀请人ID
@@ -18,6 +20,10 @@ public class UserRelation {
     private String status;   //代理标识状态
 
     private String delTag;    //删除标识
+
+    private Long createTime;
+
+    private Long updateTime;
 
     public void setId(Integer id) {
         this.id = id;
@@ -65,6 +71,29 @@ public class UserRelation {
 
     public String getDelTag() {
         return delTag;
+    }
+
+    public String getAgentName() {
+        return agentName;
+    }
+
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
+    }
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
+    }
+
+    public Long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
     }
 
 

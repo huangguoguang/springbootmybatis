@@ -3,6 +3,7 @@ package com.durian.user.agent.service;
 import com.durian.user.agent.domain.po.UserRelation;
 import com.durian.user.agent.domain.to.UserLevelRelation;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -14,7 +15,7 @@ import java.util.List;
 public interface UserRelationService {
 
 	/**
-	 * 用户下线
+	 * 得到用户下线信息
 	 * @param userId
 	 * @throws Exception
 	 */
@@ -32,7 +33,7 @@ public interface UserRelationService {
 	 * @param userId
 	 * @throws Exception
 	 */
-	Boolean userBrokerage(String userId)  throws Exception;
+	Boolean userBrokerAge(String userId,BigDecimal brokerAge)  throws Exception;
 
 
 	/**
@@ -40,6 +41,16 @@ public interface UserRelationService {
 	 * @param userRelation
 	 */
 	Boolean inviteUser(UserRelation userRelation) throws Exception ;
+
+
+	/**
+	 * 注册代理用户
+	 * @param userId
+	 * @param userName
+	 * @return
+	 * @throws Exception
+	 */
+	Boolean registerUserAgent(String userId,String userName) throws Exception;
 
 
 }
