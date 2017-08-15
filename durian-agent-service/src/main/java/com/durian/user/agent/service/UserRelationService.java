@@ -35,14 +35,6 @@ public interface UserRelationService {
 	Boolean userBrokerage(String userId)  throws Exception;
 
 
-
-	/**
-	 * 注册为代理用户
-	 * @param userId
-	 * @param nickName
-	 */
-	Boolean registerAgentUser(String userId,String nickName) throws Exception ;
-
 	/**
 	 * 邀请用户
 	 * @param userRelation

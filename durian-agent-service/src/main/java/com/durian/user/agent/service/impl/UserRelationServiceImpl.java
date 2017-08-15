@@ -12,8 +12,6 @@ import com.durian.user.capital.domain.enums.CapitalPurposeEnums;
 import com.durian.user.capital.domain.enums.CapitalRedisKeyEnums;
 import com.durian.user.capital.domain.po.UserBilling;
 import com.durian.user.capital.domain.po.UserCapital;
-import com.durian.user.dao.UserInfoDao;
-import com.durian.user.domain.po.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +39,6 @@ public class UserRelationServiceImpl implements UserRelationService {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    @Autowired
-    private UserInfoDao userInfoDao;
 
     @Override
     public String getUserReferrals(String userId) throws Exception {
@@ -132,24 +128,10 @@ public class UserRelationServiceImpl implements UserRelationService {
 
     }
 
-    @Override
-    public Boolean registerAgentUser(String userId,String nickName) throws Exception {
-        UserInfo userInfo = new UserInfo();
-        UserRelation userRelation = new UserRelation();
-
-        userInfo.setUserId(userId);
-        userInfo.setNickName(nickName);
-
-        userRelation.setInviterId(userId);
-
-        userInfoDao.updateNickName(userInfo);
-        //userRelationDao.updateRelationInfo(userRelation);
-
-        return true;
-    }
 
     @Override
     public Boolean inviteUser(UserRelation userRelation) throws Exception {
+
         int i =  userRelationDao.saveUserRelation(userRelation);
 
         if(i==1){

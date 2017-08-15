@@ -115,31 +115,31 @@
     where inviter_Id = #{inviterId,jdbcType=VARCHAR}
   </update>
 
-  <select id="selectUserAgentInfo" parameterType="java.lang.String" resultType="map">
+  <select id="selectUserAgentInfo" parameterType="java.lang.String" resultType="java.util.Map">
         select * from t_user_relation where inviter_id in(#{userId})
   </select>
 
-  <select id="selectUserAgent2Info" parameterType="java.lang.String" resultType="map">
+  <select id="selectUserAgent2Info" parameterType="java.lang.String" resultType="java.util.Map">
       select *  from t_user_relation where inviter_id in(
       select invitee_id from t_user_relation where inviter_id in(#{userId}))
   </select>
 
-  <select id="selectUserAgent3Info" parameterType="java.lang.String" resultType="map">
+  <select id="selectUserAgent3Info" parameterType="java.lang.String" resultType="java.util.Map">
     select * from t_user_relation where inviter_id in(
         select invitee_id  from t_user_relation where inviter_id in(
             select invitee_id from t_user_relation where inviter_id in(#{userId})))
   </select>
 
-  <select id="selectBrokerageInfo" parameterType="java.lang.String" resultMap="com.durian.user.agent.domain.po.UserRelation">
+  <select id="selectBrokerageInfo" parameterType="java.lang.String" resultType="com.durian.user.agent.domain.po.UserRelation">
       select * from t_user_relation where invitee_id in(#{userId})
   </select>
 
-  <select id="selectBrokerage2Info" parameterType="java.lang.String" resultMap="com.durian.user.agent.domain.po.UserRelation">
+  <select id="selectBrokerage2Info" parameterType="java.lang.String" resultType="com.durian.user.agent.domain.po.UserRelation">
     select *  from t_user_relation where invitee_id in(
       select inviter_id from t_user_relation where invitee_id in(#{userId}))
   </select>
 
-  <select id="selectBrokerage3Info" parameterType="java.lang.String" resultMap="com.durian.user.agent.domain.po.UserRelation">
+  <select id="selectBrokerage3Info" parameterType="java.lang.String" resultType="com.durian.user.agent.domain.po.UserRelation">
     select * from t_user_relation where invitee_id in(
       select inviter_id  from t_user_relation where invitee_id in(
         select inviter_id from t_user_relation where invitee_id in(#{userId})))
