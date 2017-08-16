@@ -1,14 +1,16 @@
 package com.durian.user.capital.dispatcher.api;
 
 import com.durian.user.capital.domain.po.UserBilling;
+import com.durian.user.capital.domain.po.UserCapital;
 import com.durian.user.capital.service.UserCapitalService;
 import com.durian.user.capital.thrift.api.domain.UserBillingTo;
+import com.durian.user.capital.thrift.api.domain.UserCapitalTo;
 import com.durian.user.capital.thrift.api.service.UserCapitalServiceApi;
 import com.platform.common.thrift.service.annotation.EnableThriftService;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -58,9 +60,14 @@ public class UserCapitalServiceApiImpl implements UserCapitalServiceApi.Iface {
 		}
 
 		@Override
-		public String getUserBalance(String userId) throws TException {
+		public UserCapitalTo getUserCapital(String userId) throws TException {
 				try{
-					return userCapitalService.getUserBalance(userId).toString();
+					UserCapital userCapital =  userCapitalService.getUserCapital(userId);
+
+					UserCapitalTo userCapitalTo = new UserCapitalTo();
+					BeanUtils.copyProperties(userCapital, userCapitalTo);
+
+					return userCapitalTo;
 				} catch (Exception e){
 						throw new TException(e.getMessage());
 				}

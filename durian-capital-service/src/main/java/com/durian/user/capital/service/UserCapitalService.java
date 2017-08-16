@@ -1,6 +1,7 @@
 package com.durian.user.capital.service;
 
 import com.durian.user.capital.domain.po.UserBilling;
+import com.durian.user.capital.domain.po.UserCapital;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -40,7 +41,7 @@ public interface UserCapitalService {
      * @param userId 用户ID
      * @return balance
      * */
-    BigDecimal getUserBalance(String userId) throws Exception;
+    UserCapital getUserCapital(String userId) throws Exception;
 
     /**
      * 用户余额变化
