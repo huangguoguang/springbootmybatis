@@ -26,7 +26,7 @@ public interface UserRelationService {
 	 * @param userId
 	 * @throws Exception
 	 */
-	Boolean userReferrals(String userId)  throws Exception;
+	UserLevelRelation userReferrals(String userId)  throws Exception;
 
 	/**
 	 * 用户佣金

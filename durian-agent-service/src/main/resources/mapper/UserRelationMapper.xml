@@ -134,7 +134,8 @@
   <update id="updateRelationInfo" parameterType="com.durian.user.agent.domain.po.UserRelation">
     update t_user_agent_relation
     set status = '1' ,
-        agent_name = #{agentName,jdbcType=VARCHAR}
+        agent_name = #{agentName,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=BIGINT}
     where inviter_Id = #{inviterId,jdbcType=VARCHAR}
   </update>
 

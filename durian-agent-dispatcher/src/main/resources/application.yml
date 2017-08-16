@@ -1,0 +1,27 @@
+debug: false
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: durian-agent-service # 添加应用名称（必填）
+  http:
+    encoding:
+      charset: utf-8
+      force: true
+  # 启用AOP
+  aop:
+    auto: true
+    proxy-target-class: false
+  # 控制台以ANSI彩色输出
+  output:
+    ansi:
+      enabled: ALWAYS
+  # 包含其它配置文件
+  profiles:
+    include: cloud,config
+
+# LogBack配置文件
+logging:
+  config: classpath:logback-spring.xml

@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -47,14 +49,14 @@ public class UserRelationServiceImpl implements UserRelationService {
     @Override
     public String getUserReferrals(String userId) throws Exception {
 
-        if(redisTemplate.opsForValue().get(AgentRedisKeyEnums.AGENT_INFO+userId)==null) {
+        if(redisTemplate.opsForValue().get(AgentRedisKeyEnums.AGENT_INFO+"_"+userId)==null) {
             userReferrals(userId);
         }
-        return redisTemplate.opsForValue().get(AgentRedisKeyEnums.AGENT_INFO+userId);
+        return redisTemplate.opsForValue().get(AgentRedisKeyEnums.AGENT_INFO+"_"+userId);
     }
 
     @Override
-    public Boolean userReferrals(String userId) throws Exception {
+    public UserLevelRelation userReferrals(String userId) throws Exception {
 
         UserLevelRelation userLevelRelation = new UserLevelRelation();
         userLevelRelation.setLevelCount1(String.valueOf(userRelationDao.selectUserAgentInfo(userId).size()));  //获取1级代理数据
@@ -63,10 +65,10 @@ public class UserRelationServiceImpl implements UserRelationService {
 
         //写入redis缓存起来，5分钟失效
         //JSONObject.toJSONString(userLevelRelation);
-        if(redisTemplate.opsForValue().get(AgentRedisKeyEnums.AGENT_INFO+userId)==null) {
-            redisTemplate.opsForValue().set(AgentRedisKeyEnums.AGENT_INFO + userId, JSONObject.toJSONString(userLevelRelation).toString(), 3000, TimeUnit.SECONDS);
+        if(redisTemplate.opsForValue().get(AgentRedisKeyEnums.AGENT_INFO+"_"+userId)==null) {
+            redisTemplate.opsForValue().set(AgentRedisKeyEnums.AGENT_INFO +"_"+ userId, JSONObject.toJSONString(userLevelRelation).toString(), 3000, TimeUnit.SECONDS);
         }
-        return true;
+        return userLevelRelation;
     }
 
     @Override
@@ -81,24 +83,22 @@ public class UserRelationServiceImpl implements UserRelationService {
         userAgent1 = userRelationDao.selectBrokerageInfo(userId);
         //调用资金变化接口 传入userid和变动的金额
         if(userAgent1!=null) {
-            userBrokerageOperate(userId, "1",brokerAge);
+            userBrokerageOperate(userAgent1.getInviterId(), "1",brokerAge);
         }
-
         //获取上上级用户ID对其进行佣金分成
         //比例的分成，金额的改变，流水的写入  0.1
-
-            userAgent2 = userRelationDao.selectBrokerage2Info(userId);
+        userAgent2 = userRelationDao.selectBrokerage2Info(userId);
 
         //调用资金变化接口 传入userid和变动的金额
         if(userAgent2 !=null) {
-              userBrokerageOperate(userId, "2",brokerAge);
+              userBrokerageOperate(userAgent2.getInviterId(), "2",brokerAge);
         }
         //获取上上上级用户ID对其进行佣金分成
         //比例的分成，金额的改变，流水的写入 0.05
         userAgent3 = userRelationDao.selectBrokerage3Info(userId);
         //调用资金变化接口 传入userid和变动的金额
         if(userAgent3 !=null) {
-            userBrokerageOperate(userId, "3",brokerAge);
+            userBrokerageOperate(userAgent3.getInviterId(), "3",brokerAge);
         }
         return true;
     }
@@ -139,6 +139,11 @@ public class UserRelationServiceImpl implements UserRelationService {
 
     @Override
     public Boolean inviteUser(UserRelation userRelation) throws Exception {
+        userRelation.setCreateTime(new Date().getTime());
+        userRelation.setDelTag("0");
+        userRelation.setStatus("0");
+        userRelation.setDeptCode("9999");
+        userRelation.setDeptId("0");
         int i =  userRelationDao.saveUserRelation(userRelation);
         if(i==1){
             return  true;
@@ -149,10 +154,10 @@ public class UserRelationServiceImpl implements UserRelationService {
 
     @Override
     public Boolean registerUserAgent(String userId, String userName) throws Exception {
-
         UserRelation userRelation = new UserRelation();
         userRelation.setInviterId(userId);
         userRelation.setAgentName(userName);
+        userRelation.setUpdateTime(new Date().getTime());
         int i =  userRelationDao.updateRelationInfo(userRelation);
         if(i==1){
             return  true;

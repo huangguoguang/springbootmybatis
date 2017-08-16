@@ -1,0 +1,45 @@
+debug: false
+
+server:
+  port: 8081
+
+spring:
+  application:
+    name: durian-agent-client
+  http:
+    encoding:
+      charset: utf-8
+      force: true
+  # 启用AOP
+  aop:
+    auto: true
+    proxy-target-class: false
+  # 控制台以ANSI彩色输出
+  output:
+    ansi:
+      enabled: ALWAYS
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true # 开启重试机制
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000 # 断路器的超时时间需要大于ribbon的超时时间，不然不会触发重试。
+
+user-service:
+  ribbon:
+    ConnectTimeout: 250 # 请求连接的超时时间
+    ReadTimeout: 1000 # 请求处理的超时时间
+    OkToRetryOnAllOperations: true # 对所有操作请求都进行重试
+    MaxAutoRetriesNextServer: 2 # 切换实例的重试次数
+    MaxAutoRetries: 1 # 对当前实例的重试次数
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.1.40:8092/eureka/v2/
