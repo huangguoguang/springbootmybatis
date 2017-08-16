@@ -55,8 +55,8 @@ public class UserCapitalServiceImpl implements UserCapitalService {
     }
 
     @Override
-    public BigDecimal getUserBalance(String userId) throws Exception {
-        return userCapitalDao.getUserCapital(userId).getAmount();
+    public UserCapital getUserCapital(String userId) throws Exception {
+        return userCapitalDao.getUserCapital(userId);
     }
 
     @Override

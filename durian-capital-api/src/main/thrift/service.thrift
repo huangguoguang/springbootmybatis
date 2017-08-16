@@ -31,7 +31,7 @@ service UserCapitalServiceApi {
     * @param userId 用户ID
     * @return balance
     * */
-   string getUserBalance(1:required string userId);
+   domain.UserCapitalTo getUserCapital(1:required string userId);
 
    /**
     * 用户余额变化
