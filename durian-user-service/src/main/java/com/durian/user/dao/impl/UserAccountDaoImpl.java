@@ -97,9 +97,6 @@ public class UserAccountDaoImpl implements UserAccountDao {
         userAllInfo.setStatus(userAccount.getStatus());
         userBusinessMapper.insert(userBusiness);
 
-        //创建资金账户
-        userCapitalService.createUserCapital(userAllInfo.getId());
-        //创建代理关系
 
 
         //新增用户关系
@@ -107,10 +104,21 @@ public class UserAccountDaoImpl implements UserAccountDao {
         userRelation.setDeptId(registerUser.getDeptId());
         userRelation.setDeptCode(registerUser.getDeptId());
         //
-        userRelation.setInviteeId(userAllInfo.getId());
+        if(registerUser.getInviterId() ==null){
+            userRelation.setInviterId(userAllInfo.getId());
+        }else{
+            userRelation.setInviteeId(userAllInfo.getId());
+            userRelation.setInviterId(registerUser.getInviterId());
+        }
         //
-        userRelation.setInviterId(registerUser.getInviterId());
-        //userRelationService.inviteUser(userRelation);
+
+        userRelationService.inviteUser(userRelation);
+
+
+
+        //创建资金账户
+        userCapitalService.createUserCapital(userAllInfo.getId());
+        //创建代理关系
 
         redisTemplate.opsForValue().set("userAllInfo:"+userAllInfo.getId(),JsonSerializerUtils.seriazile(userAllInfo));
         redisTemplate.delete("mobilecode:"+registerUser.getMobile()+":"+ UserSmsEnum.REGISTER.getCode());
