@@ -73,14 +73,6 @@ public class RegisterUser  implements Serializable {
 		this.name = name;
 	}
 
-    public String getInviterId() {
-        return inviterId;
-    }
-
-    public void setInviterId(String inviterId) {
-        this.inviterId = inviterId;
-    }
-
     public String getDeptCode() {
         return deptCode;
     }
@@ -96,6 +88,13 @@ public class RegisterUser  implements Serializable {
     public void setDeptId(String deptId) {
         this.deptId = deptId;
     }
-    
-    
+
+
+    public String getInviterId() {
+        return inviterId;
+    }
+
+    public void setInviterId(String inviterId) {
+        this.inviterId = inviterId;
+    }
 }

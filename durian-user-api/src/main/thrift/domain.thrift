@@ -31,7 +31,7 @@ struct RegisterUserTo {
     3:required string mobile;
     4:optional string password;
     5:optional string mobileCode;
-    6:optional i64 inviterId;
+    6:optional string inviterId;
     7:optional string deptCode;
     8:optional string deptId;
 }

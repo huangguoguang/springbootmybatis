@@ -1,6 +1,7 @@
 package com.durian.user.service.impl;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.durian.user.dao.*;
 import com.durian.user.domain.enums.TokenExceptionEnum;
 import com.durian.user.domain.enums.UserExceptionEnum;
@@ -67,6 +68,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserAllInfo registerUser(RegisterUser registerUser) throws Exception {
+        LOGGER.info("用户登录:"+ JSONObject.toJSONString(registerUser));
         //手机号码格式不正确
         if(StringUtils.isBlank(registerUser.getMobile())){
             throw new CustomException(UserExceptionEnum.USER_MOBILE_NULL);
