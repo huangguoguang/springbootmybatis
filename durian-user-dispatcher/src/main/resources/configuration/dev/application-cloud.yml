@@ -8,6 +8,6 @@ eureka:
     leaseExpirationDurationInSeconds: 10
   client:
     serviceUrl:
-      defaultZone: http://guess.eureka.com:8092/eureka/
+      defaultZone: http://user.eureka.com:8092/eureka/
     healthcheck:
       enabled: true
