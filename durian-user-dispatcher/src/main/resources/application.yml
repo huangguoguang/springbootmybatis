@@ -1,11 +1,11 @@
 debug: false
 
 server:
-  port: 8088
+  port: 51112
 
 spring:
   application:
-    name: user
+    name: guess-user
   http:
     encoding:
       charset: utf-8

@@ -1,13 +1,13 @@
 eureka:
   instance:
-    prefer-ip-address: true
+    preferIpAddress: true
     #此配置建议只试用开发和测试环境
     #心跳间隔时间,默认是30秒
-    lease-renewal-interval-in-seconds: 5
+    leaseRenewalIntervalInSeconds: 5
     #最后一次心跳时间后leaseExpirationDurationInSeconds秒就认为是下线了，默认是90秒
-    lease-expiration-duration-in-seconds: 10
+    leaseExpirationDurationInSeconds: 10
   client:
     serviceUrl:
-      defaultZone: http://eureka-server:5001/eureka/
+      defaultZone: http://test.eureka.durian.com:51200/eureka/
     healthcheck:
       enabled: true

@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Scope;
 @Import(HttpThriftClientAutoConfiguration.class)
 public class UserClientConfig {
 
-    @ThriftLoadBalancerClient(serviceId = "user", url = "/api/user")
+    @ThriftLoadBalancerClient(serviceId = "guess-user", url = "/api/user")
     private UserServiceApi.Iface userServiceApi;
 
     @ThriftHttpClient(host = "127.0.0.1", port = 8088, url = "/api/user")

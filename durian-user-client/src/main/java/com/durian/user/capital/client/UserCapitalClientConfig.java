@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Scope;
 @Configuration
 @Import(HttpThriftClientAutoConfiguration.class)
 public class UserCapitalClientConfig {
-		@ThriftLoadBalancerClient(serviceId = "user", url = "/api/capital")
+		@ThriftLoadBalancerClient(serviceId = "guess-user", url = "/api/capital")
 		private UserCapitalServiceApi.Iface userCapitalServiceApi;
 
 		@Bean
