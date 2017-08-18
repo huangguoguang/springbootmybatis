@@ -1,62 +1,81 @@
-CREATE TABLE `t_user_account` (
-  `id` varchar(32) NOT NULL DEFAULT '',
-  `account_type` varchar(10) DEFAULT NULL COMMENT '’À∫≈¿‡–Õ',
-  `account_level` int(6) DEFAULT NULL COMMENT 'µ»º∂',
-  `consum_amount` decimal(10,2) DEFAULT NULL COMMENT 'œ˚∑—Ω∂Ó',
-  `risk_level` int(6) DEFAULT NULL COMMENT '∑Áœ’µ»º∂',
-  `status` int(2) DEFAULT NULL COMMENT '”√ªß◊¥Ã¨(1ø…”√,2,Ω˚”√,3◊¢œ˙)',
-  `create_time` bigint(13) NOT NULL COMMENT '¥¥Ω® ±º‰',
-  `update_time` bigint(13) DEFAULT NULL COMMENT '∏¸–¬ ±º‰',
-  `del_tag` char(1) DEFAULT NULL COMMENT '…æ≥˝◊¥Ã¨',
+-- -----------------------------------------------------
+-- model  `user`   table `t_user_info`
+-- -----------------------------------------------------
+CREATE TABLE `t_user_info` (
+  `id` int(32) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(32) DEFAULT NULL COMMENT 'Áî®Êà∑ID',
+  `nick_icon` varchar(255) DEFAULT NULL COMMENT 'ÂõæÂÉè',
+  `nick_name` varchar(100) DEFAULT NULL COMMENT 'ÊòµÁß∞',
+  `gender` int(1) DEFAULT NULL COMMENT 'ÊÄßÂà´',
+  `province` varchar(100) DEFAULT NULL COMMENT 'ÁúÅ',
+  `city` varchar(100) DEFAULT NULL COMMENT 'Â∏Ç',
+  `area` varchar(255) DEFAULT NULL COMMENT 'Âå∫Âüü',
+  `street` varchar(255) DEFAULT NULL COMMENT 'Ë°óÈÅì',
+  `address` varchar(255) DEFAULT NULL COMMENT 'Âú∞ÂùÄ',
+  `create_time` bigint(13) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `update_time` bigint(13) DEFAULT NULL COMMENT 'Êõ¥Êñ∞Êó∂Èó¥',
+  `del_tag` char(1) DEFAULT NULL COMMENT 'Âà†Èô§Áä∂ÊÄÅ',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+
+
+-- -----------------------------------------------------
+-- model  `user`   table `t_user_business`
+-- -----------------------------------------------------
 
 CREATE TABLE `t_user_business` (
   `id` int(32) NOT NULL AUTO_INCREMENT,
   `user_id` varchar(32) NOT NULL,
-  `name` varchar(20) DEFAULT NULL COMMENT '√˚◊÷',
-  `mobile` varchar(20) DEFAULT NULL COMMENT ' ÷ª˙∫≈¬Î',
-  `id_card` varchar(20) DEFAULT NULL COMMENT '…Ì∑›÷§',
-  `email` varchar(100) DEFAULT NULL COMMENT '” œ‰',
-  `password` varchar(255) DEFAULT NULL COMMENT '”√ªß√‹¬Î(MD5)',
+  `name` varchar(20) DEFAULT NULL COMMENT 'ÂêçÂ≠ó',
+  `mobile` varchar(20) DEFAULT NULL COMMENT 'ÊâãÊú∫Âè∑Á†Å',
+  `id_card` varchar(20) DEFAULT NULL COMMENT 'Ë∫´‰ªΩËØÅ',
+  `email` varchar(100) DEFAULT NULL COMMENT 'ÈÇÆÁÆ±',
+  `password` varchar(255) DEFAULT NULL COMMENT 'Áî®Êà∑ÂØÜÁ†Å(MD5)',
   `birthday` date DEFAULT NULL,
-  `education` varchar(100) DEFAULT NULL COMMENT 'ΩÃ”˝≥Ã∂»',
-  `create_time` bigint(13) NOT NULL COMMENT '¥¥Ω® ±º‰',
-  `update_time` bigint(13) DEFAULT NULL COMMENT '∏¸–¬ ±º‰',
-  `del_tag` char(1) DEFAULT NULL COMMENT '…æ≥˝◊¥Ã¨',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
-
-
-CREATE TABLE `t_user_info` (
-  `id` int(32) NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(32) DEFAULT NULL COMMENT '”√ªßID',
-  `nick_icon` varchar(255) DEFAULT NULL COMMENT 'ÕºœÒ',
-  `nick_name` varchar(100) DEFAULT NULL COMMENT 'Í«≥∆',
-  `gender` int(1) DEFAULT NULL COMMENT '–‘±',
-  `province` varchar(100) DEFAULT NULL COMMENT ' °',
-  `city` varchar(100) DEFAULT NULL COMMENT ' –',
-  `area` varchar(255) DEFAULT NULL COMMENT '«¯”Ú',
-  `street` varchar(255) DEFAULT NULL COMMENT 'Ω÷µ¿',
-  `address` varchar(255) DEFAULT NULL COMMENT 'µÿ÷∑',
-  `create_time` bigint(13) NOT NULL COMMENT '¥¥Ω® ±º‰',
-  `update_time` bigint(13) DEFAULT NULL COMMENT '∏¸–¬ ±º‰',
-  `del_tag` char(1) DEFAULT NULL COMMENT '…æ≥˝◊¥Ã¨',
+  `education` varchar(100) DEFAULT NULL COMMENT 'ÊïôËÇ≤Á®ãÂ∫¶',
+  `create_time` bigint(13) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `update_time` bigint(13) DEFAULT NULL COMMENT 'Êõ¥Êñ∞Êó∂Èó¥',
+  `del_tag` char(1) DEFAULT NULL COMMENT 'Âà†Èô§Áä∂ÊÄÅ',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
 
 
 
+
+
+-- -----------------------------------------------------
+-- model  `user`   table `t_user_account`
+-- -----------------------------------------------------
+CREATE TABLE `t_user_account` (
+  `id` varchar(32) NOT NULL DEFAULT '',
+  `account_type` varchar(10) DEFAULT NULL COMMENT 'Ë¥¶Âè∑Á±ªÂûã',
+  `account_level` int(6) DEFAULT NULL COMMENT 'Á≠âÁ∫ß',
+  `consum_amount` decimal(10,2) DEFAULT NULL COMMENT 'Ê∂àË¥πÈáëÈ¢ù',
+  `risk_level` int(6) DEFAULT NULL COMMENT 'È£éÈô©Á≠âÁ∫ß',
+  `status` int(2) DEFAULT NULL COMMENT 'Áî®Êà∑Áä∂ÊÄÅ(1ÂèØÁî®,2,Á¶ÅÁî®,3Ê≥®ÈîÄ)',
+  `create_time` bigint(13) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `update_time` bigint(13) DEFAULT NULL COMMENT 'Êõ¥Êñ∞Êó∂Èó¥',
+  `del_tag` char(1) DEFAULT NULL COMMENT 'Âà†Èô§Áä∂ÊÄÅ',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+
+-- -----------------------------------------------------
+-- model  `user`   table `t_user_login`
+-- -----------------------------------------------------
 CREATE TABLE `t_user_login` (
   `id` int(32) NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(32) DEFAULT NULL COMMENT '”√ªßID',
-  `type` varchar(10) DEFAULT NULL COMMENT 'µ«¬º¿‡–Õ',
-  `status` int(2) DEFAULT NULL COMMENT 'µ«¬º◊¥Ã¨',
+  `user_id` varchar(32) DEFAULT NULL COMMENT 'Áî®Êà∑ID',
+  `type` varchar(10) DEFAULT NULL COMMENT 'ÁôªÂΩïÁ±ªÂûã',
+  `status` int(2) DEFAULT NULL COMMENT 'ÁôªÂΩïÁä∂ÊÄÅ',
   `ip` varchar(20) DEFAULT NULL COMMENT 'ip',
-  `address` varchar(255) DEFAULT NULL COMMENT 'µÿ÷∑',
-  `create_time` bigint(13) NOT NULL COMMENT '¥¥Ω® ±º‰',
-  `update_time` bigint(13) DEFAULT NULL COMMENT '∏¸–¬ ±º‰',
-  `del_tag` char(1) DEFAULT NULL COMMENT '…æ≥˝◊¥Ã¨',
+  `address` varchar(255) DEFAULT NULL COMMENT 'Âú∞ÂùÄ',
+  `create_time` bigint(13) NOT NULL COMMENT 'ÂàõÂª∫Êó∂Èó¥',
+  `update_time` bigint(13) DEFAULT NULL COMMENT 'Êõ¥Êñ∞Êó∂Èó¥',
+  `del_tag` char(1) DEFAULT NULL COMMENT 'Âà†Èô§Áä∂ÊÄÅ',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=966 DEFAULT CHARSET=utf8;
 
@@ -64,23 +83,45 @@ CREATE TABLE `t_user_login` (
 
 
 
-CREATE TABLE `t_user_agent_relation` (
-  `id` int(20) NOT NULL AUTO_INCREMENT,
-  `dept_code` varchar(10) DEFAULT NULL,
-  `dept_id` varchar(10) DEFAULT NULL,
-  `agent_name` varchar(20) DEFAULT NULL,
-  `inviter_id` varchar(20) DEFAULT NULL,
-  `invitee_id` varchar(20) DEFAULT NULL,
-  `status` char(1) DEFAULT '0',
-  `del_tag` char(1) DEFAULT NULL,
-  `create_time` bigint(20) DEFAULT NULL,
-  `update_time` bigint(20) DEFAULT NULL,
+-- -----------------------------------------------------
+-- model  `capital`   table `t_user_capital`
+-- -----------------------------------------------------
+CREATE TABLE `t_user_capital` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ËµÑÈáëID',
+  `user_id` varchar(50) DEFAULT NULL COMMENT 'Áî®Êà∑ID',
+  `amount` decimal(10,0) DEFAULT NULL COMMENT 'ÈáëÈ¢ù',
+  `status` varchar(10) DEFAULT NULL COMMENT 'Ë¥¶Êà∑Áä∂ÊÄÅ',
+  `create_time` mediumtext,
+  `update_time` mediumtext,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 
 
 
+-- -----------------------------------------------------
+-- model  `capital`   table `t_user_capital_billing`
+-- -----------------------------------------------------
+CREATE TABLE `t_user_capital_billing` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(50) DEFAULT NULL COMMENT 'Áî®Êà∑ID',
+  `amount` decimal(10,0) DEFAULT NULL COMMENT 'ÈáëÈ¢ù',
+  `balance` decimal(10,0) DEFAULT NULL COMMENT '‰ΩôÈ¢ù',
+  `operate` varchar(5) DEFAULT NULL COMMENT 'Âä†/Âáè',
+  `purpose` varchar(5) DEFAULT NULL COMMENT 'ÁõÆÁöÑ',
+  `correlation` varchar(50) DEFAULT NULL COMMENT 'ÂÖ≥ËÅî',
+  `description` varchar(100) DEFAULT NULL COMMENT 'ÊèèËø∞',
+  `del_tag` char(1) DEFAULT '0',
+  `createTime` mediumtext,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+
+-- -----------------------------------------------------
+-- model  `agent`   table `t_user_agent_allot`
+-- -----------------------------------------------------
 CREATE TABLE `t_user_agent_allot` (
   `id` varchar(50) NOT NULL,
   `dept_code` varchar(20) DEFAULT NULL,
@@ -96,30 +137,22 @@ CREATE TABLE `t_user_agent_allot` (
 
 
 
-CREATE TABLE `t_user_capital` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '◊ ΩID',
-  `user_id` varchar(50) DEFAULT NULL COMMENT '”√ªßID',
-  `amount` decimal(10,0) DEFAULT NULL COMMENT 'Ω∂Ó',
-  `status` varchar(10) DEFAULT NULL COMMENT '’Àªß◊¥Ã¨',
-  `create_time` mediumtext,
-  `update_time` mediumtext,
+-- -----------------------------------------------------
+-- model  `agent`   table `t_user_agent_relation`
+-- -----------------------------------------------------
+CREATE TABLE `t_user_agent_relation` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `dept_code` varchar(10) DEFAULT NULL,
+  `dept_id` varchar(10) DEFAULT NULL,
+  `agent_name` varchar(20) DEFAULT NULL,
+  `inviter_id` varchar(20) DEFAULT NULL,
+  `invitee_id` varchar(20) DEFAULT NULL,
+  `status` char(1) DEFAULT '0',
+  `del_tag` char(1) DEFAULT NULL,
+  `create_time` bigint(20) DEFAULT NULL,
+  `update_time` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
 
 
-
-
-CREATE TABLE `t_user_capital_billing` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(50) DEFAULT NULL COMMENT '”√ªßID',
-  `amount` decimal(10,0) DEFAULT NULL COMMENT 'Ω∂Ó',
-  `balance` decimal(10,0) DEFAULT NULL COMMENT '”‡∂Ó',
-  `operate` varchar(5) DEFAULT NULL COMMENT 'º”/ºı',
-  `purpose` varchar(5) DEFAULT NULL COMMENT 'ƒøµƒ',
-  `correlation` varchar(50) DEFAULT NULL COMMENT 'πÿ¡™',
-  `description` varchar(100) DEFAULT NULL COMMENT '√Ë ˆ',
-  `del_tag` char(1) DEFAULT '0',
-  `createTime` mediumtext,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
