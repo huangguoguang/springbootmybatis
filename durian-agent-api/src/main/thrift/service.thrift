@@ -33,7 +33,33 @@ service UserAgentServiceApi {
     * @param userRelation
     *
     */
-    bool UserRelationSave(1: required domain.UserRelationTo userRelation);
+   bool saveUserRelation(1: required domain.UserRelationTo userRelation);
+
+
+    /**
+     * 新增代理比例信息
+     *
+     * @param UserAgentConfig
+     *
+     */
+   bool saveUserAgentConfig(1:required domain.UserAgentConfigTo UserAgentConfig);
+
+
+    /**
+     * 修改代理比例信息
+     *
+     * @param UserAgentConfig
+     *
+     */
+   bool updateUserAgentConfig(1:required domain.UserAgentConfigTo UserAgentConfig);
+
+    /**
+     * 获取代理比例信息
+     *
+     * @param UserAgentConfig
+     *
+     */
+   domain.ResultDataConfigStructTo getUserAgentConfig(1:required string id);
 
 
 

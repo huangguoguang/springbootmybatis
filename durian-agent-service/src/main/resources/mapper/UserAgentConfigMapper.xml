@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.durian.user.agent.mapper.UserAgentConfigMapper">
+  <resultMap id="BaseResultMap" type="com.durian.user.agent.domain.po.UserAgentConfig">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="dept_code" jdbcType="DOUBLE" property="deptCode" />
+    <result column="level_allot_1" jdbcType="DOUBLE" property="levelAllot1" />
+    <result column="level_allot_2" jdbcType="DOUBLE" property="levelAllot2" />
+    <result column="level_allot_3" jdbcType="DOUBLE" property="levelAllot3" />
+    <result column="del_tag" jdbcType="CHAR" property="delTag" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    id,dept_code,level_allot_1,level_allot_2,level_allot_3,del_tag,create_time,update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_agent_allot
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_user_agent_allot
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.durian.user.agent.domain.po.UserAgentConfig">
+    insert into t_user_agent_allot (id,dept_code,level_allot_1,level_allot_2, level_allot_3,del_tag,create_time,update_time)
+    values (#{id,jdbcType=VARCHAR},#{deptCode,jdbcType=VARCHAR},#{levelAllot1,jdbcType=DOUBLE},#{levelAllot2,jdbcType=DOUBLE},#{levelAllot3,jdbcType=DOUBLE},#{delTag,jdbcType=CHAR},#{createTime,jdbcType=BIGINT},#{updateTime,jdbcType=BIGINT}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.durian.user.agent.domain.po.UserAgentConfig" >
+    insert into t_user_agent_allot
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="deptCode != null">
+        dept_code,
+      </if>
+      <if test="levelAllot1 != null">
+        level_allot_1,
+      </if>
+      <if test="levelAllot2 != null">
+        level_allot_2,
+      </if>
+      <if test="levelAllot3 != null">
+        level_allot_3,
+      </if>
+      <if test="delTag != null">
+        del_tag,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="deptCode != null">
+        #{deptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="levelAllot1 != null">
+        #{levelAllot1,jdbcType=DOUBLE},
+      </if>
+      <if test="levelAllot2 != null">
+        #{levelAllot2,jdbcType=DOUBLE},
+      </if>
+      <if test="levelAllot3 != null">
+        #{levelAllot3,jdbcType=DOUBLE},
+      </if>
+      <if test="delTag != null">
+        #{delTag,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.durian.user.agent.domain.po.UserAgentConfig">
+    update t_user_agent_allot
+    <set>
+      <if test="levelAllot1 != null">
+        level_allot_1 = #{levelAllot1,jdbcType=DOUBLE},
+      </if>
+      <if test="levelAllot1 != null">
+        level_allot_2 = #{levelAllot2,jdbcType=DOUBLE},
+      </if>
+      <if test="levelAllot1 != null">
+        level_allot_3 = #{levelAllot3,jdbcType=DOUBLE},
+      </if>
+      <if test="delTag != null">
+        del_tag = #{delTag,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.durian.user.agent.domain.po.UserAgentConfig">
+    update t_user_agent_allot
+    set level_allot_1 = #{levelAllot1,jdbcType=DOUBLE},
+      level_allot_2 = #{levelAllot2,jdbcType=DOUBLE},
+      level_allot_3 = #{levelAllot3,jdbcType=DOUBLE},
+      del_tag = #{delTag,jdbcType=CHAR},
+      update_time = #{updateTime,jdbcType=BIGINT},
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

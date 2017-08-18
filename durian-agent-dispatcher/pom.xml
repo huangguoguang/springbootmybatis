@@ -13,7 +13,7 @@
     <version>1.0.0-SNAPSHOT</version>
     <dependencies>
         <dependency>
-            <groupId>com.platform</groupId>
+            <groupId>com.durian.user</groupId>
             <artifactId>durian-agent-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>

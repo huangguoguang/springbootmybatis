@@ -2,8 +2,10 @@ package com.durian.user.agent.service.impl;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.durian.user.agent.dao.UserAgentConfigDao;
 import com.durian.user.agent.dao.UserRelationDao;
 import com.durian.user.agent.domain.enums.AgentRedisKeyEnums;
+import com.durian.user.agent.domain.po.UserAgentConfig;
 import com.durian.user.agent.domain.po.UserRelation;
 import com.durian.user.agent.domain.to.UserLevelRelation;
 import com.durian.user.agent.service.UserRelationService;
@@ -21,8 +23,11 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 
@@ -45,14 +50,17 @@ public class UserRelationServiceImpl implements UserRelationService {
     @Autowired
     private UserCapitalService userCapitalService;
 
+    @Autowired
+    private UserAgentConfigDao userAgentConfigDao;
+
 
     @Override
     public String getUserReferrals(String userId) throws Exception {
 
-        if(redisTemplate.opsForValue().get(AgentRedisKeyEnums.AGENT_INFO+"_"+userId)==null) {
+        if(redisTemplate.opsForValue().get(AgentRedisKeyEnums.AGENT_INFO.getCode()+userId)==null) {
             userReferrals(userId);
         }
-        return redisTemplate.opsForValue().get(AgentRedisKeyEnums.AGENT_INFO+"_"+userId);
+        return redisTemplate.opsForValue().get(AgentRedisKeyEnums.AGENT_INFO.getCode()+userId);
     }
 
     @Override
@@ -65,8 +73,8 @@ public class UserRelationServiceImpl implements UserRelationService {
 
         //写入redis缓存起来，5分钟失效
         //JSONObject.toJSONString(userLevelRelation);
-        if(redisTemplate.opsForValue().get(AgentRedisKeyEnums.AGENT_INFO+"_"+userId)==null) {
-            redisTemplate.opsForValue().set(AgentRedisKeyEnums.AGENT_INFO +"_"+ userId, JSONObject.toJSONString(userLevelRelation).toString(), 3000, TimeUnit.SECONDS);
+        if(redisTemplate.opsForValue().get(AgentRedisKeyEnums.AGENT_INFO.getCode()+userId)==null) {
+            redisTemplate.opsForValue().set(AgentRedisKeyEnums.AGENT_INFO.getCode()+ userId, JSONObject.toJSONString(userLevelRelation).toString(), 3000, TimeUnit.SECONDS);
         }
         return userLevelRelation;
     }
@@ -140,6 +148,7 @@ public class UserRelationServiceImpl implements UserRelationService {
     @Override
     public Boolean inviteUser(UserRelation userRelation) throws Exception {
         userRelation.setCreateTime(new Date().getTime());
+        // todo 需要替换
         userRelation.setDelTag("0");
         userRelation.setStatus("0");
         userRelation.setDeptCode("9999");
@@ -165,4 +174,20 @@ public class UserRelationServiceImpl implements UserRelationService {
             return false;
         }
     }
+
+    @Override
+    public UserAgentConfig getUserAgentConfig(String id) throws Exception {
+        return userAgentConfigDao.getUserAgentConfig(id);
+    }
+
+    @Override
+    public Boolean updateUserAgentConfig(UserAgentConfig userAgentConfig) throws Exception {
+        return userAgentConfigDao.updateUserAgentConfig(userAgentConfig);
+    }
+
+    @Override
+    public Boolean saveUserAgentConfig(UserAgentConfig userAgentConfig) throws Exception {
+        return userAgentConfigDao.saveUserAgentConfig(userAgentConfig);
+    }
+
 }

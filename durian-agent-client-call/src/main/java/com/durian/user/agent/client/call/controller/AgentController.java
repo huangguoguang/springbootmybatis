@@ -1,8 +1,9 @@
 package com.durian.user.agent.client.call.controller;
 
 
-import com.durian.user.agent.domain.po.UserRelation;
+import com.durian.user.agent.thrift.api.domain.ResultDataConfigStructTo;
 import com.durian.user.agent.thrift.api.domain.ResultDataStructTo;
+import com.durian.user.agent.thrift.api.domain.UserAgentConfigTo;
 import com.durian.user.agent.thrift.api.domain.UserRelationTo;
 import com.durian.user.agent.thrift.api.service.UserAgentServiceApi;
 import org.slf4j.Logger;
@@ -71,14 +72,41 @@ public class AgentController {
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Boolean inviteUser(UserRelationTo userRelationTo) throws Exception {
-        return userAgentServiceApi.UserRelationSave(userRelationTo);
+        return userAgentServiceApi.saveUserRelation(userRelationTo);
     }
 
 
+    /**
+     * 保存配置文件
+     * @param userAgentConfigTo
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/config", method = RequestMethod.POST)
+    public Boolean saveUserAgentConfig(UserAgentConfigTo userAgentConfigTo) throws Exception {
+        return  userAgentServiceApi.saveUserAgentConfig(userAgentConfigTo);
+    }
 
+    /**
+     * 更新配置文件
+     * @param userAgentConfigTo
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/config", method = RequestMethod.PUT)
+    public Boolean updateUserAgentConfig(UserAgentConfigTo userAgentConfigTo) throws Exception {
+        return  userAgentServiceApi.updateUserAgentConfig(userAgentConfigTo);
+    }
 
-
-
-
+    /**
+     * 获取配置文件
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/config", method = RequestMethod.GET)
+    public ResultDataConfigStructTo getUserAgentConfig(String id) throws Exception {
+        return  userAgentServiceApi.getUserAgentConfig(id);
+    }
 
 }

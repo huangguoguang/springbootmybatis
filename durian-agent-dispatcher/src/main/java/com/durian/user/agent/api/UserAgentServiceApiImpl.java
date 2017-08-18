@@ -2,11 +2,10 @@ package com.durian.user.agent.api;
 
 
 import com.durian.user.agent.domain.po.UserRelation;
+import com.durian.user.agent.domain.po.UserAgentConfig;
 import com.durian.user.agent.domain.to.UserLevelRelation;
 import com.durian.user.agent.service.UserRelationService;
-import com.durian.user.agent.thrift.api.domain.ResultDataStructTo;
-import com.durian.user.agent.thrift.api.domain.UserLevelRelationTo;
-import com.durian.user.agent.thrift.api.domain.UserRelationTo;
+import com.durian.user.agent.thrift.api.domain.*;
 import com.durian.user.agent.thrift.api.service.UserAgentServiceApi;
 import com.github.pagehelper.PageInfo;
 import com.platform.common.domain.to.PageTo;
@@ -39,14 +38,14 @@ public class UserAgentServiceApiImpl implements UserAgentServiceApi.Iface {
     @Override
     public ResultDataStructTo userAgentCount(String userId) throws TException {
 
-        ResultDataStructTo result= new ResultDataStructTo();
+        ResultDataStructTo result = new ResultDataStructTo();
         try {
             UserLevelRelation userLevelRelation = new UserLevelRelation();
-            userLevelRelation =  userRelationService.userReferrals(userId);
+            userLevelRelation = userRelationService.userReferrals(userId);
             UserLevelRelationTo userLevelRelationTo = new UserLevelRelationTo();
             BeanUtils.copyProperties(userLevelRelation, userLevelRelationTo);
             result.setUserLevelRelationTo(userLevelRelationTo);
-            return  result;
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
             return result;
@@ -56,25 +55,25 @@ public class UserAgentServiceApiImpl implements UserAgentServiceApi.Iface {
     @Override
     public boolean registerUserAgent(String userId, String agentName) throws TException {
         try {
-            return userRelationService.registerUserAgent(userId,agentName);
+            return userRelationService.registerUserAgent(userId, agentName);
         } catch (Exception e) {
             e.printStackTrace();
-            return  false;
+            return false;
         }
     }
 
     @Override
-    public boolean userAgentBrokerage(String userId,double amount) throws TException {
+    public boolean userAgentBrokerage(String userId, double amount) throws TException {
         try {
             return userRelationService.userBrokerAge(userId, BigDecimal.valueOf(amount));
         } catch (Exception e) {
             e.printStackTrace();
-            return  false;
+            return false;
         }
     }
 
     @Override
-    public boolean UserRelationSave(UserRelationTo userRelation) throws TException {
+    public boolean saveUserRelation(UserRelationTo userRelation) throws TException {
         try {
             UserRelation userRelationParam = new UserRelation();
             BeanUtils.copyProperties(userRelation, userRelationParam);
@@ -83,6 +82,52 @@ public class UserAgentServiceApiImpl implements UserAgentServiceApi.Iface {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public boolean saveUserAgentConfig(UserAgentConfigTo UserAgentConfig) throws TException {
+        try {
+            UserAgentConfig userAgentConfigParam = new UserAgentConfig();
+            BeanUtils.copyProperties(UserAgentConfig, userAgentConfigParam);
+            return userRelationService.saveUserAgentConfig(userAgentConfigParam);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateUserAgentConfig(UserAgentConfigTo UserAgentConfig) throws TException {
+
+        try {
+            UserAgentConfig userAgentConfigParam = new UserAgentConfig();
+            BeanUtils.copyProperties(UserAgentConfig, userAgentConfigParam);
+            return userRelationService.updateUserAgentConfig(userAgentConfigParam);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
 
     }
+
+    @Override
+    public ResultDataConfigStructTo getUserAgentConfig(String id) throws TException {
+
+        ResultDataConfigStructTo result = new ResultDataConfigStructTo();
+
+        try {
+            UserAgentConfig userAgentConfigParam = new UserAgentConfig();
+            UserAgentConfigTo userAgentConfigTo = new UserAgentConfigTo();
+            userAgentConfigParam = userRelationService.getUserAgentConfig(id);
+            BeanUtils.copyProperties(userAgentConfigParam, userAgentConfigTo);
+            result.setUserAgentConfigTo(userAgentConfigTo);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return result;
+        }
+    }
 }
+
+
+

@@ -39,6 +39,11 @@
             <artifactId>durian-agent-entity</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.durian.user</groupId>
+            <artifactId>durian-agent-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
