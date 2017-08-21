@@ -1,9 +1,9 @@
 spring:
   datasource:
     master:
-      url: jdbc:mysql://192.168.1.19:1234/user_pay?useUnicode=true&characterEncoding=UTF-8
-      username: atlas
-      password: atlas
+      url: jdbc:mysql://192.168.1.71:3306/dev_guess?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: dev
+      password: dev
       # 使用druid数据源
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: com.mysql.jdbc.Driver
@@ -22,9 +22,9 @@ spring:
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
     slave:
-      url: jdbc:mysql://192.168.1.19:1234/user_pay?useUnicode=true&characterEncoding=UTF-8
-      username: atlas
-      password: atlas
+      url: jdbc:mysql://192.168.1.70:3306/dev_guess?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: dev
+      password: dev
       # 使用druid数据源
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: com.mysql.jdbc.Driver
