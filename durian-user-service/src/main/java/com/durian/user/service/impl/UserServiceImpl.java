@@ -2,6 +2,9 @@ package com.durian.user.service.impl;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.durian.tools.sms.thrift.api.domain.ResultMessageStructTo;
+import com.durian.tools.sms.thrift.api.domain.SmsVerifyMessageTo;
+import com.durian.tools.sms.thrift.api.service.SmsServiceApi;
 import com.durian.user.dao.*;
 import com.durian.user.domain.enums.TokenExceptionEnum;
 import com.durian.user.domain.enums.UserExceptionEnum;
@@ -65,6 +68,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserInfoDao userInfoDao;
 
+    @Autowired
+    private SmsServiceApi.Iface smsServiceApi;
+
 
     @Override
     public UserAllInfo registerUser(RegisterUser registerUser) throws Exception {
@@ -93,7 +99,22 @@ public class UserServiceImpl implements UserService {
             throw new CustomException(UserExceptionEnum.USER_NIKENAME_NULL);
         }
     	//判断手机短信
-        if(!registerUser.getMobileCode().equalsIgnoreCase(redisTemplate.opsForValue().get("mobilecode:"+registerUser.getMobile()+":"+UserSmsEnum.REGISTER.getCode()))){
+/*        if(!registerUser.getMobileCode().equalsIgnoreCase(redisTemplate.opsForValue().get("mobilecode:"+registerUser.getMobile()+":"+UserSmsEnum.REGISTER.getCode()))){
+            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+        }*/
+        SmsVerifyMessageTo smsVerifyMessageTo = new SmsVerifyMessageTo();
+        //验证码
+        smsVerifyMessageTo.setVerifyCode(registerUser.getMobileCode());
+        smsVerifyMessageTo.setMobile(registerUser.getMobile());
+        smsVerifyMessageTo.setOperator(registerUser.getMobile());
+        smsVerifyMessageTo.setType("register");
+        smsVerifyMessageTo.setSystem("user");
+        smsVerifyMessageTo.setServices("user");
+        smsVerifyMessageTo.setDescription("用户手机号码注册");
+        smsVerifyMessageTo.setOperator(registerUser.getMobile());
+        smsVerifyMessageTo.setContent(registerUser.getMobileCode());
+        ResultMessageStructTo sendOk = smsServiceApi.verifyMessage(smsVerifyMessageTo);
+        if(sendOk.getCode()!=200){
             throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
         }
     	//判断密码等级
@@ -140,7 +161,20 @@ public class UserServiceImpl implements UserService {
 
         String mobileCode = RandomValidateCode.getRandomNumber(4);
         String content = MessageFormat.format(UserSmsEnum.REGISTER_CONTENT.getDesc(), mobileCode);
-        UserSms userSms = new UserSms();
+        SmsVerifyMessageTo smsVerifyMessageTo = new SmsVerifyMessageTo();
+        smsVerifyMessageTo.setMobile(registerUser.getMobile());
+        smsVerifyMessageTo.setContent(content);
+        smsVerifyMessageTo.setServices("user");
+        smsVerifyMessageTo.setDescription("用户手机号码注册");
+        smsVerifyMessageTo.setOperator(registerUser.getMobile());
+        smsVerifyMessageTo.setType("register");
+        smsVerifyMessageTo.setSystem("user");
+        smsVerifyMessageTo.setVerifyCode(mobileCode);
+        smsVerifyMessageTo.setActiveSecond(60*5);
+        ResultMessageStructTo sendOk = smsServiceApi.sendVerifyMessage(smsVerifyMessageTo);
+        LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk.getCode());
+        //redisTemplate.opsForValue().set("mobilecode:"+registerUser.getMobile()+":"+UserSmsEnum.REGISTER.getCode(),mobileCode, 120, TimeUnit.SECONDS);
+        /*UserSms userSms = new UserSms();
         userSms.setContent(content);
         userSms.setCreateTime(new Date().getTime());
         userSms.setDescription(UserSmsEnum.REGISTER.getDesc());
@@ -154,7 +188,7 @@ public class UserServiceImpl implements UserService {
         int record = userSmsDao.saveUserSms(userSms);
         if (record>0){
             redisTemplate.opsForValue().set("mobilecode:"+registerUser.getMobile()+":"+UserSmsEnum.REGISTER.getCode(),mobileCode, 120, TimeUnit.SECONDS);
-        }
+        }*/
     }
 
     @Override
