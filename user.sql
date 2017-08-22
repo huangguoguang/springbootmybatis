@@ -91,8 +91,8 @@ CREATE TABLE `t_user_capital` (
   `user_id` varchar(50) DEFAULT NULL COMMENT '用户ID',
   `amount` decimal(10,0) DEFAULT NULL COMMENT '金额',
   `status` varchar(10) DEFAULT NULL COMMENT '账户状态',
-  `create_time` mediumtext,
-  `update_time` mediumtext,
+  `create_time` bigint(20) DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
@@ -107,12 +107,12 @@ CREATE TABLE `t_user_capital_billing` (
   `user_id` varchar(50) DEFAULT NULL COMMENT '用户ID',
   `amount` decimal(10,0) DEFAULT NULL COMMENT '金额',
   `balance` decimal(10,0) DEFAULT NULL COMMENT '余额',
-  `operate` varchar(5) DEFAULT NULL COMMENT '加/减',
-  `purpose` varchar(5) DEFAULT NULL COMMENT '目的',
+  `operate` varchar(10) DEFAULT NULL COMMENT '加/减',
+  `purpose` varchar(10) DEFAULT NULL COMMENT '目的',
   `correlation` varchar(50) DEFAULT NULL COMMENT '关联',
   `description` varchar(100) DEFAULT NULL COMMENT '描述',
   `del_tag` char(1) DEFAULT '0',
-  `createTime` mediumtext,
+  `create_time` bigint(20) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
