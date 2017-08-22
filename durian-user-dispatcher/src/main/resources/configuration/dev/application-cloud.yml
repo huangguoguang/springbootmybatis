@@ -6,6 +6,7 @@ eureka:
     leaseRenewalIntervalInSeconds: 5
     #最后一次心跳时间后leaseExpirationDurationInSeconds秒就认为是下线了，默认是90秒
     leaseExpirationDurationInSeconds: 10
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
   client:
     serviceUrl:
       defaultZone: http://dev.eureka.durian.com:51100/eureka/
