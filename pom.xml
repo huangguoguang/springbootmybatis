@@ -5,7 +5,7 @@
     <groupId>com.durian.user</groupId>
     <artifactId>durian-user</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>durian-user Maven</name>
     <url>http://maven.apache.org</url>
@@ -16,9 +16,6 @@
         <module>durian-user-client</module>
         <module>durian-user-entity</module>
         <module>durian-user-api</module>
-        <module>durian-capital-service</module>
-        <module>durian-capital-entity</module>
-        <module>durian-capital-api</module>
     </modules>
 
     <parent>
