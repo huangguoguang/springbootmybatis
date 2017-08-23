@@ -2,7 +2,6 @@ package com.durian.user.service.impl;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.durian.tools.sms.thrift.api.domain.ResultMessageStructTo;
 import com.durian.tools.sms.thrift.api.domain.SmsVerifyMessageTo;
 import com.durian.tools.sms.thrift.api.service.SmsServiceApi;
 import com.durian.user.dao.*;
@@ -113,10 +112,10 @@ public class UserServiceImpl implements UserService {
         smsVerifyMessageTo.setDescription("用户手机号码注册");
         smsVerifyMessageTo.setOperator(registerUser.getMobile());
         smsVerifyMessageTo.setContent(registerUser.getMobileCode());
-        ResultMessageStructTo sendOk = smsServiceApi.verifyMessage(smsVerifyMessageTo);
+/*        ResultMessageStructTo sendOk = smsServiceApi.verifyMessage(smsVerifyMessageTo);
         if(sendOk.getCode()!=200){
             throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
-        }
+        }*/
     	//判断密码等级
         UserAllInfo userAllInfo = userAccountDao.getUserInfoByMoblie(registerUser.getMobile());
         if(userAllInfo !=null){
@@ -171,8 +170,8 @@ public class UserServiceImpl implements UserService {
         smsVerifyMessageTo.setSystem("user");
         smsVerifyMessageTo.setVerifyCode(mobileCode);
         smsVerifyMessageTo.setActiveSecond(60*5);
-        ResultMessageStructTo sendOk = smsServiceApi.sendVerifyMessage(smsVerifyMessageTo);
-        LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk.getCode());
+        /*ResultMessageStructTo sendOk = smsServiceApi.sendVerifyMessage(smsVerifyMessageTo);*/
+        LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+"未发送!");
         //redisTemplate.opsForValue().set("mobilecode:"+registerUser.getMobile()+":"+UserSmsEnum.REGISTER.getCode(),mobileCode, 120, TimeUnit.SECONDS);
         /*UserSms userSms = new UserSms();
         userSms.setContent(content);
