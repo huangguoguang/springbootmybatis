@@ -2,9 +2,9 @@
 <configuration>
 
     <!-- 日志文件路径 -->
-    <property name="LOG_HOME" value="/www/logs"/>
+    <property name="LOG_HOME" value="/logs"/>
     <!-- 应用目录名称 -->
-    <property name="APP_DIR" value="user"/>
+    <property name="APP_DIR" value="user/dev"/>
     <!-- 日志文件名称 -->
     <property name="LOG_FILE_NAME" value="durian-user"/>
 
@@ -33,7 +33,7 @@
     </logger>
 
     <!-- 日志输出级别设置 -->
-    <logger name="com.anchol" level="DEBUG" additivity="false">
+    <logger name="com.durian" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE_APPENDER"/>
     </logger>
 
