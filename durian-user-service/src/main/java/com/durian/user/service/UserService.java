@@ -75,7 +75,7 @@ public interface UserService {
 
     /**
      * 启用用户
-     * @param token
+     * @param userId
      * @return
      */
 	String enableUser(String userId) throws Exception ;
@@ -83,21 +83,21 @@ public interface UserService {
 
 	/**
 	 * 禁用用户
-	 * @param token
+	 * @param userId
 	 * @return
 	 */
 	String disableUser(String userId) throws Exception ;
 
 	/**
 	 * 
-	 * @param accessToken
+	 * @param userId
 	 * @return
 	 */
 	UserAllInfo userInfo(String userId) throws Exception ;
 
 	/**
 	 * 设置个人信息
-	 * @param accessToken
+	 * @param userId
 	 * @param userAllInfo
 	 * @return
 	 * @throwsException
@@ -106,7 +106,7 @@ public interface UserService {
 
 	/**
 	 * 注册用户列表
-	 * @param accessToken
+	 * @param userId
 	 * @return
 	 */
 	List<UserAllInfo> selectUserInfoList(String userId) throws Exception;
@@ -114,7 +114,7 @@ public interface UserService {
 	/**
 	 * 用户登录历史
 	 * @author daixibiao
-	 * @param accessToken
+	 * @param userId
 	 * @return
 	 * @throws Exception
      * */
@@ -123,7 +123,7 @@ public interface UserService {
 
 	/**
 	 * 修改密码
-	 * @param accessToken
+	 * @param userId
 	 * @param newPwd
 	 * @return
 	 */

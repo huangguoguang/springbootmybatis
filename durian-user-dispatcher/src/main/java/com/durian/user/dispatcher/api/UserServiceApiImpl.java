@@ -147,4 +147,16 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             throw new TException(e);
         }
     }
+
+    @Override
+    public UserAllInfoTo userInfoByAccessToken(String accessToken) throws TException {
+        try {
+            UserAllInfoTo userAllInfoTo = new UserAllInfoTo();
+            BeanUtils.copyProperties(userService.userInfoByToken(accessToken),userAllInfoTo);
+            return userAllInfoTo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new TException(e);
+        }
+    }
 }

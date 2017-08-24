@@ -57,5 +57,16 @@ service UserServiceApi {
        */
       void registerAgentUser(1: required string userId,2: required string nickName);
 
+
+
+  /**
+     * 获取用户列表
+     *
+     * @return
+     * @throws Exception
+     */
+    domain.UserAllInfoTo userInfoByAccessToken(1: required string accessToken);
+
+
 }
 

@@ -331,8 +331,10 @@ public class UserServiceImpl implements UserService {
 		if(token==null){
 	        throw new CustomException(TokenExceptionEnum.TOKEN_EXPIRES_CODE);
 	    }
-		UserAllInfo  userAllInfo = new UserAllInfo();
-		userAllInfo.setId(token.getUserId());
+		UserAllInfo  userAllInfo =  userAccountDao.getUserInfoById(token.getUserId());
+        if(userAllInfo == null){
+            throw new CustomException(UserExceptionEnum.USER_NOT_EXIST);
+        }
 		return userAllInfo ;
 	}
 
