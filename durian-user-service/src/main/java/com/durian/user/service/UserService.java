@@ -139,5 +139,6 @@ public interface UserService {
 	UserAllInfo userInfoByToken(String accessToken)throws Exception;
 
 
+	void test(String levelAllot1, String levelAllot2, String levelAllot3);
 }
 

@@ -1,12 +1,8 @@
 package com.durian.user.interceptor;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.durian.user.domain.annotation.NoLoginAuth;
+import com.durian.user.utils.token.Token;
+import com.durian.user.utils.token.TokenGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +11,11 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.durian.user.domain.annotation.NoLoginAuth;
-import com.durian.user.utils.token.Token;
-import com.durian.user.utils.token.TokenGenerator;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 认证拦截器
@@ -52,7 +50,7 @@ public class AuthHandlerInterceptor implements HandlerInterceptor {
 			if(token == null ) {
 				LOGGER.info("服务器模拟accessToken异常,请传入Header token参数!");
 				// throw new CustomException(TokenExceptionEnum.TOKEN_EXPIRES_CODE);
-				result = false;
+				result = true;
 			}
         }
         LOGGER.info("***** AuthenticationInterceptor: path[{}]  result[{}] ******", request.getRequestURI(), result ? "Success" : "Failure");

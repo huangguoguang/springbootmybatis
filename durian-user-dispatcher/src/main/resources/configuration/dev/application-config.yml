@@ -44,9 +44,9 @@ spring:
       maxOpenPreparedStatements: 20
   # redis配置
   redis:
-    database: 0   # Redis数据库索引（默认为0）
-    host: 192.168.1.15   # Redis服务器连接端口
-    port: 9648
+    database: 1   # Redis数据库索引（默认为0）
+    host: 192.168.1.25   # Redis服务器连接端口
+    port: 8899
     password: 123456
     timeout: 0  # 连接超时时间（毫秒）
     # 连接池配置
@@ -62,5 +62,6 @@ spring:
     password: guest
 
 redisson:
-    url: redis://192.168.1.15:9648
+    database: 1
+    url: redis://192.168.1.25:8899
     password: 123456

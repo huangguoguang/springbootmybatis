@@ -4,6 +4,8 @@ package com.durian.user.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.durian.tools.sms.thrift.api.domain.SmsVerifyMessageTo;
 import com.durian.tools.sms.thrift.api.service.SmsServiceApi;
+import com.durian.user.agent.domain.po.UserAgentConfig;
+import com.durian.user.agent.service.UserRelationService;
 import com.durian.user.dao.*;
 import com.durian.user.domain.enums.TokenExceptionEnum;
 import com.durian.user.domain.enums.UserExceptionEnum;
@@ -127,6 +129,10 @@ public class UserServiceImpl implements UserService {
 
     }
 
+
+    @Autowired
+    private UserRelationService userRelationService ;
+
     @Override
     public void registerAgentUser(String userId,String nickName) throws Exception {
 
@@ -140,6 +146,8 @@ public class UserServiceImpl implements UserService {
 
         userInfoDao.updateNickName(userInfo);
         userRelationDao.updateRelationInfo(userRelation);*/
+        boolean agentOk = userRelationService.registerUserAgent(userId,nickName);
+        LOGGER.info("用户:"+userId+"  设置代理昵称:"+nickName + " 结果为:"+agentOk);
     }
 
     @Override
@@ -327,4 +335,17 @@ public class UserServiceImpl implements UserService {
 		userAllInfo.setId(token.getUserId());
 		return userAllInfo ;
 	}
+
+    @Override
+    public void test(String levelAllot1, String levelAllot2, String levelAllot3) {
+        try {
+            UserAgentConfig userAgentConfig = new UserAgentConfig();
+            userAgentConfig.setLevelAllot1(levelAllot1);
+            userAgentConfig.setLevelAllot2(levelAllot2);
+            userAgentConfig.setLevelAllot3(levelAllot3);
+            userRelationService.saveUserAgentConfig(userAgentConfig);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

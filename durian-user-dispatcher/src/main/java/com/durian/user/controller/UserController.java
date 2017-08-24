@@ -200,4 +200,10 @@ public class UserController {
 
 
 
+
+    @RequestMapping(value = "test/test", method = RequestMethod.GET)
+    public void test(String levelAllot1,String levelAllot2,String levelAllot3) throws Exception {
+        LOGGER.info("用户登陆历史:"+ levelAllot1);
+        userService.test(levelAllot1,levelAllot2,levelAllot3);
+    }
 }
