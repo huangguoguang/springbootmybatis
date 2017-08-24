@@ -32,10 +32,6 @@ public class AuthHandlerInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     	boolean result = true;
-    	System.out.println("qingqiu:"+request.getRequestURI());
-    	if(request.getRequestURI().equals("/error")) {
-    		return true;
-    	}
         LOGGER.info("AuthenticationInterceptor parameter[{}] :"+request2Map(request).toString());
         //加入了忽略登录标签,则不进行拦截.其他的都进行拦截
         boolean noLogin = isLoginAuthentication(handler);

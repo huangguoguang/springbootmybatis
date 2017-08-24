@@ -1,7 +1,7 @@
 spring:
   datasource:
     master:
-      url: jdbc:mysql://192.168.1.71:3306/test_guess?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      url: jdbc:mysql://192.168.1.71:3306/test_guess?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
       username: test
       password: test
       # 使用druid数据源
@@ -22,7 +22,7 @@ spring:
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
     slave:
-      url: jdbc:mysql://192.168.1.70:3306/test_guess?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      url: jdbc:mysql://192.168.1.70:3306/test_guess?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
       username: test
       password: test
       # 使用druid数据源
