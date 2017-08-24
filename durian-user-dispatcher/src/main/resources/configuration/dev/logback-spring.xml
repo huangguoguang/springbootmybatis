@@ -29,16 +29,16 @@
 
    <!-- 日志输出级别设置 -->
     <logger name="com.platform" level="DEBUG" additivity="false">
-        <appender-ref ref="CONSOLE_APPENDER"/>
+        <appender-ref ref="GLOBAL_APPENDER"/>
     </logger>
 
     <!-- 日志输出级别设置 -->
     <logger name="com.durian" level="DEBUG" additivity="false">
-        <appender-ref ref="CONSOLE_APPENDER"/>
+        <appender-ref ref="GLOBAL_APPENDER"/>
     </logger>
 
     <root level="INFO">
-        <appender-ref ref="CONSOLE_APPENDER"/>
+        <appender-ref ref="GLOBAL_APPENDER"/>
     </root>
 
 
