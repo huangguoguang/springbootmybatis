@@ -1,7 +1,9 @@
 package com.durian.user.dao.impl;
 
 
+import com.durian.user.agent.domain.po.UserAgent;
 import com.durian.user.agent.domain.po.UserRelation;
+import com.durian.user.agent.service.UserAgentService;
 import com.durian.user.agent.service.UserRelationService;
 import com.durian.user.capital.service.UserCapitalService;
 import com.durian.user.dao.UserAccountDao;
@@ -62,6 +64,10 @@ public class UserAccountDaoImpl implements UserAccountDao {
     @Autowired
     private UserRelationService userRelationService ;
 
+
+    @Autowired
+    private UserAgentService userAgentService;
+
     @Override
     public UserAllInfo saveUser(RegisterUser registerUser) throws Exception {
 
@@ -97,25 +103,24 @@ public class UserAccountDaoImpl implements UserAccountDao {
         userAllInfo.setStatus(userAccount.getStatus());
         userBusinessMapper.insert(userBusiness);
 
+        //初始化代理数据
+        UserAgent userAgent = new UserAgent();
+        userAgent.setUserId(userAllInfo.getId());
+        userAgent.setCreateTime(new Date().getTime());
+        userAgentService.insertUserAgent(userAgent);
 
 
-        //新增用户关系
-        UserRelation userRelation = new UserRelation();
-        userRelation.setDeptId(registerUser.getDeptId());
-        userRelation.setDeptCode(registerUser.getDeptId());
         //
-        if(registerUser.getInviterId() ==null){
-            userRelation.setInviterId(userAllInfo.getId());
-        }else{
+        if(registerUser.getInviterId() !=null){
+            // //新增用户关系
+            UserRelation userRelation = new UserRelation();
+            userRelation.setDeptId(registerUser.getDeptId());
+            userRelation.setDeptCode(registerUser.getDeptId());
             userRelation.setInviteeId(userAllInfo.getId());
             userRelation.setInviterId(registerUser.getInviterId());
+            userRelationService.inviteUser(userRelation);
         }
         //
-
-        userRelationService.inviteUser(userRelation);
-
-
-
         //创建资金账户
         userCapitalService.createUserCapital(userAllInfo.getId());
         //创建代理关系
