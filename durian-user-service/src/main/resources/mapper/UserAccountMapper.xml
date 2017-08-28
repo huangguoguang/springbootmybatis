@@ -179,4 +179,11 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+
+  <select id="selectById" parameterType="java.lang.String" resultType="com.durian.user.domain.to.UserAllInfo">
+    select a.id , b.mobile ,b.password ,a.create_time as createTime , a.account_type AS accountType ,a.account_level ,a.status ,a.del_tag AS  delTag,i.nick_icon AS nickIcon,i.nick_name nickName ,b.email
+    from t_user_business b , t_user_info i , t_user_account a    where a.id = #{id} and b.user_id = i.user_id and b.user_id = a.id
+  </select>
+
 </mapper>
