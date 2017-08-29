@@ -23,14 +23,14 @@
 
         <dependency>
             <groupId>com.durian.user</groupId>
-            <artifactId>durian-user-agent-api-impl</artifactId>
+            <artifactId>durian-user-agent-api-management</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <!-- user capital-->
         <dependency>
             <groupId>com.durian.user</groupId>
-            <artifactId>durian-user-capital-api-impl</artifactId>
+            <artifactId>durian-user-capital-api-management</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>

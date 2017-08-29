@@ -11,14 +11,27 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CustomProperties {
 
-    @Value("${custom.name}")
-    private String name;
+    @Value("${token.stringKey}")
+    private String stringKey;
 
-    public String getName() {
-        return name;
+
+    @Value("${token.owmuser}")
+    private String owmuser;
+
+
+    public String getStringKey() {
+        return stringKey;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStringKey(String stringKey) {
+        this.stringKey = stringKey;
+    }
+
+    public String getOwmuser() {
+        return owmuser;
+    }
+
+    public void setOwmuser(String owmuser) {
+        this.owmuser = owmuser;
     }
 }

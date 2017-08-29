@@ -32,6 +32,11 @@ public interface UserAccountMapper {
 
     @EnableDataSource("slave")
     UserAllInfo selectByMoblie(String moblie);
+
+
+
+    @EnableDataSource("slave")
+    UserAllInfo selectById(String id);
     
     @EnableDataSource("master")
     int updateStatusById(UserAccount record);

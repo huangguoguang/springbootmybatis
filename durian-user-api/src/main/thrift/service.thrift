@@ -10,7 +10,7 @@ service UserServiceApi {
      * @return
      * @throws Exception
      */
-    domain.UserAllInfoTo login(1: optional domain.LoginUserTo loginUserTo);
+    domain.UserTokenInfoTo login(1: optional domain.LoginUserTo loginUserTo);
 
     /**
      * 获取用户列表
@@ -18,7 +18,7 @@ service UserServiceApi {
      * @return
      * @throws Exception
      */
-    domain.UserAllInfoTo refreshToken(1: required string refreshToken,2: required string type);
+    domain.UserTokenInfoTo refreshToken(1: required string refreshToken,2: required string type);
 
 
 

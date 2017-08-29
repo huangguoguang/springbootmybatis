@@ -1,8 +1,6 @@
 package com.durian.user.interceptor;
 
 import com.durian.user.domain.annotation.NoLoginAuth;
-import com.durian.user.utils.token.Token;
-import com.durian.user.utils.token.TokenGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,21 +32,7 @@ public class AuthHandlerInterceptor implements HandlerInterceptor {
     	boolean result = true;
         LOGGER.info("AuthenticationInterceptor parameter[{}] :"+request2Map(request).toString());
         //加入了忽略登录标签,则不进行拦截.其他的都进行拦截
-        boolean noLogin = isLoginAuthentication(handler);
-        if(noLogin) {
-        	result = true ;
-        }else {
-        	//Map<String, String> headersMap  = getHeadersInfo(request);
-    		//LOGGER.info(headersMap.toString());
-    		//LoginToken tokenInfo = parameter.getParameterAnnotation(LoginToken.class);
-    		String accessToken = request.getParameter("accessToken");
-    		Token token = TokenGenerator.validateToken(accessToken);
-			if(token == null ) {
-				LOGGER.info("服务器模拟accessToken异常,请传入Header token参数!");
-				// throw new CustomException(TokenExceptionEnum.TOKEN_EXPIRES_CODE);
-				result = true;
-			}
-        }
+        //boolean noLogin = isLoginAuthentication(handler);
         LOGGER.info("***** AuthenticationInterceptor: path[{}]  result[{}] ******", request.getRequestURI(), result ? "Success" : "Failure");
         return result;
     }

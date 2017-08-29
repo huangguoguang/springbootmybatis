@@ -37,6 +37,10 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private UserAccountDao userAccountDao ;
 
+
+    @Autowired
+    private TokenGenerator tokenGenerator;
+
     @Override
     public UserAllInfo login(LoginUser loginUser) throws Exception {
         //判断手机号码是否合法
@@ -84,11 +88,11 @@ public class LoginServiceImpl implements LoginService {
 
         //创建token返回用户对象.  设置用户登录时间为 24小时
         Integer expires = 60 * 60 * 24;
-        String accessToken = TokenGenerator.generatorToken(userAllInfo.getMobile(),userAllInfo.getId(),loginUser.getType(),expires);
+        String accessToken = tokenGenerator.generatorToken(userAllInfo.getMobile(),userAllInfo.getId(),loginUser.getType(),expires);
         LOGGER.info("accessToken :" + accessToken);
         userAllInfo.setAccessToken(accessToken);
         //设置刷新登录token
-        String refreshToken = TokenGenerator.generatorToken(userAllInfo.getMobile(),userAllInfo.getId(),loginUser.getType(),60 * 6);
+        String refreshToken = tokenGenerator.generatorToken(userAllInfo.getMobile(),userAllInfo.getId(),loginUser.getType(),60 * 6);
         userAllInfo.setRefreshToken(refreshToken);
         userAllInfo.setExpires(expires);
         //设置登录时间
@@ -103,7 +107,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public UserAllInfo refreshToken(String refreshToken,String type) throws Exception {
-       Token token =  TokenGenerator.validateToken(refreshToken);
+       Token token =  tokenGenerator.validateToken(refreshToken);
        LOGGER.info(JSONObject.toJSONString(token));
        if(token==null){
            throw new CustomException(TokenExceptionEnum.TOKEN_EXPIRES_CODE);
@@ -111,7 +115,7 @@ public class LoginServiceImpl implements LoginService {
        UserAllInfo userAllInfo =  userAccountDao.getUserInfoById(token.getUserId());
         //创建token返回用户对象.  设置用户登录时间为 24小时
         Integer expires = 60 * 1;
-        String accessToken = TokenGenerator.generatorToken(userAllInfo.getMobile(),userAllInfo.getId(),type,expires);
+        String accessToken = tokenGenerator.generatorToken(userAllInfo.getMobile(),userAllInfo.getId(),type,expires);
         userAllInfo.setAccessToken(accessToken);
         userAllInfo.setCreateTime(new Date().getTime());
         userAllInfo.setRefreshToken(refreshToken);

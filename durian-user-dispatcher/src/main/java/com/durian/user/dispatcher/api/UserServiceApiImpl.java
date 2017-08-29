@@ -6,9 +6,7 @@ import com.durian.user.domain.to.RegisterUser;
 import com.durian.user.domain.to.UserAllInfo;
 import com.durian.user.service.LoginService;
 import com.durian.user.service.UserService;
-import com.durian.user.thrift.api.domain.LoginUserTo;
-import com.durian.user.thrift.api.domain.RegisterUserTo;
-import com.durian.user.thrift.api.domain.UserAllInfoTo;
+import com.durian.user.thrift.api.domain.*;
 import com.durian.user.thrift.api.service.UserServiceApi;
 import com.platform.common.thrift.service.annotation.EnableThriftService;
 import org.apache.thrift.TException;
@@ -32,28 +30,51 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
 
 
     @Override
-    public UserAllInfoTo login(LoginUserTo loginUserTo) throws TException {
+    public UserTokenInfoTo login(LoginUserTo loginUserTo) throws TException {
         LoginUser loginUser = new LoginUser();
         BeanUtils.copyProperties(loginUserTo, loginUser);
         try {
             //判断用户登录
             UserAllInfo userAllInfo = loginService.login(loginUser);
-            UserAllInfoTo userAllInfoTo = new UserAllInfoTo();
-            BeanUtils.copyProperties(userAllInfo,userAllInfoTo);
+            UserTokenInfoTo userAllInfoTo = new UserTokenInfoTo();
+            TokenInfoTo tokenInfoTo = new TokenInfoTo();
+            tokenInfoTo.setAccessToken(userAllInfo.getAccessToken());
+            tokenInfoTo.setRefreshToken(userAllInfo.getRefreshToken());
+            tokenInfoTo.setExpires(userAllInfo.getExpires());
+            userAllInfoTo.setTokenInfoTo(tokenInfoTo);
+
+            UserInfoTo userInfoTo = new UserInfoTo();
+            userInfoTo.setId(userAllInfo.getId());
+            userInfoTo.setAccountType(userAllInfo.getAccountType());
+            userInfoTo.setCreateTime(userAllInfo.getCreateTime());
+            userInfoTo.setStatus(userAllInfo.getStatus().toString());
+
+            userAllInfoTo.setUserInfoTo(userInfoTo);
             return userAllInfoTo ;
         } catch (Exception e) {
             e.printStackTrace();
-
             throw new TException(e);
         }
     }
 
     @Override
-    public UserAllInfoTo refreshToken(String refreshToken, String type) throws TException {
+    public UserTokenInfoTo refreshToken(String refreshToken, String type) throws TException {
         try {
             UserAllInfo userAllInfo = loginService.refreshToken(refreshToken,type);
-            UserAllInfoTo userAllInfoTo = new UserAllInfoTo();
-            BeanUtils.copyProperties(userAllInfo,userAllInfoTo);
+            UserTokenInfoTo userAllInfoTo = new UserTokenInfoTo();
+            TokenInfoTo tokenInfoTo = new TokenInfoTo();
+            tokenInfoTo.setAccessToken(userAllInfo.getAccessToken());
+            tokenInfoTo.setRefreshToken(userAllInfo.getRefreshToken());
+            tokenInfoTo.setExpires(userAllInfo.getExpires());
+            userAllInfoTo.setTokenInfoTo(tokenInfoTo);
+
+            UserInfoTo userInfoTo = new UserInfoTo();
+            userInfoTo.setId(userAllInfo.getId());
+            userInfoTo.setAccountType(userAllInfo.getAccountType());
+            userInfoTo.setCreateTime(userAllInfo.getCreateTime());
+            userInfoTo.setStatus(userAllInfo.getStatus().toString());
+
+            userAllInfoTo.setUserInfoTo(userInfoTo);
             return userAllInfoTo;
         } catch (Exception e) {
             e.printStackTrace();

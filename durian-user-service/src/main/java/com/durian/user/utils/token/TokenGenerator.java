@@ -1,21 +1,24 @@
 package com.durian.user.utils.token;
 
-import java.util.Date;
-
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSONObject;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Date;
 
 /**
  *
  */
+@Service
+@Configuration
 public class TokenGenerator {
 
     private static Logger logger = LoggerFactory.getLogger(TokenGenerator.class);
@@ -23,21 +26,15 @@ public class TokenGenerator {
     public static final String KEY_ALGORITHM = "DES";
     public static final String CIPHER_ALGORITHM_ECB = "DES/ECB/PKCS5Padding";
 
-    private static String stringKey ="安全第一";
-    private static Integer expires;  //过期时间
+    @Value("${token.stringKey}")
+    private  String stringKey ;//="安全第一";
 
-    private static SecretKey deskey; // 密钥
-    private static String owmuser = "anchol";          //
+    private  Integer expires;  //过期时间
 
-    static {
-        try {
-            init();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            logger.error(e.getMessage(),e.getCause());
-        }
-    }
+    private  SecretKey deskey; // 密钥
+
+    @Value("${token.owmuser}")
+    private  String owmuser ;//= "guess";          //
 
     /**
      * 生成token
@@ -45,7 +42,10 @@ public class TokenGenerator {
      * @return
      * @throws Exception
      */
-    public static String generatorToken(String mobile ,String userId,String type,Integer expires) throws Exception {
+    public  String generatorToken(String mobile ,String userId,String type,Integer expires) throws Exception {
+        if(deskey==null){
+            init();
+        }
         Token token = new Token();
         token.setMobile(mobile);
         token.setUserId(userId);
@@ -61,7 +61,7 @@ public class TokenGenerator {
      * @param tokenString
      * @return
      */
-    public static Token validateToken(String tokenString) {
+    public  Token validateToken(String tokenString) {
         try {
         	if(StringUtils.isBlank(tokenString)) {
         		return null ;
@@ -86,7 +86,7 @@ public class TokenGenerator {
      * 初始化加密文字
      * @throws Exception
      */
-    public static  void init() throws Exception {
+    public   void init() throws Exception {
         byte[] key = stringKey.getBytes();
         // 创建一个空的8位字节数组（默认值为0）
         byte[] encodedKey = new byte[8];
@@ -102,7 +102,7 @@ public class TokenGenerator {
      * @param str 明文
      * @return 密文,base64编码
      */
-    public static String encrytor(String str) throws Exception {
+    public  String encrytor(String str) throws Exception {
         Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM_ECB);
         cipher.init(Cipher.ENCRYPT_MODE, deskey);
         byte[] target = cipher.doFinal(str.getBytes());
@@ -115,7 +115,7 @@ public class TokenGenerator {
      * @return 明文
      * @throws Exception
      */
-    public static String decryptor(String str) throws Exception {
+    public  String decryptor(String str) throws Exception {
         byte[] src = Base64.decodeBase64(str);
         Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM_ECB);
         cipher.init(Cipher.DECRYPT_MODE, deskey);

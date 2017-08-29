@@ -81,10 +81,14 @@ public class UserServiceImpl implements UserService {
     private UserAgentConfigService userAgentConfigService;
 
 
+    @Autowired
+    private TokenGenerator tokenGenerator;
+
+
     @Override
     public UserAllInfo registerUser(RegisterUser registerUser) throws Exception {
         LOGGER.info("用户登录:"+ JSONObject.toJSONString(registerUser));
-        //手机号码格式不正确
+        // 手机号码格式不正确
         if(StringUtils.isBlank(registerUser.getMobile())){
             throw new CustomException(UserExceptionEnum.USER_MOBILE_NULL);
         }
@@ -117,7 +121,7 @@ public class UserServiceImpl implements UserService {
         smsVerifyMessageTo.setMobile(registerUser.getMobile());
         smsVerifyMessageTo.setOperator(registerUser.getMobile());
         smsVerifyMessageTo.setType("register");
-        smsVerifyMessageTo.setSystem("user");
+        smsVerifyMessageTo.setSystem("guess");
         smsVerifyMessageTo.setServices("user");
         smsVerifyMessageTo.setDescription("用户手机号码注册");
         smsVerifyMessageTo.setOperator(registerUser.getMobile());
@@ -233,10 +237,10 @@ public class UserServiceImpl implements UserService {
             smsResult=   SmsUtil.sendMessage(findPwd.getMobile(),content);
         }
         LOGGER.info("用户手机号码:"+findPwd.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+smsResult);
-        int record = userSmsDao.saveUserSms(userSms);
-        if (record>0){
-            redisTemplate.opsForValue().set("mobilecode:"+findPwd.getMobile()+":"+UserSmsEnum.FIND_PWD.getCode(),mobileCode, 120, TimeUnit.SECONDS);
-        }
+        //int record = userSmsDao.saveUserSms(userSms);
+        //if (record>0){
+          //  redisTemplate.opsForValue().set("mobilecode:"+findPwd.getMobile()+":"+UserSmsEnum.FIND_PWD.getCode(),mobileCode, 120, TimeUnit.SECONDS);
+        //}
         return null;
     }
 
@@ -335,7 +339,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserAllInfo userInfoByToken(String accessToken) throws Exception {
-		Token token =  TokenGenerator.validateToken(accessToken);
+		Token token =  tokenGenerator.validateToken(accessToken);
 		if(token==null){
 	        throw new CustomException(TokenExceptionEnum.TOKEN_EXPIRES_CODE);
 	    }

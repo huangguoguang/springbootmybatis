@@ -1,5 +1,29 @@
 namespace java com.durian.user.thrift.api.domain
 
+
+struct UserInfoTo {
+    1:optional string id;
+    2:required string accountType;
+    3:optional string accountLevel;
+    4:optional string status;
+    5:optional i64 createTime;
+    6:optional string delTag;
+    7:optional string mobile;
+    8:optional i64 loginTime;
+}
+
+
+struct TokenInfoTo {
+    1:optional string accessToken;
+    2:optional string refreshToken;
+    3:optional i32 expires;
+}
+
+struct UserTokenInfoTo {
+    1: required UserInfoTo userInfoTo;
+    2: optional TokenInfoTo tokenInfoTo;
+}
+
 struct UserAllInfoTo {
     1:optional string id;
     2:required string accountType;

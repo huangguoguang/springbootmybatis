@@ -9,7 +9,6 @@ import com.durian.user.capital.service.UserCapitalService;
 import com.durian.user.dao.UserAccountDao;
 import com.durian.user.domain.enums.AccountTypeEnum;
 import com.durian.user.domain.enums.UserExceptionEnum;
-import com.durian.user.domain.enums.UserSmsEnum;
 import com.durian.user.domain.enums.UserStatusEnum;
 import com.durian.user.domain.po.UserAccount;
 import com.durian.user.domain.po.UserBusiness;
@@ -125,8 +124,8 @@ public class UserAccountDaoImpl implements UserAccountDao {
         userCapitalService.createUserCapital(userAllInfo.getId());
         //创建代理关系
 
-        redisTemplate.opsForValue().set("userAllInfo:"+userAllInfo.getId(),JsonSerializerUtils.seriazile(userAllInfo));
-        redisTemplate.delete("mobilecode:"+registerUser.getMobile()+":"+ UserSmsEnum.REGISTER.getCode());
+        //redisTemplate.opsForValue().set("userAllInfo:"+userAllInfo.getId(),JsonSerializerUtils.seriazile(userAllInfo));
+        //redisTemplate.delete("mobilecode:"+registerUser.getMobile()+":"+ UserSmsEnum.REGISTER.getCode());
 
 
         return userAllInfo;
@@ -153,7 +152,12 @@ public class UserAccountDaoImpl implements UserAccountDao {
 
     @Override
     public UserAllInfo getUserInfoById(String id) {
-        return  JsonSerializerUtils.deserialize(redisTemplate.opsForValue().get("userAllInfo:"+id),UserAllInfo.class);
+        UserAllInfo  userAllInfo  = JsonSerializerUtils.deserialize(redisTemplate.opsForValue().get("userAllInfo:"+id),UserAllInfo.class);
+        if(userAllInfo ==null ){
+            userAllInfo  = userAccountMapper.selectById(id);
+            redisTemplate.opsForValue().set("userAllInfo:"+userAllInfo.getId(),JsonSerializerUtils.seriazile(userAllInfo));
+        }
+        return userAllInfo ;
     }
 
     @Override
