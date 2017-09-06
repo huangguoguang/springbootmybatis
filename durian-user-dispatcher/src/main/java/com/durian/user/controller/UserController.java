@@ -206,4 +206,9 @@ public class UserController {
         LOGGER.info("用户登陆历史:"+ levelAllot1);
         userService.test(levelAllot1,levelAllot2,levelAllot3);
     }
+
+    @RequestMapping(value = "userinfo",method = RequestMethod.GET)
+    public List<UserAllInfo> getAllUser() throws Exception{
+        return userService.getAllUserInfo();
+    }
 }

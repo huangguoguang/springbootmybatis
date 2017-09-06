@@ -44,4 +44,7 @@ public interface UserAccountMapper {
     @EnableDataSource("slave")
     List<UserAllInfo> selectUserInfoList(UserAllInfo userAllInfo);
 
+    @EnableDataSource("slave")
+    List<UserAllInfo> syntheticalUserAllInfoList();
+
 }

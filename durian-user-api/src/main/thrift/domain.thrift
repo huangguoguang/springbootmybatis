@@ -60,3 +60,50 @@ struct RegisterUserTo {
     8:optional string deptId;
 }
 
+struct PageInfoTo {
+    1: i32 pageNum;
+    2: i32 pageSize;
+    3: i32 size;
+    4: i32 startRow;
+    5: i32 endRow;
+    6: i64 total;
+    7: i32 pages;
+    8: i32 prePage;
+    9: i32 nextPage;
+    10: bool isFirstPage;
+    11: bool isLastPage;
+    12: string condition;
+}
+
+struct SyntheticalUserAllInfoTo{
+
+    1: string id;
+    2: string accountType;
+    3: i32 accountLevel;
+    4: i32 status;
+    5: i64 createTime;
+    6: string delTag;
+    7: string nickIcon;
+    8: string nickName;
+    9: i32 gender;
+    10: string province;
+    11: string city;
+    12: string area;
+    13: string street;
+    14: string address;
+    15: string mobile;
+    16: string name;
+    17: string idCard;
+    18: string email;
+    19: string password;
+    20: string birthday;
+    21: string education;
+}
+
+struct ResultUserInfoPageStructTo {
+    1: required i32 code;
+    2: optional string message;
+    3: optional PageInfoTo pageInfoTo;
+    4: optional list<SyntheticalUserAllInfoTo> syntheticalUserAllInfoToList;
+}
+

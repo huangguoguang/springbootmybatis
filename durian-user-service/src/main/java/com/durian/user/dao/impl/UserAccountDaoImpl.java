@@ -227,4 +227,9 @@ public class UserAccountDaoImpl implements UserAccountDao {
     public List<UserAllInfo> selectUserInfoList(UserAllInfo userAllInfo) throws Exception {
         return userAccountMapper.selectUserInfoList(userAllInfo);
     }
+
+    @Override
+    public List<UserAllInfo> syntheticalUserAllInfoList() throws Exception {
+        return userAccountMapper.syntheticalUserAllInfoList();
+    }
 }
