@@ -186,4 +186,17 @@
     from t_user_business b , t_user_info i , t_user_account a    where a.id = #{id} and b.user_id = i.user_id and b.user_id = a.id
   </select>
 
+  <select id="syntheticalUserAllInfoList"  resultType="com.durian.user.domain.to.UserAllInfo">
+    select a.id ,a.account_type as accountType ,a.account_level as accountLevel,
+    a.status ,a.create_time as createTime ,a.del_tag AS delTag ,
+    b.name ,b.mobile ,b.id_card as idCard ,
+    b.email ,b.password ,b.birthday ,b.education ,
+    i.nick_icon as nickIcon,i.nick_name as nickName ,
+    i.gender ,i.province ,i.city ,i.area ,i.street , i.address
+    from t_user_business b , t_user_info i , t_user_account a
+    where
+    b.user_id = i.user_id and b.user_id = a.id
+    ORDER BY a.create_time DESC
+  </select>
+
 </mapper>

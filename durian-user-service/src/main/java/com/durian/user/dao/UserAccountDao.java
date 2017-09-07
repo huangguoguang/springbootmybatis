@@ -77,4 +77,6 @@ public interface UserAccountDao {
      * @throws Exception
      */
     List<UserAllInfo> selectUserInfoList(UserAllInfo userAllInfo) throws Exception;
+
+    List<UserAllInfo> syntheticalUserAllInfoList() throws Exception;
 }

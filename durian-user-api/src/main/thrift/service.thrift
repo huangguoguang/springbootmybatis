@@ -67,6 +67,7 @@ service UserServiceApi {
      */
     domain.UserAllInfoTo userInfoByAccessToken(1: required string accessToken);
 
-
+    domain.ResultUserInfoPageStructTo getAllUserInfo(
+        1: required domain.PageInfoTo pageInfoTo);
 }
 

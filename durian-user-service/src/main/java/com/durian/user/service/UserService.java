@@ -5,6 +5,8 @@ import com.durian.user.domain.po.UserLogin;
 import com.durian.user.domain.to.FindPwd;
 import com.durian.user.domain.to.RegisterUser;
 import com.durian.user.domain.to.UserAllInfo;
+import com.github.pagehelper.PageInfo;
+import com.platform.common.domain.to.PageTo;
 
 import java.util.List;
 
@@ -140,5 +142,14 @@ public interface UserService {
 
 
 	void test(String levelAllot1, String levelAllot2, String levelAllot3);
+
+	/**
+	 * 获取提现订单列表
+	 * @param pageParam
+	 * @return
+	 * */
+	PageInfo<UserAllInfo> getUserAllInfo(PageTo pageParam) throws Exception;
+
+	List<UserAllInfo> getAllUserInfo() throws Exception;
 }
 

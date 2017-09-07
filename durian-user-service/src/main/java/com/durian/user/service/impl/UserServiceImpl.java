@@ -26,7 +26,11 @@ import com.durian.user.utils.sms.SmsUtil;
 import com.durian.user.utils.token.Token;
 import com.durian.user.utils.token.TokenGenerator;
 import com.durian.user.utils.validate.RegexValidateUtil;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.platform.common.domain.exception.CustomException;
+import com.platform.common.domain.to.PageTo;
 import com.platform.common.service.redis.util.JsonSerializerUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -361,5 +365,18 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public PageInfo<UserAllInfo> getUserAllInfo(PageTo pageParam) throws Exception {
+        Page<Object> page = PageHelper.startPage(pageParam.getPageNum(),pageParam.getPageSize());
+        userAccountDao.syntheticalUserAllInfoList();
+        PageInfo<UserAllInfo> pageInfo = new PageInfo(page);
+        return pageInfo;
+    }
+
+    @Override
+    public List<UserAllInfo> getAllUserInfo() throws Exception {
+        return userAccountDao.syntheticalUserAllInfoList();
     }
 }

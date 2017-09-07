@@ -8,11 +8,22 @@ import com.durian.user.service.LoginService;
 import com.durian.user.service.UserService;
 import com.durian.user.thrift.api.domain.*;
 import com.durian.user.thrift.api.service.UserServiceApi;
+import com.github.pagehelper.PageInfo;
+import com.platform.common.domain.to.PageTo;
 import com.platform.common.thrift.service.annotation.EnableThriftService;
 import org.apache.thrift.TException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by hufeng on 2017/8/11.
@@ -21,6 +32,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceApiImpl implements UserServiceApi.Iface{
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceApiImpl.class);
+
+    public static String[] getNullPropertyNames (Object source) {
+        final BeanWrapper src = new BeanWrapperImpl(source);
+        java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
+
+        Set<String> emptyNames = new HashSet<String>();
+        for(java.beans.PropertyDescriptor pd : pds) {
+            Object srcValue = src.getPropertyValue(pd.getName());
+            if (srcValue == null) emptyNames.add(pd.getName());
+        }
+        String[] result = new String[emptyNames.size()];
+        return emptyNames.toArray(result);
+    }
 
     @Autowired
     private LoginService loginService;
@@ -179,5 +204,33 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             e.printStackTrace();
             throw new TException(e);
         }
+    }
+
+    @Override
+    public ResultUserInfoPageStructTo getAllUserInfo(PageInfoTo pageInfoTo) throws TException {
+        ResultUserInfoPageStructTo structTo = new ResultUserInfoPageStructTo();
+        try {
+            PageTo pageParam = new PageTo();
+            BeanUtils.copyProperties(pageInfoTo, pageParam);
+            PageInfo<UserAllInfo> pageUserAllInfo = userService.getUserAllInfo(pageParam);
+            BeanUtils.copyProperties(pageUserAllInfo, pageInfoTo);
+            List<SyntheticalUserAllInfoTo> syntheticalUserAllInfoToList = pageUserAllInfo.getList()
+                    .parallelStream()
+                    .map(item -> {
+                        SyntheticalUserAllInfoTo temp = new SyntheticalUserAllInfoTo();
+                        BeanUtils.copyProperties(item, temp, getNullPropertyNames(item));
+                        return temp;
+                    }).collect(Collectors.toList());
+            structTo.setSyntheticalUserAllInfoToList(syntheticalUserAllInfoToList);
+            structTo.setCode(200);
+            structTo.setPageInfoTo(pageInfoTo);
+            structTo.setMessage("获取用户信息成功");
+        } catch (Exception e) {
+            LOGGER.error("获取用户信息失败", e);
+            structTo.setCode(400);
+            structTo.setMessage("获取用户信息失败");
+            e.printStackTrace();
+        }
+        return structTo;
     }
 }
