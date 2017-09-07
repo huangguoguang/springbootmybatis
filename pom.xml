@@ -35,7 +35,7 @@
         <repository>
             <id>local-repo</id>
             <name>Internal Repository</name>
-            <url>http://192.168.1.39:8888/nexus/content/groups/public</url>
+            <url>http://maven.durian.com:8888/nexus/content/groups/public</url>
         </repository>
     </repositories>
 
