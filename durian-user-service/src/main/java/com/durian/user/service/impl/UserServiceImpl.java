@@ -111,10 +111,10 @@ public class UserServiceImpl implements UserService {
         if(StringUtils.isBlank(registerUser.getMobileCode())){
             throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_NULL);
         }
-        //判断昵称
+/*        //判断昵称
         if(StringUtils.isBlank(registerUser.getNickName())){
             throw new CustomException(UserExceptionEnum.USER_NIKENAME_NULL);
-        }
+        }*/
     	//判断手机短信
 /*        if(!registerUser.getMobileCode().equalsIgnoreCase(redisTemplate.opsForValue().get("mobilecode:"+registerUser.getMobile()+":"+UserSmsEnum.REGISTER.getCode()))){
             throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);

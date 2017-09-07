@@ -1,6 +1,13 @@
 namespace java com.durian.user.thrift.api.domain
 
 
+// 公共返回消息
+struct ResultMessageStructTo {
+    1: optional i32 code;
+    2: optional string data;
+    3: optional string message;
+}
+
 struct UserInfoTo {
     1:optional string id;
     2:required string accountType;
@@ -51,13 +58,12 @@ struct LoginUserTo {
 
 struct RegisterUserTo {
     1:optional string userId;
-    2:optional string nickName;
-    3:required string mobile;
-    4:optional string password;
-    5:optional string mobileCode;
-    6:optional string inviterId;
-    7:optional string deptCode;
-    8:optional string deptId;
+    2:required string mobile;
+    3:optional string password;
+    4:optional string mobileCode;
+    5:optional string inviterId;
+    6:optional string deptCode;
+    7:optional string deptId;
 }
 
 struct PageInfoTo {
