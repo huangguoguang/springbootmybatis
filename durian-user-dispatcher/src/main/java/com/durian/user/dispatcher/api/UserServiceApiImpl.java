@@ -1,5 +1,6 @@
 package com.durian.user.dispatcher.api;
 
+import com.durian.common.utils.ThriftTException;
 import com.durian.user.domain.to.FindPwd;
 import com.durian.user.domain.to.LoginUser;
 import com.durian.user.domain.to.RegisterUser;
@@ -9,6 +10,7 @@ import com.durian.user.service.UserService;
 import com.durian.user.thrift.api.domain.*;
 import com.durian.user.thrift.api.service.UserServiceApi;
 import com.github.pagehelper.PageInfo;
+import com.platform.common.domain.exception.CustomException;
 import com.platform.common.domain.to.PageTo;
 import com.platform.common.thrift.service.annotation.EnableThriftService;
 import org.apache.thrift.TException;
@@ -101,9 +103,12 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
 
             userAllInfoTo.setUserInfoTo(userInfoTo);
             return userAllInfoTo;
+        } catch (CustomException e) {
+            e.printStackTrace();
+            throw new ThriftTException(e.getCode().getCode(),e.getCode().getMsg());
         } catch (Exception e) {
             e.printStackTrace();
-            throw new TException(e);
+            throw new ThriftTException(e.getMessage());
         }
     }
 

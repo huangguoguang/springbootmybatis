@@ -2,11 +2,11 @@
 <configuration>
 
     <!-- 日志文件路径 -->
-    <property name="LOG_HOME" value="/www/logs"/>
+    <property name="LOG_HOME" value="/logs"/>
     <!-- 应用目录名称 -->
-    <property name="APP_DIR" value="user"/>
+    <property name="APP_DIR" value="guess/test"/>
     <!-- 日志文件名称 -->
-    <property name="LOG_FILE_NAME" value="durian-user"/>
+    <property name="LOG_FILE_NAME" value="user"/>
 
     <!-- 彩色日志 -->
     <!-- 彩色日志依赖的渲染类 -->
@@ -29,6 +29,7 @@
 
     <!-- 日志输出级别设置 -->
     <root level="INFO">
+        <appender-ref ref="CONSOLE_APPENDER"/>
         <appender-ref ref="GLOBAL_APPENDER"/>
     </root>
 
