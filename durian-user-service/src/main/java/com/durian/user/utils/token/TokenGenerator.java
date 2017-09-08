@@ -63,6 +63,9 @@ public class TokenGenerator {
      */
     public  Token validateToken(String tokenString) {
         try {
+            if(deskey==null){
+                init();
+            }
         	if(StringUtils.isBlank(tokenString)) {
         		return null ;
         	}

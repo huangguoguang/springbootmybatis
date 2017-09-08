@@ -174,7 +174,11 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
     public UserAllInfoTo userInfoByUserId(String userId) throws ThriftException,TException {
         try {
             UserAllInfoTo userAllInfoTo = new UserAllInfoTo();
-            BeanUtils.copyProperties(userService.userInfo(userId),userAllInfoTo);
+            UserAllInfo userAllInfo = userService.userInfo(userId);
+            userAllInfoTo.setId(userAllInfo.getId());
+            userAllInfoTo.setAccountType(userAllInfo.getAccountType());
+            userAllInfoTo.setCreateTime(userAllInfo.getCreateTime());
+            userAllInfoTo.setStatus(userAllInfo.getStatus().toString());
             return userAllInfoTo;
         } catch (CustomException e) {
             throw new ThriftException(e.getCode().getCode(),e.getCode().getMsg());
@@ -209,7 +213,13 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
     public UserAllInfoTo userInfoByAccessToken(String accessToken) throws ThriftException,TException {
         try {
             UserAllInfoTo userAllInfoTo = new UserAllInfoTo();
-            BeanUtils.copyProperties(userService.userInfoByToken(accessToken),userAllInfoTo);
+            UserAllInfo userAllInfo = userService.userInfoByToken(accessToken);
+            //BeanUtils.copyProperties(userAllInfo,userAllInfoTo);
+            userAllInfoTo.setId(userAllInfo.getId());
+            userAllInfoTo.setAccountType(userAllInfo.getAccountType());
+            userAllInfoTo.setId(userAllInfo.getId());
+            userAllInfoTo.setCreateTime(userAllInfo.getCreateTime());
+            userAllInfoTo.setStatus(userAllInfo.getStatus().toString());
             return userAllInfoTo;
         } catch (CustomException e) {
             throw new ThriftException(e.getCode().getCode(),e.getCode().getMsg());
