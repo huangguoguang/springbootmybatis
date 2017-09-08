@@ -1,6 +1,9 @@
 namespace java com.durian.user.thrift.api.domain
 
-
+exception ThriftException {
+  1: i32 code,
+  2: string msg
+}
 // 公共返回消息
 struct ResultMessageStructTo {
     1: optional i32 code;

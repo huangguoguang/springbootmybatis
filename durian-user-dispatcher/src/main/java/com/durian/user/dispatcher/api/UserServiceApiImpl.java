@@ -1,6 +1,5 @@
 package com.durian.user.dispatcher.api;
 
-import com.durian.common.utils.ThriftTException;
 import com.durian.user.domain.to.FindPwd;
 import com.durian.user.domain.to.LoginUser;
 import com.durian.user.domain.to.RegisterUser;
@@ -10,6 +9,7 @@ import com.durian.user.service.UserService;
 import com.durian.user.thrift.api.domain.*;
 import com.durian.user.thrift.api.service.UserServiceApi;
 import com.github.pagehelper.PageInfo;
+import com.platform.common.domain.enums.ExceptionCodeEnums;
 import com.platform.common.domain.exception.CustomException;
 import com.platform.common.domain.to.PageTo;
 import com.platform.common.thrift.service.annotation.EnableThriftService;
@@ -57,7 +57,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
 
 
     @Override
-    public UserTokenInfoTo login(LoginUserTo loginUserTo) throws TException {
+    public UserTokenInfoTo login(LoginUserTo loginUserTo) throws ThriftException,TException {
         LoginUser loginUser = new LoginUser();
         BeanUtils.copyProperties(loginUserTo, loginUser);
         try {
@@ -78,14 +78,15 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
 
             userAllInfoTo.setUserInfoTo(userInfoTo);
             return userAllInfoTo ;
+        } catch (CustomException e) {
+            throw new ThriftException(e.getCode().getCode(),e.getCode().getMsg());
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new TException(e);
+            throw new ThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
         }
     }
 
     @Override
-    public UserTokenInfoTo refreshToken(String refreshToken, String type) throws TException {
+    public UserTokenInfoTo refreshToken(String refreshToken, String type) throws ThriftException,TException {
         try {
             UserAllInfo userAllInfo = loginService.refreshToken(refreshToken,type);
             UserTokenInfoTo userAllInfoTo = new UserTokenInfoTo();
@@ -104,17 +105,15 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             userAllInfoTo.setUserInfoTo(userInfoTo);
             return userAllInfoTo;
         } catch (CustomException e) {
-            e.printStackTrace();
-            throw new ThriftTException(e.getCode().getCode(),e.getCode().getMsg());
+            throw new ThriftException(e.getCode().getCode(),e.getCode().getMsg());
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new ThriftTException(e.getMessage());
+            throw new ThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
         }
     }
 
 
     @Override
-    public void registerUser(RegisterUserTo registerUserTo) throws TException {
+    public void registerUser(RegisterUserTo registerUserTo) throws ThriftException,TException {
 
         try {
             RegisterUser registerUser = new RegisterUser();
@@ -122,92 +121,100 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             //判断用户登录
             UserAllInfo userAllInfo = userService.registerUser(registerUser);
 
+        } catch (CustomException e) {
+            throw new ThriftException(e.getCode().getCode(),e.getCode().getMsg());
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new TException(e);
+            throw new ThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
         }
     }
 
     @Override
-    public void registerMobileCode(RegisterUserTo registerUserTo) throws TException {
+    public void registerMobileCode(RegisterUserTo registerUserTo) throws ThriftException,TException {
         try {
             RegisterUser registerUser = new RegisterUser();
             BeanUtils.copyProperties(registerUserTo, registerUser);
             //判断用户登录
             userService.registerMobileCode(registerUser);
+        } catch (CustomException e) {
+            throw new ThriftException(e.getCode().getCode(),e.getCode().getMsg());
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new TException(e);
+            throw new ThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
         }
     }
 
     @Override
-    public void findPwdMobileCode(RegisterUserTo registerUserTo) throws TException {
+    public void findPwdMobileCode(RegisterUserTo registerUserTo) throws ThriftException,TException {
         try {
             FindPwd findPwd = new FindPwd();
             BeanUtils.copyProperties(registerUserTo, findPwd);
             userService.findPwdMobileCode(findPwd);
+        } catch (CustomException e) {
+            throw new ThriftException(e.getCode().getCode(),e.getCode().getMsg());
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new TException(e);
+            throw new ThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
         }
 
     }
 
     @Override
-    public void resetPwd(RegisterUserTo registerUserTo) throws TException {
+    public void resetPwd(RegisterUserTo registerUserTo) throws ThriftException,TException {
         try {
             FindPwd findPwd = new FindPwd();
             BeanUtils.copyProperties(registerUserTo, findPwd);
             userService.resetPwd(findPwd);
+        } catch (CustomException e) {
+            throw new ThriftException(e.getCode().getCode(),e.getCode().getMsg());
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new TException(e);
+            throw new ThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
         }
     }
 
 
     @Override
-    public UserAllInfoTo userInfoByUserId(String userId) throws TException {
+    public UserAllInfoTo userInfoByUserId(String userId) throws ThriftException,TException {
         try {
             UserAllInfoTo userAllInfoTo = new UserAllInfoTo();
             BeanUtils.copyProperties(userService.userInfo(userId),userAllInfoTo);
             return userAllInfoTo;
+        } catch (CustomException e) {
+            throw new ThriftException(e.getCode().getCode(),e.getCode().getMsg());
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new TException(e);
+            throw new ThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
         }
     }
 
     @Override
-    public void modifyPwd(String userId, String oldPwd, String newPwd) throws TException {
+    public void modifyPwd(String userId, String oldPwd, String newPwd) throws ThriftException,TException {
         try {
             userService.modifyPwd(userId,oldPwd,newPwd);
+        } catch (CustomException e) {
+            throw new ThriftException(e.getCode().getCode(),e.getCode().getMsg());
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new TException(e);
+            throw new ThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
         }
     }
 
     @Override
-    public void registerAgentUser(String userId, String nickName) throws TException {
+    public void registerAgentUser(String userId, String nickName) throws ThriftException,TException {
         try {
             userService.registerAgentUser(userId,nickName);
+        } catch (CustomException e) {
+            throw new ThriftException(e.getCode().getCode(),e.getCode().getMsg());
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new TException(e);
+            throw new ThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
         }
     }
 
     @Override
-    public UserAllInfoTo userInfoByAccessToken(String accessToken) throws TException {
+    public UserAllInfoTo userInfoByAccessToken(String accessToken) throws ThriftException,TException {
         try {
             UserAllInfoTo userAllInfoTo = new UserAllInfoTo();
             BeanUtils.copyProperties(userService.userInfoByToken(accessToken),userAllInfoTo);
             return userAllInfoTo;
+        } catch (CustomException e) {
+            throw new ThriftException(e.getCode().getCode(),e.getCode().getMsg());
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new TException(e);
+            throw new ThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
         }
     }
 
