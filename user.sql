@@ -124,13 +124,13 @@ CREATE TABLE `t_user_capital_billing` (
 -- -----------------------------------------------------
 CREATE TABLE `t_user_agent_allot` (
   `id` varchar(50) NOT NULL,
-  `dept_code` varchar(20) DEFAULT NULL,
-  `level_allot_1` double(10,3) DEFAULT NULL,
-  `level_allot_2` double(10,3) DEFAULT NULL,
-  `level_allot_3` double(10,3) DEFAULT NULL,
-  `del_tag` char(1) DEFAULT NULL,
-  `create_time` bigint(20) DEFAULT NULL,
-  `update_time` bigint(20) DEFAULT NULL,
+  `dept_code` varchar(20) DEFAULT NULL  COMMENT '部门CODE',
+  `level_allot_1` double(10,3) DEFAULT NULL  COMMENT '比例1',
+  `level_allot_2` double(10,3) DEFAULT NULL  COMMENT '比例2',
+  `level_allot_3` double(10,3) DEFAULT NULL  COMMENT '比例3',
+  `del_tag` char(1) DEFAULT NULL  COMMENT '删除标识',
+  `create_time` bigint(20) DEFAULT NULL  COMMENT '创建时间',
+  `update_time` bigint(20) DEFAULT NULL  COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -142,17 +142,53 @@ CREATE TABLE `t_user_agent_allot` (
 -- -----------------------------------------------------
 CREATE TABLE `t_user_agent_relation` (
   `id` int(20) NOT NULL AUTO_INCREMENT,
-  `dept_code` varchar(10) DEFAULT NULL,
-  `dept_id` varchar(10) DEFAULT NULL,
-  `agent_name` varchar(20) DEFAULT NULL,
-  `inviter_id` varchar(20) DEFAULT NULL,
-  `invitee_id` varchar(20) DEFAULT NULL,
-  `status` char(1) DEFAULT '0',
-  `del_tag` char(1) DEFAULT NULL,
-  `create_time` bigint(20) DEFAULT NULL,
-  `update_time` bigint(20) DEFAULT NULL,
+  `dept_code` varchar(10) DEFAULT NULL  COMMENT '部门CODE',
+  `dept_id` varchar(10) DEFAULT NULL  COMMENT '部门ID',
+  `agent_name` varchar(20) DEFAULT NULL  COMMENT '代理名字',
+  `inviter_id` varchar(20) DEFAULT NULL  COMMENT '邀请人ID',
+  `invitee_id` varchar(20) DEFAULT NULL  COMMENT '被邀请人ID',
+  `status` char(1) DEFAULT '0'  COMMENT '状态',
+  `del_tag` char(1) DEFAULT NULL  COMMENT '删除标识',
+  `create_time` bigint(20) DEFAULT NULL  COMMENT '创建时间',
+  `update_time` bigint(20) DEFAULT NULL  COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
+
+
+
+-- ----------------------------
+-- Table structure for t_user_dept_info
+-- ----------------------------
+DROP TABLE IF EXISTS `t_user_dept_info`;
+CREATE TABLE `t_user_dept_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `dept_name` varchar(100) DEFAULT NULL  COMMENT '部门名称',
+  `dept_code` varchar(100) DEFAULT NULL  COMMENT '部门CODE',
+  `dept_type` char(2) DEFAULT NULL  COMMENT '部门类型',
+  `dept_parent_id` varchar(20) DEFAULT NULL  COMMENT '部门父ID',
+  `del_tag` char(1) DEFAULT NULL  COMMENT '删除标识',
+  `status` char(1) DEFAULT NULL  COMMENT '状态',
+  `create_time` bigint(20) DEFAULT NULL  COMMENT '创建时间',
+  `update_time` bigint(20) DEFAULT NULL  COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1003 DEFAULT CHARSET=utf8mb4;
+
+
+-- ----------------------------
+-- Table structure for t_user_agent_allot_ex
+-- ----------------------------
+DROP TABLE IF EXISTS `t_user_agent_allot_ex`;
+CREATE TABLE `t_user_agent_allot_ex` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `dept_code` varchar(20) DEFAULT NULL COMMENT '部门名称',
+  `allot` double(10,3) DEFAULT NULL COMMENT '比例',
+  `rate` int(5) DEFAULT NULL COMMENT '等级',
+  `status` char(1) DEFAULT NULL COMMENT '状态',
+  `del_tag` char(1) DEFAULT NULL COMMENT '删除标识',
+  `create_time` bigint(20) DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 
 
