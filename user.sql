@@ -80,6 +80,50 @@ CREATE TABLE `t_user_login` (
 ) ENGINE=InnoDB AUTO_INCREMENT=966 DEFAULT CHARSET=utf8;
 
 
+-- -----------------------------------------------------
+-- model  `user`   table `t_backend_user`
+-- -----------------------------------------------------
+CREATE TABLE `t_backend_user` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `status` int(2) DEFAULT NULL,
+  `nick_icon` varchar(255) DEFAULT NULL COMMENT '图像',
+  `nick_name` varchar(100) DEFAULT NULL COMMENT '昵称',
+  `gender` int(1) DEFAULT NULL COMMENT '性别',
+  `province` varchar(100) DEFAULT NULL COMMENT '省',
+  `city` varchar(100) DEFAULT NULL COMMENT '市',
+  `area` varchar(255) DEFAULT NULL COMMENT '区域',
+  `street` varchar(255) DEFAULT NULL COMMENT '街道',
+  `address` varchar(255) DEFAULT NULL COMMENT '地址',
+  `create_time` bigint(13) DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(13) DEFAULT NULL COMMENT '更新时间',
+  `del_tag` char(1) DEFAULT NULL COMMENT '删除状态',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='后台用户';
+
+
+
+
+-- -----------------------------------------------------
+-- model  `user`   table `t_backend_user_login`
+-- -----------------------------------------------------
+
+CREATE TABLE `t_backend_user_login` (
+  `id` int(32) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(32) DEFAULT NULL COMMENT '用户ID',
+  `type` varchar(10) DEFAULT NULL COMMENT '登录类型',
+  `status` int(2) DEFAULT NULL COMMENT '登录状态',
+  `ip` varchar(20) DEFAULT NULL COMMENT 'ip',
+  `address` varchar(255) DEFAULT NULL COMMENT '地址',
+  `create_time` bigint(13) DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(13) DEFAULT NULL COMMENT '更新时间',
+  `del_tag` char(1) DEFAULT NULL COMMENT '删除状态',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=533 DEFAULT CHARSET=utf8 COMMENT='后台用户登录信息';
+
+
+
 
 
 
