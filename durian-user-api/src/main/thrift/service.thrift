@@ -70,3 +70,18 @@ service UserServiceApi {
     domain.ResultUserInfoPageStructTo getAllUserInfo( 1: required domain.PageInfoTo pageInfoTo);
 }
 
+
+
+service BackendUserServiceApi {
+
+    /**
+     * 获取用户列表
+     *
+     * @return
+     * @throws Exception
+     */
+    domain.UserAllInfoTo login(1: optional domain.LoginUserTo loginUserTo) throws (1: domain.UserThriftException ex);
+
+    domain.ResultBackendUserInfoPageStructTo getUserList( 1: required domain.PageInfoTo pageInfoTo);
+}
+

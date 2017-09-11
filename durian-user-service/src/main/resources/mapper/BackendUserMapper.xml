@@ -211,6 +211,12 @@
   </update>
   
     <select id="selectByName" parameterType="java.lang.String" resultType="com.durian.user.domain.to.UserAllInfo">
-    	select a.id , a.name ,a.password ,a.create_time as createTime from t_backend_user a  where a.name = #{name} 
+    	select a.id , a.name ,a.password ,a.create_time as createTime ,a.status  from t_backend_user a  where a.name = #{name}
   	</select>
+
+  <select id="getUserList"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_backend_user
+   </select>
 </mapper>

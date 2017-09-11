@@ -1,10 +1,11 @@
 package com.durian.user.mapper;
 
-import org.springframework.stereotype.Repository;
-
 import com.durian.user.domain.po.BackendUser;
 import com.durian.user.domain.to.UserAllInfo;
 import com.platform.common.domain.annotation.EnableDataSource;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface BackendUserMapper {
@@ -29,4 +30,8 @@ public interface BackendUserMapper {
     
     @EnableDataSource("slave")
 	UserAllInfo selectByName(String name);
+
+
+    @EnableDataSource("slave")
+    List<BackendUser> getUserList();
 }

@@ -1,6 +1,7 @@
 package com.durian.user.dao.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import com.durian.user.mapper.BackendUserLoginMapper;
 import com.durian.user.utils.date.IdentificationUtil;
@@ -54,5 +55,10 @@ public class BackendUserDaoImpl implements BackendUserDao{
 		return backendUserLoginMapper.insert(backendUserLogin);
 	}
 
-	
+	@Override
+	public List<BackendUser> getUserList() {
+		return backendUserMapper.getUserList();
+	}
+
+
 }

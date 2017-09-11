@@ -6,6 +6,7 @@ import com.durian.user.dao.UserBusinessDao;
 import com.durian.user.dao.UserInfoDao;
 import com.durian.user.domain.enums.LoginTypeEnum;
 import com.durian.user.domain.enums.UserExceptionEnum;
+import com.durian.user.domain.po.BackendUser;
 import com.durian.user.domain.po.BackendUserLogin;
 import com.durian.user.domain.po.UserBusiness;
 import com.durian.user.domain.po.UserInfo;
@@ -17,7 +18,11 @@ import com.durian.user.service.BackendUserService;
 import com.durian.user.utils.date.DateFormatUtil;
 import com.durian.user.utils.encrypt.MD5Utils;
 import com.durian.user.utils.token.TokenGenerator;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.platform.common.domain.exception.CustomException;
+import com.platform.common.domain.to.PageTo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,8 +64,8 @@ public class BackendUserServiceImpl implements BackendUserService{
         backendUserLogin.setUserId(userAllInfo.getId());
         backendUserLogin.setCreateTime(new Date().getTime());
         backendUserLogin.setType(loginUser.getType());
-        LOGGER.info("用户登录数据:"+JSONObject.toJSONString(loginUser));
-		if((!userAllInfo.getPassword().equals(MD5Utils.sign(loginUser.getPassword(), MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET))) ){
+        LOGGER.debug("用户登录数据:"+JSONObject.toJSONString(loginUser));
+		if(!userAllInfo.getPassword().equals(MD5Utils.sign(loginUser.getPassword(), MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET))){
 			backendUserLogin.setStatus(1);
 			backendUserDao.saveLogin( backendUserLogin);
 			throw new CustomException(UserExceptionEnum.USER_MOBILE_PASSWORD);
@@ -124,5 +129,13 @@ public class BackendUserServiceImpl implements BackendUserService{
         //userInfoDetail.setQqAccount();
         //userInfoDetail.setWeiboAccont();
         return userInfoDetail;
+    }
+
+    @Override
+    public PageInfo<BackendUser> getUserList(PageTo pageTo) throws Exception {
+        Page<Object> page = PageHelper.startPage(pageTo.getPageNum(), pageTo.getPageSize());
+        backendUserDao.getUserList();
+        PageInfo<BackendUser> pageInfo = new PageInfo(page);
+        return pageInfo;
     }
 }

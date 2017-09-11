@@ -13,7 +13,7 @@ struct ResultMessageStructTo {
 
 struct UserInfoTo {
     1:optional string id;
-    2:required string accountType;
+    2:optional string accountType;
     3:optional string accountLevel;
     4:optional string status;
     5:optional i64 createTime;
@@ -36,7 +36,7 @@ struct UserTokenInfoTo {
 
 struct UserAllInfoTo {
     1:optional string id;
-    2:required string accountType;
+    2:optional string accountType;
     3:optional string accountLevel;
     4:optional string status;
     5:optional i64 createTime;
@@ -52,7 +52,7 @@ struct UserAllInfoTo {
 ####后台用户登录对象
 struct LoginUserTo {
     1:optional string type;
-    2:required string mobile;
+    2:optional string mobile;
     3:optional string password;
     4:optional string returnUrl;
     5:optional string ip;
@@ -61,7 +61,7 @@ struct LoginUserTo {
 
 struct RegisterUserTo {
     1:optional string userId;
-    2:required string mobile;
+    2:optional string mobile;
     3:optional string password;
     4:optional string mobileCode;
     5:optional string inviterId;
@@ -110,9 +110,40 @@ struct SyntheticalUserAllInfoTo{
 }
 
 struct ResultUserInfoPageStructTo {
-    1: required i32 code;
+    1: optional i32 code;
     2: optional string message;
     3: optional PageInfoTo pageInfoTo;
     4: optional list<SyntheticalUserAllInfoTo> syntheticalUserAllInfoToList;
 }
 
+
+struct BackendUserTo{
+    1: string id;
+    2: string accountType;
+    3: i32 accountLevel;
+    4: i32 status;
+    5: i64 createTime;
+    6: string delTag;
+    7: string nickIcon;
+    8: string nickName;
+    9: i32 gender;
+    10: string province;
+    11: string city;
+    12: string area;
+    13: string street;
+    14: string address;
+    15: string mobile;
+    16: string name;
+    17: string idCard;
+    18: string email;
+    19: string password;
+    20: string birthday;
+    21: string education;
+}
+
+struct ResultBackendUserInfoPageStructTo {
+    1: optional i32 code;
+    2: optional string message;
+    3: optional PageInfoTo pageInfoTo;
+    4: optional list<BackendUserTo> backendUserToList;
+}
