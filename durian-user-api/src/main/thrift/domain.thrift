@@ -1,6 +1,6 @@
 namespace java com.durian.user.thrift.api.domain
 
-exception ThriftException {
+exception UserThriftException {
   1: i32 code,
   2: string msg
 }
