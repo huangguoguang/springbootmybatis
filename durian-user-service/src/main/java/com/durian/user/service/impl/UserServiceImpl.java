@@ -2,6 +2,7 @@ package com.durian.user.service.impl;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.durian.common.domain.enums.BillingStatisticsEnums;
 import com.durian.tools.sms.thrift.api.domain.SmsVerifyMessageTo;
 import com.durian.tools.sms.thrift.api.service.SmsServiceApi;
 import com.durian.user.agent.domain.po.UserAgentConfig;
@@ -379,4 +380,15 @@ public class UserServiceImpl implements UserService {
     public List<UserAllInfo> getAllUserInfo() throws Exception {
         return userAccountDao.syntheticalUserAllInfoList();
     }
+
+    @Override
+    public Integer statisticsTodayUserRegister() throws Exception {
+        return Integer.valueOf(StringUtils.defaultIfBlank((String)redisTemplate.opsForValue().get(BillingStatisticsEnums.TODAY_USER_REGISTER.getCode()),"0"));
+    }
+
+    @Override
+    public Integer statisticsUserRegisterCount(String startDate) throws Exception {
+        return userAccountDao.getUserRegisterCount(startDate);
+    }
 }
+

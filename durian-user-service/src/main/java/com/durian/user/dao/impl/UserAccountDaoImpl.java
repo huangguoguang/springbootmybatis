@@ -1,6 +1,7 @@
 package com.durian.user.dao.impl;
 
 
+import com.durian.common.domain.enums.BillingStatisticsEnums;
 import com.durian.user.agent.domain.po.UserAgent;
 import com.durian.user.agent.domain.po.UserRelation;
 import com.durian.user.agent.service.UserAgentService;
@@ -124,6 +125,9 @@ public class UserAccountDaoImpl implements UserAccountDao {
         userCapitalService.createUserCapital(userAllInfo.getId());
         //创建代理关系
 
+        //今日注册量,注册成功一个加1
+        redisTemplate.opsForValue().increment(BillingStatisticsEnums.TODAY_USER_REGISTER.getCode(),1);
+
         //redisTemplate.opsForValue().set("userAllInfo:"+userAllInfo.getId(),JsonSerializerUtils.seriazile(userAllInfo));
         //redisTemplate.delete("mobilecode:"+registerUser.getMobile()+":"+ UserSmsEnum.REGISTER.getCode());
 
@@ -231,5 +235,10 @@ public class UserAccountDaoImpl implements UserAccountDao {
     @Override
     public List<UserAllInfo> syntheticalUserAllInfoList() throws Exception {
         return userAccountMapper.syntheticalUserAllInfoList();
+    }
+
+    @Override
+    public Integer getUserRegisterCount(String startDate) {
+        return userAccountMapper.getUserRegisterCount(startDate);
     }
 }

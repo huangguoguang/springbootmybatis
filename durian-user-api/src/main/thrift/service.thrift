@@ -68,6 +68,18 @@ service UserServiceApi {
     domain.UserAllInfoTo userInfoByAccessToken(1: required string accessToken) throws (1: domain.UserThriftException ex);
 
     domain.ResultUserInfoPageStructTo getAllUserInfo( 1: required domain.PageInfoTo pageInfoTo);
+
+
+    /**
+    * 查询制定天数注册量
+    **/
+    i32 statisticsUserRegisterCount( 1: required string startDate) throws (1: domain.UserThriftException ex);
+
+
+    /**
+    * 查询注册量
+    **/
+    i32 statisticsTodayUserRegister() throws (1: domain.UserThriftException ex);
 }
 
 
@@ -83,5 +95,9 @@ service BackendUserServiceApi {
     domain.UserAllInfoTo login(1: optional domain.LoginUserTo loginUserTo) throws (1: domain.UserThriftException ex);
 
     domain.ResultBackendUserInfoPageStructTo getUserList( 1: required domain.PageInfoTo pageInfoTo);
+
+
+
+
 }
 

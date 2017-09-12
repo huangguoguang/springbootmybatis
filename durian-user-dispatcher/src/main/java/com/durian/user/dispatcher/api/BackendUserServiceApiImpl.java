@@ -73,11 +73,10 @@ public class BackendUserServiceApiImpl implements BackendUserServiceApi.Iface{
              return userAllInfoTo ;
         } catch (CustomException e) {
             LOGGER.error(e.getMessage(),e.fillInStackTrace());
-            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
         } catch (Exception e) {
-           // e.printStackTrace();
-            LOGGER.error(e.getMessage(),e.fillInStackTrace());
-            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
+             LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
         }
     }
 
@@ -110,11 +109,11 @@ public class BackendUserServiceApiImpl implements BackendUserServiceApi.Iface{
             resultBackendUserInfoPageStructTo.setPageInfoTo(pageInfoTo);
             return resultBackendUserInfoPageStructTo ;
         } catch (CustomException e) {
-            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg());
-        } catch (Exception e) {
-            e.printStackTrace();
             LOGGER.error(e.getMessage(),e.fillInStackTrace());
-            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
         }
     }
 

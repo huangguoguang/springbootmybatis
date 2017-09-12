@@ -79,4 +79,11 @@ public interface UserAccountDao {
     List<UserAllInfo> selectUserInfoList(UserAllInfo userAllInfo) throws Exception;
 
     List<UserAllInfo> syntheticalUserAllInfoList() throws Exception;
+
+    /**
+     * 查询制定实际注册量
+     * @param startDate
+     * @return
+     */
+    Integer getUserRegisterCount(String startDate);
 }
