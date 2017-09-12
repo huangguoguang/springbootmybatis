@@ -57,7 +57,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
 
 
     @Override
-    public UserTokenInfoTo login(LoginUserTo loginUserTo) throws UserThriftException,TException {
+    public UserTokenInfoTo login(LoginUserTo loginUserTo) throws UserThriftException {
         LoginUser loginUser = new LoginUser();
         BeanUtils.copyProperties(loginUserTo, loginUser);
         try {
@@ -86,7 +86,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
     }
 
     @Override
-    public UserTokenInfoTo refreshToken(String refreshToken, String type) throws UserThriftException,TException {
+    public UserTokenInfoTo refreshToken(String refreshToken, String type) throws UserThriftException {
         try {
             UserAllInfo userAllInfo = loginService.refreshToken(refreshToken,type);
             UserTokenInfoTo userAllInfoTo = new UserTokenInfoTo();
@@ -113,7 +113,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
 
 
     @Override
-    public void registerUser(RegisterUserTo registerUserTo) throws UserThriftException,TException {
+    public void registerUser(RegisterUserTo registerUserTo) throws UserThriftException {
 
         try {
             RegisterUser registerUser = new RegisterUser();
@@ -129,7 +129,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
     }
 
     @Override
-    public void registerMobileCode(RegisterUserTo registerUserTo) throws UserThriftException,TException {
+    public void registerMobileCode(RegisterUserTo registerUserTo) throws UserThriftException {
         try {
             RegisterUser registerUser = new RegisterUser();
             BeanUtils.copyProperties(registerUserTo, registerUser);
@@ -143,7 +143,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
     }
 
     @Override
-    public void findPwdMobileCode(RegisterUserTo registerUserTo) throws UserThriftException,TException {
+    public void findPwdMobileCode(RegisterUserTo registerUserTo) throws UserThriftException {
         try {
             FindPwd findPwd = new FindPwd();
             BeanUtils.copyProperties(registerUserTo, findPwd);
@@ -157,7 +157,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
     }
 
     @Override
-    public void resetPwd(RegisterUserTo registerUserTo) throws UserThriftException,TException {
+    public void resetPwd(RegisterUserTo registerUserTo) throws UserThriftException {
         try {
             FindPwd findPwd = new FindPwd();
             BeanUtils.copyProperties(registerUserTo, findPwd);
@@ -171,7 +171,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
 
 
     @Override
-    public UserAllInfoTo userInfoByUserId(String userId) throws UserThriftException,TException {
+    public UserAllInfoTo userInfoByUserId(String userId) throws UserThriftException {
         try {
             UserAllInfoTo userAllInfoTo = new UserAllInfoTo();
             UserAllInfo userAllInfo = userService.userInfo(userId);
@@ -188,7 +188,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
     }
 
     @Override
-    public void modifyPwd(String userId, String oldPwd, String newPwd) throws UserThriftException,TException {
+    public void modifyPwd(String userId, String oldPwd, String newPwd) throws UserThriftException {
         try {
             userService.modifyPwd(userId,oldPwd,newPwd);
         } catch (CustomException e) {
@@ -199,7 +199,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
     }
 
     @Override
-    public void registerAgentUser(String userId, String nickName) throws UserThriftException,TException {
+    public void registerAgentUser(String userId, String nickName) throws UserThriftException {
         try {
             userService.registerAgentUser(userId,nickName);
         } catch (CustomException e) {
@@ -210,7 +210,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
     }
 
     @Override
-    public UserAllInfoTo userInfoByAccessToken(String accessToken) throws UserThriftException,TException {
+    public UserAllInfoTo userInfoByAccessToken(String accessToken) throws UserThriftException {
         try {
             UserAllInfoTo userAllInfoTo = new UserAllInfoTo();
             UserAllInfo userAllInfo = userService.userInfoByToken(accessToken);
