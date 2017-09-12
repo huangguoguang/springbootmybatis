@@ -200,7 +200,7 @@
   </select>
 
 
-  <select id="getUserRegisterCount" parameterType="java.lang.String" >
+  <select id="getUserRegisterCount" parameterType="java.lang.String" resultType="java.lang.Integer" >
     select count(*)  from t_user_account
      where  TO_DAYS(from_unixtime(create_time/1000))  = TO_DAYS(str_to_date(#{startDate},'%Y-%m-%d'))
 
