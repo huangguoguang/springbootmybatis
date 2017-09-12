@@ -80,7 +80,7 @@ public interface UserService {
      * @param userId
      * @return
      */
-	String enableUser(String userId) throws Exception ;
+	int enableUser(String userId) throws Exception ;
 
 
 	/**
@@ -88,7 +88,7 @@ public interface UserService {
 	 * @param userId
 	 * @return
 	 */
-	String disableUser(String userId) throws Exception ;
+	int disableUser(String userId) throws Exception ;
 
 	/**
 	 * 
@@ -173,5 +173,8 @@ public interface UserService {
 	 * @throws Exception
 	 */
 	Integer statisticsUserRegisterCount(String startDate) throws Exception;
+
+
+
 }
 

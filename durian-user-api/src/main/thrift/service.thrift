@@ -97,7 +97,15 @@ service BackendUserServiceApi {
     domain.ResultBackendUserInfoPageStructTo getUserList( 1: required domain.PageInfoTo pageInfoTo);
 
 
+    /**
+    * 启用用户
+    **/
+    string enableUser( 1: required string userId) throws (1: domain.UserThriftException ex);
 
+        /**
+        * 禁用用户
+        **/
+     string disableUser( 1: required string userId) throws (1: domain.UserThriftException ex);
 
 }
 

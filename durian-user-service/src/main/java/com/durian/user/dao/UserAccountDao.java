@@ -86,4 +86,6 @@ public interface UserAccountDao {
      * @return
      */
     Integer getUserRegisterCount(String startDate);
+
+
 }

@@ -261,15 +261,13 @@ public class UserServiceImpl implements UserService {
     }
 
 	@Override
-	public String enableUser(String userId)  throws Exception {
-		userAccountDao.updateUserStatus(userId, UserStatusEnum.Enable.getCode());
-		return null;
+	public int enableUser(String userId)  throws Exception {
+		return userAccountDao.updateUserStatus(userId, UserStatusEnum.Enable.getCode());
 	}
 
 	@Override
-	public String disableUser(String userId)  throws Exception {
-		userAccountDao.updateUserStatus(userId, UserStatusEnum.Disable.getCode());
-		return null;
+	public int disableUser(String userId)  throws Exception {
+		return  userAccountDao.updateUserStatus(userId, UserStatusEnum.Disable.getCode());
 	}
 
 	@Override
@@ -390,5 +388,8 @@ public class UserServiceImpl implements UserService {
     public Integer statisticsUserRegisterCount(String startDate) throws Exception {
         return userAccountDao.getUserRegisterCount(startDate);
     }
+
+
+
 }
 

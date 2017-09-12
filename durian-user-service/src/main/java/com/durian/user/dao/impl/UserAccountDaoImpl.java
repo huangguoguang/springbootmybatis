@@ -241,4 +241,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
     public Integer getUserRegisterCount(String startDate) {
         return userAccountMapper.getUserRegisterCount(startDate);
     }
+
+
+
 }
