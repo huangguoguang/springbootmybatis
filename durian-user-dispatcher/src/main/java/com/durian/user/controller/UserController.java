@@ -125,7 +125,7 @@ public class UserController {
      * @throws Exception
      */
     @RequestMapping(value = "/enableUser", method = RequestMethod.POST)
-    public Callable<String> enableUser(@ModelAttribute String userId) throws Exception {
+    public Callable<Integer> enableUser(@ModelAttribute String userId) throws Exception {
         return () -> userService.enableUser(userId);
     }
 
@@ -136,7 +136,7 @@ public class UserController {
      * @throws Exception
      */
     @RequestMapping(value = "/disableUser", method = RequestMethod.POST)
-    public Callable<String> disableUser(@ModelAttribute String userId) throws Exception {
+    public Callable<Integer> disableUser(@ModelAttribute String userId) throws Exception {
         return () -> userService.disableUser(userId);
     }
 

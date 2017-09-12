@@ -4,6 +4,7 @@ import com.durian.user.domain.po.BackendUser;
 import com.durian.user.domain.to.LoginUser;
 import com.durian.user.domain.to.UserAllInfo;
 import com.durian.user.service.BackendUserService;
+import com.durian.user.service.UserService;
 import com.durian.user.thrift.api.domain.*;
 import com.durian.user.thrift.api.service.BackendUserServiceApi;
 import com.github.pagehelper.PageInfo;
@@ -33,6 +34,9 @@ public class BackendUserServiceApiImpl implements BackendUserServiceApi.Iface{
     @Autowired
     private BackendUserService backendUserService;
 
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public UserAllInfoTo login(LoginUserTo loginUserTo) throws UserThriftException,TException {
@@ -89,6 +93,34 @@ public class BackendUserServiceApiImpl implements BackendUserServiceApi.Iface{
             resultBackendUserInfoPageStructTo.setBackendUserToList(guessGoodsList);
             resultBackendUserInfoPageStructTo.setPageInfoTo(pageInfoTo);
             return resultBackendUserInfoPageStructTo ;
+        } catch (CustomException e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
+        }
+    }
+
+    @Override
+    public String enableUser(String userId) throws UserThriftException, TException {
+        try {
+            userService.enableUser(userId);
+            return "启用成功";
+        } catch (CustomException e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
+        }
+    }
+
+    @Override
+    public String disableUser(String userId) throws UserThriftException, TException {
+        try {
+            userService.disableUser(userId);
+            return "禁用成功";
         } catch (CustomException e) {
             LOGGER.error(e.getMessage(),e.fillInStackTrace());
             throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
