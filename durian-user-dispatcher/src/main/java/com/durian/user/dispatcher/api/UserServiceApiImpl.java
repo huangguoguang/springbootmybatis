@@ -79,9 +79,11 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             userAllInfoTo.setUserInfoTo(userInfoTo);
             return userAllInfoTo ;
         } catch (CustomException e) {
-            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
         } catch (Exception e) {
-            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
         }
     }
 
@@ -105,9 +107,11 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             userAllInfoTo.setUserInfoTo(userInfoTo);
             return userAllInfoTo;
         } catch (CustomException e) {
-            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
         } catch (Exception e) {
-            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
         }
     }
 
@@ -122,9 +126,11 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             UserAllInfo userAllInfo = userService.registerUser(registerUser);
 
         } catch (CustomException e) {
-            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
         } catch (Exception e) {
-            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
         }
     }
 
@@ -136,9 +142,11 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             //判断用户登录
             userService.registerMobileCode(registerUser);
         } catch (CustomException e) {
-            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
         } catch (Exception e) {
-            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
         }
     }
 
@@ -149,9 +157,11 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             BeanUtils.copyProperties(registerUserTo, findPwd);
             userService.findPwdMobileCode(findPwd);
         } catch (CustomException e) {
-            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
         } catch (Exception e) {
-            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
         }
 
     }
@@ -163,9 +173,11 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             BeanUtils.copyProperties(registerUserTo, findPwd);
             userService.resetPwd(findPwd);
         } catch (CustomException e) {
-            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
         } catch (Exception e) {
-            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
         }
     }
 
@@ -181,9 +193,11 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             userAllInfoTo.setStatus(userAllInfo.getStatus().toString());
             return userAllInfoTo;
         } catch (CustomException e) {
-            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
         } catch (Exception e) {
-            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
         }
     }
 
@@ -192,9 +206,11 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
         try {
             userService.modifyPwd(userId,oldPwd,newPwd);
         } catch (CustomException e) {
-            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
         } catch (Exception e) {
-            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
         }
     }
 
@@ -203,9 +219,11 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
         try {
             userService.registerAgentUser(userId,nickName);
         } catch (CustomException e) {
-            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
         } catch (Exception e) {
-            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
         }
     }
 
@@ -222,9 +240,11 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             userAllInfoTo.setStatus(userAllInfo.getStatus().toString());
             return userAllInfoTo;
         } catch (CustomException e) {
-            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
         } catch (Exception e) {
-            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg());
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
         }
     }
 
@@ -254,5 +274,31 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             e.printStackTrace();
         }
         return structTo;
+    }
+
+    @Override
+    public int statisticsUserRegisterCount(String startDate) throws UserThriftException, TException {
+        try {
+            return userService.statisticsUserRegisterCount(startDate);
+        } catch (CustomException e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
+        }
+    }
+
+    @Override
+    public int statisticsTodayUserRegister() throws UserThriftException, TException {
+        try {
+            return userService.statisticsTodayUserRegister();
+        } catch (CustomException e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
+        }
     }
 }

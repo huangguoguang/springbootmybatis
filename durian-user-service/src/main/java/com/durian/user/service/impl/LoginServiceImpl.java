@@ -92,7 +92,7 @@ public class LoginServiceImpl implements LoginService {
         LOGGER.info("accessToken :" + accessToken);
         userAllInfo.setAccessToken(accessToken);
         //设置刷新登录token
-        String refreshToken = tokenGenerator.generatorToken(userAllInfo.getMobile(),userAllInfo.getId(),loginUser.getType(),60 * 6);
+        String refreshToken = tokenGenerator.generatorToken(userAllInfo.getMobile(),userAllInfo.getId(),loginUser.getType(),expires);
         userAllInfo.setRefreshToken(refreshToken);
         userAllInfo.setExpires(expires);
         //设置登录时间

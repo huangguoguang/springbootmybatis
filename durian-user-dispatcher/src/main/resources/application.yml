@@ -39,3 +39,17 @@ tfs:
     maxWaitThread: 100
 
 
+
+custom:
+    task:
+      capital:
+        userBillingPool:
+          corePoolSize: 20
+          maxPoolSize: 200
+          keepAliveSeconds: 300
+          queueCapacity: 40000
+        billingStatisticsPool:
+          corePoolSize: 20
+          maxPoolSize: 200
+          keepAliveSeconds: 300
+          queueCapacity: 40000

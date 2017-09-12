@@ -150,6 +150,28 @@ public interface UserService {
 	 * */
 	PageInfo<UserAllInfo> getUserAllInfo(PageTo pageParam) throws Exception;
 
+
+	/**
+	 * 用户分页列表查询
+	 * @return
+	 * @throws Exception
+	 */
 	List<UserAllInfo> getAllUserInfo() throws Exception;
+
+
+	/**
+	 * 查询今日注册量
+	 * @return
+	 * @throws Exception
+	 */
+	Integer statisticsTodayUserRegister() throws Exception;
+
+
+	/**
+	 * 查询制定时间注册量
+	 * @return
+	 * @throws Exception
+	 */
+	Integer statisticsUserRegisterCount(String startDate) throws Exception;
 }
 
