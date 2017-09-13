@@ -220,30 +220,53 @@ public class UserServiceImpl implements UserService {
         userSms.setDescription(UserSmsEnum.FIND_PWD.getDesc());
         userSms.setType(UserSmsEnum.FIND_PWD.getCode());
         userSms.setMobile(findPwd.getMobile());
-        SmsVerifyMessage smsVerifyMessage = new SmsVerifyMessage();
-        smsVerifyMessage.setMobile(findPwd.getMobile());
-        smsVerifyMessage.setContent(content);
-        smsVerifyMessage.setServices("user");
-        smsVerifyMessage.setDescription("找回密码");
-        smsVerifyMessage.setOperator(findPwd.getMobile());
-        smsVerifyMessage.setType("register");
-        smsVerifyMessage.setSystem("user");
-        smsVerifyMessage.setVerifyCode(mobileCode);
-        smsVerifyMessage.setActiveSecond(60*5);
-        boolean sendOk = smsService.sendMessage(smsVerifyMessage,SmsSendTypeEnums.TEXT);
-        LOGGER.info("用户手机号码:"+findPwd.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk+" !");
+        try{
+            SmsVerifyMessage smsVerifyMessage = new SmsVerifyMessage();
+            smsVerifyMessage.setMobile(findPwd.getMobile());
+            smsVerifyMessage.setContent(content);
+            smsVerifyMessage.setDescription("找回密码");
+            smsVerifyMessage.setOperator(findPwd.getMobile());
+            smsVerifyMessage.setSystem("guess");
+            smsVerifyMessage.setServices("user");
+            smsVerifyMessage.setType("resetpwd");
+            smsVerifyMessage.setVerifyCode(mobileCode);
+            smsVerifyMessage.setActiveSecond(60*5);
+            boolean sendOk = smsService.sendMessage(smsVerifyMessage,SmsSendTypeEnums.TEXT);
+            if(!sendOk){
+                throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+            }
+            LOGGER.info("用户手机号码:"+findPwd.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk +" !");
+        }catch (SmsException e){
+            //throw new CustomException(e.getMessage());
+            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR,e.getMessage());
+        }
         return null;
     }
 
     @Override
     public void resetPwd(FindPwd findPwd) throws Exception {
         //判断手机短信
-        if(!findPwd.getMobileCode().equalsIgnoreCase(redisTemplate.opsForValue().get("mobilecode:"+findPwd.getMobile()+":"+UserSmsEnum.FIND_PWD.getCode()))){
-            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+        try{
+            SmsVerifyMessage smsVerifyMessage = new SmsVerifyMessage();
+            smsVerifyMessage.setVerifyCode(findPwd.getMobileCode());
+            smsVerifyMessage.setMobile(findPwd.getMobile());
+            smsVerifyMessage.setOperator(findPwd.getMobile());
+            smsVerifyMessage.setSystem("guess");
+            smsVerifyMessage.setServices("user");
+            smsVerifyMessage.setType("resetpwd");
+            smsVerifyMessage.setDescription("找回密码");
+            smsVerifyMessage.setOperator(findPwd.getMobile());
+            smsVerifyMessage.setContent(findPwd.getMobileCode());
+            boolean sendOk = smsService.verifyMessage(smsVerifyMessage);
+            if(!sendOk){
+                throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+            }
+           // LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk +" !");
+        }catch (SmsException e){
+            //throw new CustomException(e.getMessage());
+            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR,e.getMessage());
         }
         userAccountDao.updatePwd(findPwd);
-        //删除短信验证码.防止重复修改密码了.
-        redisTemplate.delete("mobilecode:" + findPwd.getMobile() + ":" + UserSmsEnum.FIND_PWD.getCode());
     }
 
 	@Override
