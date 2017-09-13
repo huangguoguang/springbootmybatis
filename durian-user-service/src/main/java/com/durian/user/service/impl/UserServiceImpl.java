@@ -119,9 +119,9 @@ public class UserServiceImpl implements UserService {
         smsVerifyMessage.setVerifyCode(registerUser.getMobileCode());
         smsVerifyMessage.setMobile(registerUser.getMobile());
         smsVerifyMessage.setOperator(registerUser.getMobile());
-        smsVerifyMessage.setType("register");
         smsVerifyMessage.setSystem("guess");
         smsVerifyMessage.setServices("user");
+        smsVerifyMessage.setType("register");
         smsVerifyMessage.setDescription("用户手机号码注册");
         smsVerifyMessage.setOperator(registerUser.getMobile());
         smsVerifyMessage.setContent(registerUser.getMobileCode());
@@ -167,11 +167,11 @@ public class UserServiceImpl implements UserService {
         SmsVerifyMessage smsVerifyMessage = new SmsVerifyMessage();
         smsVerifyMessage.setMobile(registerUser.getMobile());
         smsVerifyMessage.setContent(content);
+        smsVerifyMessage.setSystem("guess");
         smsVerifyMessage.setServices("user");
+        smsVerifyMessage.setType("register");
         smsVerifyMessage.setDescription("用户手机号码注册");
         smsVerifyMessage.setOperator(registerUser.getMobile());
-        smsVerifyMessage.setType("register");
-        smsVerifyMessage.setSystem("user");
         smsVerifyMessage.setVerifyCode(mobileCode);
         smsVerifyMessage.setActiveSecond(60*5);
         boolean sendOk= smsService.sendMessage(smsVerifyMessage, SmsSendTypeEnums.TEXT);
