@@ -8,6 +8,7 @@ package com.durian.user.domain.enums;
 public enum UserRedisKeyEnum {
 
     USER("user:{0}"),
+    USER_ALL_INFO("user:userAllInfo:{0}"),
     INFO("info"),
     TOKEN_REFRESH_FREQUENCY("token_refresh_frequency"),  
 

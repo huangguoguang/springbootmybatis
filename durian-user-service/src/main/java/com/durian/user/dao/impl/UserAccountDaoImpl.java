@@ -10,6 +10,7 @@ import com.durian.user.capital.service.UserCapitalService;
 import com.durian.user.dao.UserAccountDao;
 import com.durian.user.domain.enums.AccountTypeEnum;
 import com.durian.user.domain.enums.UserExceptionEnum;
+import com.durian.user.domain.enums.UserRedisKeyEnum;
 import com.durian.user.domain.enums.UserStatusEnum;
 import com.durian.user.domain.po.UserAccount;
 import com.durian.user.domain.po.UserBusiness;
@@ -32,6 +33,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -127,39 +129,22 @@ public class UserAccountDaoImpl implements UserAccountDao {
 
         //今日注册量,注册成功一个加1
         redisTemplate.opsForValue().increment(BillingStatisticsEnums.TODAY_USER_REGISTER.getCode(),1);
-
-        //redisTemplate.opsForValue().set("userAllInfo:"+userAllInfo.getId(),JsonSerializerUtils.seriazile(userAllInfo));
-        //redisTemplate.delete("mobilecode:"+registerUser.getMobile()+":"+ UserSmsEnum.REGISTER.getCode());
-
-
         return userAllInfo;
 
     }
 
     @Override
     public UserAllInfo getUserInfoByMoblie(String moblie) {
-/*        UserBusiness userBusiness = userBusinessMapper.selectByMoblie(moblie);
-        if(userBusiness ==null) {
-            return null ;
-        }
-         UserAllInfo userAllInfo = new UserAllInfo();
-        userAllInfo.setId(userBusiness.getUserId());
-        userAllInfo.setMoblie(moblie);
-        userAllInfo.setPassword(userBusiness.getPassword());
-        //userAllInfo.setAccountType(userBusiness.get);
-        //userAllInfo.setStatus(userAccount.getStatus());
-        userAccountMapper.selectByMoblie(moblie);
-        */
         UserAllInfo userAllInfo = userAccountMapper.selectByMoblie(moblie);
         return userAllInfo;
     }
 
     @Override
     public UserAllInfo getUserInfoById(String id) {
-        UserAllInfo  userAllInfo  = JsonSerializerUtils.deserialize(redisTemplate.opsForValue().get("userAllInfo:"+id),UserAllInfo.class);
+        UserAllInfo  userAllInfo  = JsonSerializerUtils.deserialize(redisTemplate.opsForValue().get(MessageFormat.format(UserRedisKeyEnum.USER_ALL_INFO.getKey(), id)),UserAllInfo.class);
         if(userAllInfo ==null ){
             userAllInfo  = userAccountMapper.selectById(id);
-            redisTemplate.opsForValue().set("userAllInfo:"+userAllInfo.getId(),JsonSerializerUtils.seriazile(userAllInfo));
+            redisTemplate.opsForValue().set(MessageFormat.format(UserRedisKeyEnum.USER_ALL_INFO.getKey(), id),JsonSerializerUtils.seriazile(userAllInfo));
         }
         return userAllInfo ;
     }
@@ -191,7 +176,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
 		record.setId(id);
 		int count = userAccountMapper.updateStatusById(record);
 		userAllInfo.setStatus(status);
-		redisTemplate.opsForValue().set("userAllInfo:"+userAllInfo.getId(),JsonSerializerUtils.seriazile(userAllInfo));
+		redisTemplate.opsForValue().set(MessageFormat.format(UserRedisKeyEnum.USER_ALL_INFO.getKey(), userAllInfo.getId()),JsonSerializerUtils.seriazile(userAllInfo));
 		return count;
 	}
 

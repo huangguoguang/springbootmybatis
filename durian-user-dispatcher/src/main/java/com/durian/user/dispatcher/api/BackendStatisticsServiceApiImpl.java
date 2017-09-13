@@ -16,25 +16,25 @@ import java.util.Map;
  */
 @EnableThriftService(path = "/api/backendstatistics")
 @Service
-public class BackendStatisticsServiceApiImpl implements BackendStatisticsServiceApi.Iface{
-		@Resource
-		private BillingStatisticsService billingStatisticsService;
+public class BackendStatisticsServiceApiImpl implements BackendStatisticsServiceApi.Iface {
+    @Resource
+    private BillingStatisticsService billingStatisticsService;
 
-		@Override
-		public Map<String, String> getMainPageStatisticsInfo() throws TException {
-				Map<String, String> billingStatistics = billingStatisticsService.getBillingStatisticsInfo();
-				// TODO
+    @Override
+    public Map<String, String> getMainPageStatisticsInfo() throws TException {
+        Map<String, String> billingStatistics = billingStatisticsService.getBillingStatisticsInfo();
+        // TODO
 //				Map<String, String>
-				return null;
-		}
+        return null;
+    }
 
-		@Override
-		public List<String> getBrokerageChartInfo() throws TException {
-				return billingStatisticsService.getBrokerageChartInfo();
-		}
+    @Override
+    public List<String> getBrokerageChartInfo() throws TException {
+        return billingStatisticsService.getBrokerageChartInfo();
+    }
 
-		@Override
-		public List<String> getRegisterChartInfo() throws TException {
-				return null;
-		}
+    @Override
+    public List<String> getRegisterChartInfo() throws TException {
+        return null;
+    }
 }

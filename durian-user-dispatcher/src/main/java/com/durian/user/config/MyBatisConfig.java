@@ -15,9 +15,9 @@ public class MyBatisConfig {
     @Bean
     public MyBatisConfigParam myBatisConfigParam() {
         MyBatisConfigParam properties = new MyBatisConfigParam();
-        properties.setBasePackage("com.durian.user.**.mapper");
+        properties.setBasePackage("com.durian.**.mapper");
         properties.setMapperLocations("classpath*:mapper/*.xml");
-        properties.setTypeAliasesPackage("com.durian.user.**.domain");
+        properties.setTypeAliasesPackage("com.durian.**.domain");
         return properties;
     }
 

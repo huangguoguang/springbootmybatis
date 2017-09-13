@@ -10,8 +10,8 @@ public enum UserSmsEnum {
     REGISTER("01", "用户注册"),
     LOGIN("02", "用户登录"),
     FIND_PWD("03", "找回密码"),
-    REGISTER_CONTENT("04", "感谢您注册畜牧商城,手机验证码为{0},祝您购物愉快!"),
-    FINDPWD_CONTENT("05", "感谢您使用畜牧商城,重置密码手机验证码为{0},为了保证您的信息安全,请不要泄露此验证码,祝您购物愉快!");
+    REGISTER_CONTENT("04", "感谢您注册,手机验证码为{0},祝您购物愉快!"),
+    FINDPWD_CONTENT("05", "感谢您使用重置密码手机验证码为{0},为了保证您的信息安全,请不要泄露此验证码,祝您购物愉快!");
     ;
 
     private String code;
