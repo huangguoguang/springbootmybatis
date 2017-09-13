@@ -10,8 +10,8 @@ import com.platform.common.domain.exception.CustomExceptionCode;
  */
 public enum UserExceptionEnum implements CustomExceptionCode {
 
-    USER_EXIST(600, "用户名已存在", 500),
-    USER_NOT_EXIST(600, "用户名不存在", 500),
+    USER_EXIST(600, "手机号已存在", 500),
+    USER_NOT_EXIST(600, "手机名不存在", 500),
     USER_IMAGE_CODE(601, "图片验证码错误", 500),
     USER_MOBLLE_CODE_NULL(602, "手机短信验证码错误", 500),
     USER_MOBLLE_CODE_ERROR(602, "手机短信验证码错误", 500),
