@@ -4,6 +4,7 @@ package com.durian.user.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.durian.common.domain.enums.BillingStatisticsEnums;
 import com.durian.tools.sms.domain.enums.SmsSendTypeEnums;
+import com.durian.tools.sms.domain.exception.SmsException;
 import com.durian.tools.sms.domain.po.SmsVerifyMessage;
 import com.durian.tools.sms.service.SmsService;
 import com.durian.user.agent.domain.po.UserAgentConfig;
@@ -115,20 +116,28 @@ public class UserServiceImpl implements UserService {
             throw new CustomException(UserExceptionEnum.USER_NIKENAME_NULL);
         }*/
     	//判断手机短信
-        SmsVerifyMessage smsVerifyMessage = new SmsVerifyMessage();
-        smsVerifyMessage.setVerifyCode(registerUser.getMobileCode());
-        smsVerifyMessage.setMobile(registerUser.getMobile());
-        smsVerifyMessage.setOperator(registerUser.getMobile());
-        smsVerifyMessage.setSystem("guess");
-        smsVerifyMessage.setServices("user");
-        smsVerifyMessage.setType("register");
-        smsVerifyMessage.setDescription("用户手机号码注册");
-        smsVerifyMessage.setOperator(registerUser.getMobile());
-        smsVerifyMessage.setContent(registerUser.getMobileCode());
-        boolean sendOk = smsService.verifyMessage(smsVerifyMessage);
-        if(!sendOk){
+
+        try{
+            SmsVerifyMessage smsVerifyMessage = new SmsVerifyMessage();
+            smsVerifyMessage.setVerifyCode(registerUser.getMobileCode());
+            smsVerifyMessage.setMobile(registerUser.getMobile());
+            smsVerifyMessage.setOperator(registerUser.getMobile());
+            smsVerifyMessage.setSystem("guess");
+            smsVerifyMessage.setServices("user");
+            smsVerifyMessage.setType("register");
+            smsVerifyMessage.setDescription("用户手机号码注册");
+            smsVerifyMessage.setOperator(registerUser.getMobile());
+            smsVerifyMessage.setContent(registerUser.getMobileCode());
+            boolean sendOk = smsService.verifyMessage(smsVerifyMessage);
+            if(!sendOk){
+                throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+            }
+           // LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk +" !");
+        }catch (SmsException e){
+            //throw new CustomException(e.getMessage());
             throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
         }
+
     	//判断密码等级
         UserAllInfo userAllInfo = userAccountDao.getUserInfoByMoblie(registerUser.getMobile());
         if(userAllInfo !=null){
@@ -164,18 +173,28 @@ public class UserServiceImpl implements UserService {
 
         String mobileCode = RandomValidateCode.getRandomNumber(4);
         String content = MessageFormat.format(UserSmsEnum.REGISTER_CONTENT.getDesc(), mobileCode);
-        SmsVerifyMessage smsVerifyMessage = new SmsVerifyMessage();
-        smsVerifyMessage.setMobile(registerUser.getMobile());
-        smsVerifyMessage.setContent(content);
-        smsVerifyMessage.setSystem("guess");
-        smsVerifyMessage.setServices("user");
-        smsVerifyMessage.setType("register");
-        smsVerifyMessage.setDescription("用户手机号码注册");
-        smsVerifyMessage.setOperator(registerUser.getMobile());
-        smsVerifyMessage.setVerifyCode(mobileCode);
-        smsVerifyMessage.setActiveSecond(60*5);
-        boolean sendOk= smsService.sendMessage(smsVerifyMessage, SmsSendTypeEnums.TEXT);
-        LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk +" !");
+
+        try{
+            SmsVerifyMessage smsVerifyMessage = new SmsVerifyMessage();
+            smsVerifyMessage.setMobile(registerUser.getMobile());
+            smsVerifyMessage.setContent(content);
+            smsVerifyMessage.setSystem("guess");
+            smsVerifyMessage.setServices("user");
+            smsVerifyMessage.setType("register");
+            smsVerifyMessage.setDescription("用户手机号码注册");
+            smsVerifyMessage.setOperator(registerUser.getMobile());
+            smsVerifyMessage.setVerifyCode(mobileCode);
+            smsVerifyMessage.setActiveSecond(60*5);
+            boolean sendOk= smsService.sendMessage(smsVerifyMessage, SmsSendTypeEnums.TEXT);
+            if(!sendOk){
+                throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+            }
+            LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk +" !");
+        }catch (SmsException e){
+            //throw new CustomException(e.getMessage());
+            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+        }
+
 
     }
 
