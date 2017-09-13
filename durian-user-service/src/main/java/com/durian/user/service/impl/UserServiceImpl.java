@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
            // LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk +" !");
         }catch (SmsException e){
             //throw new CustomException(e.getMessage());
-            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR,e.getMessage());
         }
 
     	//判断密码等级
@@ -192,7 +192,7 @@ public class UserServiceImpl implements UserService {
             LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk +" !");
         }catch (SmsException e){
             //throw new CustomException(e.getMessage());
-            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR,e.getMessage());
         }
 
 
