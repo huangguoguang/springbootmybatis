@@ -21,7 +21,7 @@ public class BackendStatisticsServiceApiImpl implements BackendStatisticsService
 		private BillingStatisticsService billingStatisticsService;
 
 		@Override
-		public Map<String, String> getMainPageStatisticsInfo(String userId) throws TException {
+		public Map<String, String> getMainPageStatisticsInfo() throws TException {
 				Map<String, String> billingStatistics = billingStatisticsService.getBillingStatisticsInfo();
 				// TODO
 //				Map<String, String>
