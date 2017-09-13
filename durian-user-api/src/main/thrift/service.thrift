@@ -109,3 +109,11 @@ service BackendUserServiceApi {
 
 }
 
+service BackendStatisticsServiceApi {
+
+    map<string, string> getMainPageStatisticsInfo(1:required string userId);
+
+    list<string> getBrokerageChartInfo();
+
+    list<string> getRegisterChartInfo();
+}
