@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+    <!-- 日志文件输出设置 -->
+    <appender name="GLOBAL_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 当前日志文件目录及名称 -->
+        <file>${LOG_HOME}/${APP_DIR}/${LOG_FILE_NAME}.log</file>
+        <!-- 按每天生成日志文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 历史日志文件名 -->
+            <FileNamePattern>${LOG_HOME}/${APP_DIR}/archive/${LOG_FILE_NAME}.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <!-- 历史日志文件保留天数 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${GLOBAL_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 日志文件最大的大小 -->
+        <!--
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+        -->
+    </appender>
+</included>

@@ -1,0 +1,14 @@
+eureka:
+  instance:
+    preferIpAddress: true
+    #此配置建议只试用开发和测试环境
+    #心跳间隔时间,默认是30秒
+    leaseRenewalIntervalInSeconds: 5
+    #最后一次心跳时间后leaseExpirationDurationInSeconds秒就认为是下线了，默认是90秒
+    leaseExpirationDurationInSeconds: 10
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+  client:
+    serviceUrl:
+      defaultZone: http://dev.eureka.durian.com:51100/eureka/
+    healthcheck:
+      enabled: true
