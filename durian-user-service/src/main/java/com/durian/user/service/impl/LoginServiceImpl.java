@@ -87,9 +87,9 @@ public class LoginServiceImpl implements LoginService {
         //今日登陆受限
 
         //创建token返回用户对象.  设置用户登录时间为 24小时
-        Integer expires = 60 * 60 * 24;
+        Integer expires = 60 * 60 * 24*1000;
         String accessToken = tokenGenerator.generatorToken(userAllInfo.getMobile(),userAllInfo.getId(),loginUser.getType(),expires);
-        LOGGER.info("accessToken :" + accessToken);
+        LOGGER.debug("accessToken :" + accessToken);
         userAllInfo.setAccessToken(accessToken);
         //设置刷新登录token
         String refreshToken = tokenGenerator.generatorToken(userAllInfo.getMobile(),userAllInfo.getId(),loginUser.getType(),expires);
@@ -114,7 +114,7 @@ public class LoginServiceImpl implements LoginService {
        }
        UserAllInfo userAllInfo =  userAccountDao.getUserInfoById(token.getUserId());
         //创建token返回用户对象.  设置用户登录时间为 24小时
-        Integer expires = 60 * 60 * 24;
+        Integer expires = 60 * 60 * 24*1000;
         String accessToken = tokenGenerator.generatorToken(userAllInfo.getMobile(),userAllInfo.getId(),type,expires);
         userAllInfo.setAccessToken(accessToken);
         userAllInfo.setCreateTime(new Date().getTime());
@@ -122,7 +122,6 @@ public class LoginServiceImpl implements LoginService {
         userAllInfo.setExpires(expires);
         //设置登录时间
         userAllInfo.setLoginTime(new Date().getTime());
-
         userAllInfo.setPassword(null);
         userAllInfo.setMobile(null);
         return userAllInfo;
