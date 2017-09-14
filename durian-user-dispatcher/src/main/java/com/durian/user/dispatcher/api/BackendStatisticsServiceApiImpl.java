@@ -31,12 +31,13 @@ public class BackendStatisticsServiceApiImpl implements BackendStatisticsService
         Map<String, String> billingStatistics = billingStatisticsService.getBillingStatisticsInfo();
         // TODO
 //				Map<String, String>
-        Map resultMap = new HashMap<String,String>();
-        int todayBrokerage = userStatisticsService.getToDayRegisterCont(BillingStatisticsEnums.TODAY_USER_REGISTER.getCode()) ;
-        int totalBrokerage = todayBrokerage + userStatisticsService.getToDayRegisterCont(BillingStatisticsEnums.PAST_USER_REGISTER.getCode());
-        resultMap.put("todayBrokerage", todayBrokerage);
-        resultMap.put("totalBrokerage", totalBrokerage);
-        return resultMap;
+        Map<String,String> resultMap = new HashMap<String,String>();
+        int todayRegister = userStatisticsService.getToDayRegisterCont(BillingStatisticsEnums.TODAY_USER_REGISTER.getCode()) ;
+        int totalRegister = todayRegister + userStatisticsService.getToDayRegisterCont(BillingStatisticsEnums.PAST_USER_REGISTER.getCode());
+        resultMap.put("todayRegister", String.valueOf(todayRegister));
+        resultMap.put("totalRegister", String.valueOf(totalRegister));
+        billingStatistics.putAll(resultMap);
+        return billingStatistics;
     }
 
     @Override
