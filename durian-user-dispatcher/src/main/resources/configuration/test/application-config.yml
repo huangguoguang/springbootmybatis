@@ -1,7 +1,7 @@
 spring:
   datasource:
     master:
-      url: jdbc:mysql://192.168.1.71:3306/test_guess?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
+      url: jdbc:mysql://192.168.0.71:3306/test_guess?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
       username: test
       password: test
       # 使用druid数据源
@@ -22,7 +22,7 @@ spring:
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
     slave:
-      url: jdbc:mysql://192.168.1.70:3306/test_guess?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
+      url: jdbc:mysql://192.168.0.70:3306/test_guess?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
       username: test
       password: test
       # 使用druid数据源
@@ -45,7 +45,7 @@ spring:
   # redis配置
   redis:
     database: 1   # Redis数据库索引（默认为0）
-    host: 192.168.1.25 #192.168.1.15   # Redis服务器连接端口
+    host: 192.168.0.25 #192.168.1.15   # Redis服务器连接端口
     port: 8899 #9648
     password: #123456
     timeout: 0  # 连接超时时间（毫秒）
@@ -56,7 +56,7 @@ spring:
       max-idle: 20  # 连接池中的最大空闲连接
       min-idle: 0  # 连接池中的最小空闲连接
   rabbitmq:
-    host: 192.168.1.15
+    host: 192.168.0.15
     port: 5672
     username: guest
     password: guest
@@ -64,5 +64,5 @@ spring:
 
 redisson:
     database: 1
-    url: redis://192.168.1.25:9648
-    password: 8899
+    url: redis://192.168.0.25:8899
+    password: 123456
