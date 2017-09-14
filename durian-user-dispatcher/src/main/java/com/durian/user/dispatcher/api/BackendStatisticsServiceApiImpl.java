@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by lj on 2017/9/13.
  */
-@EnableThriftService(path = "/api/backendstatistics")
+@EnableThriftService(path = "/api/backendStatistics")
 @Service
 public class BackendStatisticsServiceApiImpl implements BackendStatisticsServiceApi.Iface {
     @Resource
