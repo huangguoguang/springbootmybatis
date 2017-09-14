@@ -32,8 +32,8 @@ public class BackendStatisticsServiceApiImpl implements BackendStatisticsService
         // TODO
 //				Map<String, String>
         Map<String,String> resultMap = new HashMap<String,String>();
-        int todayRegister = userStatisticsService.getToDayRegisterCont(BillingStatisticsEnums.TODAY_USER_REGISTER.getCode()) ;
-        int totalRegister = todayRegister + userStatisticsService.getToDayRegisterCont(BillingStatisticsEnums.PAST_USER_REGISTER.getCode());
+        Integer todayRegister = userStatisticsService.getToDayRegisterCont(BillingStatisticsEnums.TODAY_USER_REGISTER.getCode()) ;
+        Integer totalRegister = todayRegister + userStatisticsService.getToDayRegisterCont(BillingStatisticsEnums.PAST_USER_REGISTER.getCode());
         resultMap.put("todayRegister", String.valueOf(todayRegister));
         resultMap.put("totalRegister", String.valueOf(totalRegister));
         billingStatistics.putAll(resultMap);
