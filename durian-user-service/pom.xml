@@ -43,7 +43,7 @@
         </dependency>
         <dependency>
             <groupId>com.durian.tools</groupId>
-            <artifactId>durian-sms-client</artifactId>
+            <artifactId>durian-sms-service</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>

@@ -3,17 +3,16 @@ package com.durian.user.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.durian.common.domain.enums.BillingStatisticsEnums;
-import com.durian.tools.sms.thrift.api.domain.SmsVerifyMessageTo;
-import com.durian.tools.sms.thrift.api.service.SmsServiceApi;
+import com.durian.tools.sms.domain.enums.SmsSendTypeEnums;
+import com.durian.tools.sms.domain.exception.SmsException;
+import com.durian.tools.sms.domain.po.SmsVerifyMessage;
+import com.durian.tools.sms.service.SmsService;
 import com.durian.user.agent.domain.po.UserAgentConfig;
 import com.durian.user.agent.service.UserAgentConfigService;
 import com.durian.user.agent.service.UserAgentService;
 import com.durian.user.agent.service.UserRelationService;
 import com.durian.user.dao.*;
-import com.durian.user.domain.enums.TokenExceptionEnum;
-import com.durian.user.domain.enums.UserExceptionEnum;
-import com.durian.user.domain.enums.UserSmsEnum;
-import com.durian.user.domain.enums.UserStatusEnum;
+import com.durian.user.domain.enums.*;
 import com.durian.user.domain.po.UserBusiness;
 import com.durian.user.domain.po.UserLogin;
 import com.durian.user.domain.po.UserSms;
@@ -23,7 +22,6 @@ import com.durian.user.domain.to.UserAllInfo;
 import com.durian.user.service.UserService;
 import com.durian.user.utils.code.RandomValidateCode;
 import com.durian.user.utils.encrypt.MD5Utils;
-import com.durian.user.utils.sms.SmsUtil;
 import com.durian.user.utils.token.Token;
 import com.durian.user.utils.token.TokenGenerator;
 import com.durian.user.utils.validate.RegexValidateUtil;
@@ -72,12 +70,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserLoginDao userLoginDao;
 
-
     @Autowired
     private UserInfoDao userInfoDao;
 
     @Autowired
-    private SmsServiceApi.Iface smsServiceApi;
+    private SmsService smsService;
 
     @Autowired
     private UserAgentService userAgentService;
@@ -85,9 +82,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserAgentConfigService userAgentConfigService;
 
-
     @Autowired
     private TokenGenerator tokenGenerator;
+
+    @Autowired
+    private UserRelationService userRelationService ;
 
 
     @Override
@@ -117,52 +116,41 @@ public class UserServiceImpl implements UserService {
             throw new CustomException(UserExceptionEnum.USER_NIKENAME_NULL);
         }*/
     	//判断手机短信
-/*        if(!registerUser.getMobileCode().equalsIgnoreCase(redisTemplate.opsForValue().get("mobilecode:"+registerUser.getMobile()+":"+UserSmsEnum.REGISTER.getCode()))){
-            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
-        }*/
-        SmsVerifyMessageTo smsVerifyMessageTo = new SmsVerifyMessageTo();
-        //验证码
-        smsVerifyMessageTo.setVerifyCode(registerUser.getMobileCode());
-        smsVerifyMessageTo.setMobile(registerUser.getMobile());
-        smsVerifyMessageTo.setOperator(registerUser.getMobile());
-        smsVerifyMessageTo.setType("register");
-        smsVerifyMessageTo.setSystem("guess");
-        smsVerifyMessageTo.setServices("user");
-        smsVerifyMessageTo.setDescription("用户手机号码注册");
-        smsVerifyMessageTo.setOperator(registerUser.getMobile());
-        smsVerifyMessageTo.setContent(registerUser.getMobileCode());
-/*        ResultMessageStructTo sendOk = smsServiceApi.verifyMessage(smsVerifyMessageTo);
-        if(sendOk.getCode()!=200){
-            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
-        }*/
+
+        try{
+            SmsVerifyMessage smsVerifyMessage = new SmsVerifyMessage();
+            smsVerifyMessage.setVerifyCode(registerUser.getMobileCode());
+            smsVerifyMessage.setMobile(registerUser.getMobile());
+            smsVerifyMessage.setOperator(registerUser.getMobile());
+            smsVerifyMessage.setSystem("guess");
+            smsVerifyMessage.setServices("user");
+            smsVerifyMessage.setType("register");
+            smsVerifyMessage.setDescription("用户手机号码注册");
+            smsVerifyMessage.setOperator(registerUser.getMobile());
+            smsVerifyMessage.setContent(registerUser.getMobileCode());
+            boolean sendOk = smsService.verifyMessage(smsVerifyMessage);
+            if(!sendOk){
+                throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+            }
+           // LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk +" !");
+        }catch (SmsException e){
+            //throw new CustomException(e.getMessage());
+            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR,e.getMessage());
+        }
+
     	//判断密码等级
         UserAllInfo userAllInfo = userAccountDao.getUserInfoByMoblie(registerUser.getMobile());
         if(userAllInfo !=null){
             throw new CustomException(UserExceptionEnum.USER_EXIST);
         }
         userAllInfo = userAccountDao.saveUser(registerUser);
-
         return userAllInfo;
 
     }
 
 
-    @Autowired
-    private UserRelationService userRelationService ;
-
     @Override
     public void registerAgentUser(String userId,String nickName) throws Exception {
-
- /*       UserInfo userInfo = new UserInfo();
-        UserRelation userRelation = new UserRelation();
-
-        userInfo.setUserId(userId);
-        userInfo.setNickName(nickName);
-
-        userRelation.setInviterId(userId);
-
-        userInfoDao.updateNickName(userInfo);
-        userRelationDao.updateRelationInfo(userRelation);*/
         boolean agentOk = userAgentService.registerUserAgent(userId,nickName);
         LOGGER.info("用户:"+userId+"  设置代理昵称:"+nickName + " 结果为:"+agentOk);
     }
@@ -185,34 +173,29 @@ public class UserServiceImpl implements UserService {
 
         String mobileCode = RandomValidateCode.getRandomNumber(4);
         String content = MessageFormat.format(UserSmsEnum.REGISTER_CONTENT.getDesc(), mobileCode);
-        SmsVerifyMessageTo smsVerifyMessageTo = new SmsVerifyMessageTo();
-        smsVerifyMessageTo.setMobile(registerUser.getMobile());
-        smsVerifyMessageTo.setContent(content);
-        smsVerifyMessageTo.setServices("user");
-        smsVerifyMessageTo.setDescription("用户手机号码注册");
-        smsVerifyMessageTo.setOperator(registerUser.getMobile());
-        smsVerifyMessageTo.setType("register");
-        smsVerifyMessageTo.setSystem("user");
-        smsVerifyMessageTo.setVerifyCode(mobileCode);
-        smsVerifyMessageTo.setActiveSecond(60*5);
-        /*ResultMessageStructTo sendOk = smsServiceApi.sendVerifyMessage(smsVerifyMessageTo);*/
-        LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+"未发送!");
-        //redisTemplate.opsForValue().set("mobilecode:"+registerUser.getMobile()+":"+UserSmsEnum.REGISTER.getCode(),mobileCode, 120, TimeUnit.SECONDS);
-        /*UserSms userSms = new UserSms();
-        userSms.setContent(content);
-        userSms.setCreateTime(new Date().getTime());
-        userSms.setDescription(UserSmsEnum.REGISTER.getDesc());
-        userSms.setType(UserSmsEnum.REGISTER.getCode());
-        userSms.setMobile(registerUser.getMobile());
-        String smsResult= "ok" ;
-        if(LOGGER.isDebugEnabled()){
-             smsResult=   SmsUtil.sendMessage(registerUser.getMobile(),content);
+
+        try{
+            SmsVerifyMessage smsVerifyMessage = new SmsVerifyMessage();
+            smsVerifyMessage.setMobile(registerUser.getMobile());
+            smsVerifyMessage.setContent(content);
+            smsVerifyMessage.setSystem("guess");
+            smsVerifyMessage.setServices("user");
+            smsVerifyMessage.setType("register");
+            smsVerifyMessage.setDescription("用户手机号码注册");
+            smsVerifyMessage.setOperator(registerUser.getMobile());
+            smsVerifyMessage.setVerifyCode(mobileCode);
+            smsVerifyMessage.setActiveSecond(60*5);
+            boolean sendOk= smsService.sendMessage(smsVerifyMessage, SmsSendTypeEnums.TEXT);
+            if(!sendOk){
+                throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+            }
+            LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk +" !");
+        }catch (SmsException e){
+            //throw new CustomException(e.getMessage());
+            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR,e.getMessage());
         }
-        LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+smsResult);
-        int record = userSmsDao.saveUserSms(userSms);
-        if (record>0){
-            redisTemplate.opsForValue().set("mobilecode:"+registerUser.getMobile()+":"+UserSmsEnum.REGISTER.getCode(),mobileCode, 120, TimeUnit.SECONDS);
-        }*/
+
+
     }
 
     @Override
@@ -237,27 +220,53 @@ public class UserServiceImpl implements UserService {
         userSms.setDescription(UserSmsEnum.FIND_PWD.getDesc());
         userSms.setType(UserSmsEnum.FIND_PWD.getCode());
         userSms.setMobile(findPwd.getMobile());
-        String smsResult = "ok" ;
-        if(LOGGER.isDebugEnabled()){
-            smsResult=   SmsUtil.sendMessage(findPwd.getMobile(),content);
+        try{
+            SmsVerifyMessage smsVerifyMessage = new SmsVerifyMessage();
+            smsVerifyMessage.setMobile(findPwd.getMobile());
+            smsVerifyMessage.setContent(content);
+            smsVerifyMessage.setDescription("找回密码");
+            smsVerifyMessage.setOperator(findPwd.getMobile());
+            smsVerifyMessage.setSystem("guess");
+            smsVerifyMessage.setServices("user");
+            smsVerifyMessage.setType("resetpwd");
+            smsVerifyMessage.setVerifyCode(mobileCode);
+            smsVerifyMessage.setActiveSecond(60*5);
+            boolean sendOk = smsService.sendMessage(smsVerifyMessage,SmsSendTypeEnums.TEXT);
+            if(!sendOk){
+                throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+            }
+            LOGGER.info("用户手机号码:"+findPwd.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk +" !");
+        }catch (SmsException e){
+            //throw new CustomException(e.getMessage());
+            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR,e.getMessage());
         }
-        LOGGER.info("用户手机号码:"+findPwd.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+smsResult);
-        //int record = userSmsDao.saveUserSms(userSms);
-        //if (record>0){
-          //  redisTemplate.opsForValue().set("mobilecode:"+findPwd.getMobile()+":"+UserSmsEnum.FIND_PWD.getCode(),mobileCode, 120, TimeUnit.SECONDS);
-        //}
         return null;
     }
 
     @Override
     public void resetPwd(FindPwd findPwd) throws Exception {
         //判断手机短信
-        if(!findPwd.getMobileCode().equalsIgnoreCase(redisTemplate.opsForValue().get("mobilecode:"+findPwd.getMobile()+":"+UserSmsEnum.FIND_PWD.getCode()))){
-            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+        try{
+            SmsVerifyMessage smsVerifyMessage = new SmsVerifyMessage();
+            smsVerifyMessage.setVerifyCode(findPwd.getMobileCode());
+            smsVerifyMessage.setMobile(findPwd.getMobile());
+            smsVerifyMessage.setOperator(findPwd.getMobile());
+            smsVerifyMessage.setSystem("guess");
+            smsVerifyMessage.setServices("user");
+            smsVerifyMessage.setType("resetpwd");
+            smsVerifyMessage.setDescription("找回密码");
+            smsVerifyMessage.setOperator(findPwd.getMobile());
+            smsVerifyMessage.setContent(findPwd.getMobileCode());
+            boolean sendOk = smsService.verifyMessage(smsVerifyMessage);
+            if(!sendOk){
+                throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+            }
+           // LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk +" !");
+        }catch (SmsException e){
+            //throw new CustomException(e.getMessage());
+            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR,e.getMessage());
         }
         userAccountDao.updatePwd(findPwd);
-        //删除短信验证码.防止重复修改密码了.
-        redisTemplate.delete("mobilecode:" + findPwd.getMobile() + ":" + UserSmsEnum.FIND_PWD.getCode());
     }
 
 	@Override
@@ -294,7 +303,7 @@ public class UserServiceImpl implements UserService {
         int count = userAccountDao.updateUserAllInfo(userAllInfo);
         if (count == 1) {
             //更新个人信息成功，更新redis
-            redisTemplate.opsForValue().set("userAllInfo:"+userAllInfo.getId(), JsonSerializerUtils.seriazile(userAllInfo));
+            redisTemplate.opsForValue().set(MessageFormat.format(UserRedisKeyEnum.USER_ALL_INFO.getKey(), userAllInfo.getId()), JsonSerializerUtils.seriazile(userAllInfo));
         }
         return null;
     }
