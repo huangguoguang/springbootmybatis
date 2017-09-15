@@ -163,6 +163,27 @@ CREATE TABLE `t_user_capital_billing` (
 
 
 
+
+-- ----------------------------
+-- Table structure for t_user_agent
+-- DROP TABLE IF EXISTS `t_user_agent`;
+-- ----------------------------
+CREATE TABLE `t_user_agent` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `dept_code` varchar(10) DEFAULT NULL,
+  `dept_id` varchar(10) DEFAULT NULL,
+  `user_id` varchar(50) DEFAULT NULL,
+  `user_name` varchar(30) DEFAULT NULL,
+  `status` char(1) DEFAULT '1',
+  `invite_code` varchar(10) DEFAULT NULL,
+  `del_tag` char(1) DEFAULT NULL,
+  `create_time` bigint(20) DEFAULT NULL,
+  `update_time` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=562 DEFAULT CHARSET=utf8mb4;
+
+
+
 -- -----------------------------------------------------
 -- model  `agent`   table `t_user_agent_allot`
 -- -----------------------------------------------------

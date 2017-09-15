@@ -10,9 +10,9 @@ import com.platform.common.domain.exception.CustomExceptionCode;
  */
 public enum TokenExceptionEnum implements CustomExceptionCode {
 
-    TOKEN_EXIST(600, "用户名不存在", 500),
-    TOKEN_NOT_EXIST(600, "用户名不存在", 500),
-    TOKEN_EXPIRES_CODE(601, "用户信息已过期", 500)
+    TOKEN_EXIST(600, "用户信息已过期", 401),
+    TOKEN_NOT_EXIST(600, "用户信息已过期", 401),
+    TOKEN_EXPIRES_CODE(601, "用户信息已过期", 401)
     ;
 
     private Integer code;

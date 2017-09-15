@@ -92,8 +92,8 @@ public class UserAccountDaoImpl implements UserAccountDao {
         //用户敏感信息
         UserBusiness userBusiness = new UserBusiness();
         userBusiness.setMobile(registerUser.getMobile());
-        //userBusiness.setPassword(MD5Utils.sign(registerUser.getPassword(), MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET));
-        userBusiness.setPassword(MD5Utils.sign(registerUser.getMobile().substring(5), MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET));
+        userBusiness.setPassword(MD5Utils.sign(registerUser.getPassword(), MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET));
+        //userBusiness.setPassword(MD5Utils.sign(registerUser.getMobile().substring(5), MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET));
         userBusiness.setUserId(userAccount.getId());
         userBusiness.setCreateTime(new Date().getTime());
 
@@ -105,6 +105,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
         userAllInfo.setStatus(userAccount.getStatus());
         userBusinessMapper.insert(userBusiness);
 
+
         //初始化代理数据
         UserAgent userAgent = new UserAgent();
         userAgent.setUserId(userAllInfo.getId());
@@ -112,16 +113,13 @@ public class UserAccountDaoImpl implements UserAccountDao {
         userAgentService.insertUserAgent(userAgent);
 
 
-        //
-        if(registerUser.getInviterId() !=null){
-            // //新增用户关系
-            UserRelation userRelation = new UserRelation();
-            userRelation.setDeptId(registerUser.getDeptId());
-            userRelation.setDeptCode(registerUser.getDeptId());
-            userRelation.setInviteeId(userAllInfo.getId());
-            userRelation.setInviterId(registerUser.getInviterId());
-            userRelationService.inviteUser(userRelation);
-        }
+        // //新增用户关系
+        UserRelation userRelation = new UserRelation();
+        userRelation.setDeptId(registerUser.getDeptId());
+        userRelation.setDeptCode(registerUser.getDeptId());
+        userRelation.setInviteeId(userAllInfo.getId());
+        userRelation.setInviterId(registerUser.getInviterId());
+        userRelationService.inviteUser(userRelation);
         //
         //创建资金账户
         userCapitalService.createUserCapital(userAllInfo.getId());

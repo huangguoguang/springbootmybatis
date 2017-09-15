@@ -7,6 +7,7 @@ import com.durian.tools.sms.domain.enums.SmsSendTypeEnums;
 import com.durian.tools.sms.domain.exception.SmsException;
 import com.durian.tools.sms.domain.po.SmsVerifyMessage;
 import com.durian.tools.sms.service.SmsService;
+import com.durian.user.agent.domain.po.UserAgent;
 import com.durian.user.agent.domain.po.UserAgentConfig;
 import com.durian.user.agent.service.UserAgentConfigService;
 import com.durian.user.agent.service.UserAgentService;
@@ -111,6 +112,10 @@ public class UserServiceImpl implements UserService {
         if(StringUtils.isBlank(registerUser.getMobileCode())){
             throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_NULL);
         }
+
+        if(StringUtils.isBlank(registerUser.getInviterId())){
+            throw new CustomException(UserExceptionEnum.USER_YAOQING_CODE_NULL);
+        }
 /*        //判断昵称
         if(StringUtils.isBlank(registerUser.getNickName())){
             throw new CustomException(UserExceptionEnum.USER_NIKENAME_NULL);
@@ -138,7 +143,15 @@ public class UserServiceImpl implements UserService {
             throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR,e.getMessage());
         }
 
-    	//判断密码等级
+
+        UserAgent userAgent = userAgentService.getUserAgentInfo(registerUser.getInviterId());
+        if(userAgent ==null){
+            throw new CustomException(UserExceptionEnum.USER_YAOQING_CODE_NULL);
+        }
+        //已经重置了
+        registerUser.setInviterId(userAgent.getUserId());
+
+        //判断密码等级
         UserAllInfo userAllInfo = userAccountDao.getUserInfoByMoblie(registerUser.getMobile());
         if(userAllInfo !=null){
             throw new CustomException(UserExceptionEnum.USER_EXIST);
