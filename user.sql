@@ -236,3 +236,42 @@ CREATE TABLE `t_user_agent_allot_ex` (
 
 
 
+-- ----------------------------
+--查父集合
+-- ----------------------------
+DROP FUNCTION IF EXISTS getParentList;
+CREATE FUNCTION `getParentList`(rootId varchar(100))
+RETURNS varchar(1000)
+BEGIN
+DECLARE fid varchar(100) default '';
+DECLARE str varchar(1000) default rootId;
+
+WHILE rootId is not null  do
+    SET fid =(SELECT inviter_id FROM t_user_agent_relation WHERE invitee_id = rootId);
+    IF fid is not null THEN
+        SET str = concat(str, ',', fid);
+        SET rootId = fid;
+    ELSE
+        SET rootId = fid;
+    END IF;
+END WHILE;
+return str;
+END
+
+-- ----------------------------
+-- 查子集合
+-- ----------------------------
+DROP FUNCTION IF EXISTS getChildList;
+CREATE FUNCTION `getChildList`(rootId varchar(100))
+RETURNS varchar(2000)
+BEGIN
+DECLARE str varchar(2000);
+DECLARE cid varchar(100);
+SET str = '$';
+SET cid = rootId;
+WHILE cid is not null DO
+    SET str = concat(str, ',', cid);
+    SELECT group_concat(invitee_id) INTO cid FROM t_user_agent_relation where FIND_IN_SET(inviter_id, cid) > 0;
+END WHILE;
+RETURN str;
+END
