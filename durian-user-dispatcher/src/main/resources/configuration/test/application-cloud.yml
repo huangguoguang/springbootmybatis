@@ -10,5 +10,5 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://test.eureka.durian.com:51200/eureka/
-    healthcheck:
-      enabled: true
+    # healthcheck:
+    #   enabled: true
