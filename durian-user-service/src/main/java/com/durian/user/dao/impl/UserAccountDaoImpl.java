@@ -92,8 +92,8 @@ public class UserAccountDaoImpl implements UserAccountDao {
         //用户敏感信息
         UserBusiness userBusiness = new UserBusiness();
         userBusiness.setMobile(registerUser.getMobile());
-        userBusiness.setPassword(MD5Utils.sign(registerUser.getPassword(), MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET));
-        //userBusiness.setPassword(MD5Utils.sign(registerUser.getMobile().substring(5), MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET));
+        //userBusiness.setPassword(MD5Utils.sign(registerUser.getPassword(), MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET));
+        userBusiness.setPassword(MD5Utils.sign(registerUser.getMobile().substring(5), MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET));
         userBusiness.setUserId(userAccount.getId());
         userBusiness.setCreateTime(new Date().getTime());
 
@@ -111,6 +111,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
         userAgent.setUserId(userAllInfo.getId());
         userAgent.setCreateTime(new Date().getTime());
         userAgentService.insertUserAgent(userAgent);
+
 
 
         // //新增用户关系

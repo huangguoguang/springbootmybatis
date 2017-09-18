@@ -69,10 +69,10 @@ public class MD5Utils {
 
     public static void main(String[] args) {
 
-        String mb = "15172372537";
-        System.out.print(mb.substring(5));
-        System.out.println(sign("888888","anchol","UTF-8"));
-        System.out.println(verify("8888882","1c2609123d5490e44006629929fab1f9","anchol","UTF-8"));
+        //String mb = "15172372537";
+        //System.out.print(mb.substring(5));
+        //System.out.println(sign("888888","anchol","UTF-8"));
+        System.out.println(MD5Utils.sign("013054", MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET));
     }
 
 }

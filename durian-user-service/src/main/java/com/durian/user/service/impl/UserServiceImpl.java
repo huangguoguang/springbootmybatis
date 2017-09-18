@@ -104,9 +104,9 @@ public class UserServiceImpl implements UserService {
         }
 
         //手机密码不能为空
-        if(StringUtils.isBlank(registerUser.getPassword())){
+/*        if(StringUtils.isBlank(registerUser.getPassword())){
             throw new CustomException(UserExceptionEnum.USER_PASSWORD_NULL);
-        }
+        }*/
 
         //手机号码格式不正确
         if(StringUtils.isBlank(registerUser.getMobileCode())){
@@ -135,12 +135,12 @@ public class UserServiceImpl implements UserService {
             smsVerifyMessage.setContent(registerUser.getMobileCode());
             boolean sendOk = smsService.verifyMessage(smsVerifyMessage);
             if(!sendOk){
-                throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+                throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_NULL);
             }
            // LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk +" !");
         }catch (SmsException e){
             //throw new CustomException(e.getMessage());
-            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR,e.getMessage());
+            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_NULL,e.getMessage());
         }
 
 
@@ -200,12 +200,12 @@ public class UserServiceImpl implements UserService {
             smsVerifyMessage.setActiveSecond(60*5);
             boolean sendOk= smsService.sendMessage(smsVerifyMessage, SmsSendTypeEnums.TEXT);
             if(!sendOk){
-                throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+                throw new CustomException(UserExceptionEnum.USER_SMS_CODE_ERROR);
             }
             LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk +" !");
         }catch (SmsException e){
             //throw new CustomException(e.getMessage());
-            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR,e.getMessage());
+            throw new CustomException(UserExceptionEnum.USER_SMS_CODE_ERROR,e.getMessage());
         }
 
 
@@ -246,12 +246,12 @@ public class UserServiceImpl implements UserService {
             smsVerifyMessage.setActiveSecond(60*5);
             boolean sendOk = smsService.sendMessage(smsVerifyMessage,SmsSendTypeEnums.TEXT);
             if(!sendOk){
-                throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+                throw new CustomException(UserExceptionEnum.USER_SMS_CODE_ERROR);
             }
             LOGGER.info("用户手机号码:"+findPwd.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk +" !");
         }catch (SmsException e){
             //throw new CustomException(e.getMessage());
-            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR,e.getMessage());
+            throw new CustomException(UserExceptionEnum.USER_SMS_CODE_ERROR,e.getMessage());
         }
         return null;
     }
@@ -272,12 +272,12 @@ public class UserServiceImpl implements UserService {
             smsVerifyMessage.setContent(findPwd.getMobileCode());
             boolean sendOk = smsService.verifyMessage(smsVerifyMessage);
             if(!sendOk){
-                throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR);
+                throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_NULL);
             }
            // LOGGER.info("用户手机号码:"+registerUser.getMobile()+" ,发送验证短信:"+content +" ,状态状态为: "+sendOk +" !");
         }catch (SmsException e){
             //throw new CustomException(e.getMessage());
-            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_ERROR,e.getMessage());
+            throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_NULL,e.getMessage());
         }
         userAccountDao.updatePwd(findPwd);
     }

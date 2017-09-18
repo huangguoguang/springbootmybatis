@@ -14,7 +14,6 @@ public enum UserExceptionEnum implements CustomExceptionCode {
     USER_NOT_EXIST(600, "手机名不存在", 888),
     USER_IMAGE_CODE(601, "图片验证码错误", 500),
     USER_MOBLLE_CODE_NULL(602, "手机短信验证码错误", 888),
-    USER_MOBLLE_CODE_ERROR(602, "手机短信验证码错误", 888),
     USER_NIKENAME_NULL(603, "昵称不能为空", 888),
     USER_MOBILE_NULL(604, "手机号码不能为空", 888),
     USER_PASSWORD_NULL(604, "用户密码不能为空", 888),
@@ -28,6 +27,7 @@ public enum UserExceptionEnum implements CustomExceptionCode {
     USER_PASSWORD_ERROR(612, "用户密码错误", 888),
     MODIFY_PASSWORD_ERROR(613, "修改密码失败", 888),
     USER_YAOQING_CODE_NULL(614, "邀请码错误", 888),
+    USER_SMS_CODE_ERROR(602, "发送短信验证码错误", 888),
     ;
 
     private Integer code;

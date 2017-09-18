@@ -1,18 +1,25 @@
 package com.durian.user.utils.token;
 
 import com.alibaba.fastjson.JSONObject;
+import com.durian.user.domain.enums.UserRedisKeyEnum;
+import com.durian.user.domain.to.UserAllInfo;
+import com.platform.common.service.redis.util.JsonSerializerUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.text.MessageFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -36,6 +43,12 @@ public class TokenGenerator {
     @Value("${token.owmuser}")
     private  String owmuser ;//= "guess";          //
 
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    private String tokenRedisKey = "token:v:{0}:{1}";
+
     /**
      * 生成token
      * @param userId
@@ -53,6 +66,8 @@ public class TokenGenerator {
         token.setCreateDate(new Date().getTime());
         token.setOwmuser(owmuser);
         token.setExpires(expires);
+        //存储到Redis中设置过期时间
+        redisTemplate.opsForValue().set(MessageFormat.format(tokenRedisKey, token.getUserId(),token.getType()), "1",token.getExpires(), TimeUnit.SECONDS);
         return encrytor(JSONObject.toJSONString(token));
     }
 
@@ -74,10 +89,20 @@ public class TokenGenerator {
             if(token ==null){
                 return null ;
             }
-            //boolean expires = (token.getExpires()== 0 || ( ((new Date().getTime() - token.getCreateDate())/1000) > token.getExpires()));
-            if ( ((new Date().getTime() - token.getCreateDate()) / 1000 ) >token.getExpires()  && StringUtils.equals(token.getOwmuser(), owmuser)) {
-                return null;
+            //redis 中的token 和验证出来的token进行对比,判断
+            boolean existOk = redisTemplate.hasKey(MessageFormat.format(tokenRedisKey, token.getUserId(),token.getType()));
+            if(!existOk){
+                return null ;
             }
+           /* Token redisToken  = JsonSerializerUtils.deserialize(redisTemplate.opsForValue().get(MessageFormat.format(tokenRedisKey, token.getUserId(),token.getType())),Token.class);
+            if(redisToken == null ){
+                return null ;
+            }*/
+            redisTemplate.expire(MessageFormat.format(tokenRedisKey, token.getUserId(),token.getType()),token.getExpires(),TimeUnit.SECONDS);
+
+            /*if ( ((new Date().getTime() - token.getCreateDate()) / 1000 ) >token.getExpires()  && StringUtils.equals(token.getOwmuser(), owmuser)) {
+                return null;
+            }*/
             return token ;
         } catch (Exception e) {
         	e.printStackTrace();
@@ -89,7 +114,7 @@ public class TokenGenerator {
      * 初始化加密文字
      * @throws Exception
      */
-    public   void init() throws Exception {
+    public  synchronized void init() throws Exception {
         byte[] key = stringKey.getBytes();
         // 创建一个空的8位字节数组（默认值为0）
         byte[] encodedKey = new byte[8];
@@ -145,7 +170,7 @@ public class TokenGenerator {
     public static void main(String[] args) throws Exception {
         TokenGenerator tokenGenerator = new TokenGenerator();
         tokenGenerator.setStringKey("安全第一");
-        //tokenGenerator.setIssuer("luckymoney");
+        //tokenGenerator.setIssuer("guess");
         tokenGenerator.setExpires(0);
         tokenGenerator.init();
         String tokenString = tokenGenerator.generatorToken("18627038327","18627038327","pc",60 * 2);
