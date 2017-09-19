@@ -175,6 +175,6 @@ public interface UserService {
 	Integer statisticsUserRegisterCount(String startDate) throws Exception;
 
 
-
+    void loginOut(String userId) throws Exception;
 }
 

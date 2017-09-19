@@ -80,6 +80,12 @@ service UserServiceApi {
     * 查询注册量
     **/
     i32 statisticsTodayUserRegister() throws (1: domain.UserThriftException ex);
+
+
+/**
+* 退出登录
+**/
+    void  loginout(1: optional string userId) throws (1: domain.UserThriftException ex);
 }
 
 

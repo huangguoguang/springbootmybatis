@@ -167,6 +167,16 @@ public class TokenGenerator {
         this.expires = expires;
     }
 
+
+    /**
+     * 设置自动过期时间
+     * @param userId
+     * @throws Exception
+     */
+    public  void generatorOut(String userId) throws Exception {
+        redisTemplate.expire(MessageFormat.format(tokenRedisKey, userId,"1"),0,TimeUnit.SECONDS);
+    }
+
     public static void main(String[] args) throws Exception {
         TokenGenerator tokenGenerator = new TokenGenerator();
         tokenGenerator.setStringKey("安全第一");

@@ -412,6 +412,10 @@ public class UserServiceImpl implements UserService {
         return userAccountDao.getUserRegisterCount(startDate);
     }
 
+    @Override
+    public void loginOut(String userId) throws Exception {
+        tokenGenerator.generatorOut(userId);
+    }
 
 
 }
