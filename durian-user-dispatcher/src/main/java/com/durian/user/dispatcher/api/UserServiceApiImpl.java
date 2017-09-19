@@ -103,7 +103,6 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             userInfoTo.setAccountType(userAllInfo.getAccountType());
             userInfoTo.setCreateTime(userAllInfo.getCreateTime());
             userInfoTo.setStatus(userAllInfo.getStatus().toString());
-
             userAllInfoTo.setUserInfoTo(userInfoTo);
             return userAllInfoTo;
         } catch (CustomException e) {
@@ -191,6 +190,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             userAllInfoTo.setAccountType(userAllInfo.getAccountType());
             userAllInfoTo.setCreateTime(userAllInfo.getCreateTime());
             userAllInfoTo.setStatus(userAllInfo.getStatus().toString());
+            userAllInfoTo.setMobile(userAllInfo.getMobile());
             return userAllInfoTo;
         } catch (CustomException e) {
             LOGGER.error(e.getMessage(),e.fillInStackTrace());
