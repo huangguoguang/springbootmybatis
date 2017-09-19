@@ -166,10 +166,10 @@
 
 
   <update id="updateStatusById" parameterType="com.durian.user.domain.po.UserAccount">
-    update t_user_business
+    update t_user_account
     <set>
       <if test="status != null">
-        status = #{status,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER},
       </if>
 
       <if test="updateTime != null">
@@ -186,7 +186,7 @@
     from t_user_business b , t_user_info i , t_user_account a    where a.id = #{id} and b.user_id = i.user_id and b.user_id = a.id
   </select>
 
-  <select id="syntheticalUserAllInfoList"  resultType="com.durian.user.domain.to.UserAllInfo">
+  <select id="getUserAllInfoList"  resultType="com.durian.user.domain.to.UserAllInfo">
     select a.id ,a.account_type as accountType ,a.account_level as accountLevel,
     a.status ,a.create_time as createTime ,a.del_tag AS delTag ,
     b.name ,b.mobile ,b.id_card as idCard ,
@@ -196,7 +196,17 @@
     from t_user_business b , t_user_info i , t_user_account a
     where
     b.user_id = i.user_id and b.user_id = a.id
+    <if test="status != null">
+      and status = #{status,jdbcType=INTEGER}
+    </if>
+    <if test="id != null and id != ''">
+      AND a.id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="mobile != null and mobile != ''">
+      AND b.mobile = #{mobile,jdbcType=VARCHAR}
+    </if>
     ORDER BY a.create_time DESC
+
   </select>
 
 

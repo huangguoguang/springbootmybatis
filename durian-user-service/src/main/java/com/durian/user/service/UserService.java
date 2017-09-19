@@ -148,7 +148,7 @@ public interface UserService {
 	 * @param pageParam
 	 * @return
 	 * */
-	PageInfo<UserAllInfo> getUserAllInfo(PageTo pageParam) throws Exception;
+	PageInfo<UserAllInfo> getUserAllInfo(PageTo pageParam,UserAllInfo userAllInfo) throws Exception;
 
 
 	/**
@@ -156,7 +156,7 @@ public interface UserService {
 	 * @return
 	 * @throws Exception
 	 */
-	List<UserAllInfo> getAllUserInfo() throws Exception;
+	List<UserAllInfo> getAllUserInfo( UserAllInfo userAllInfo) throws Exception;
 
 
 	/**

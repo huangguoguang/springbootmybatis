@@ -166,7 +166,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
 	@Override
 	public int updateUserStatus(String id,Integer status) throws Exception {
 		UserAllInfo userAllInfo = getUserInfoById(id);
-		if(userAllInfo == null ){
+		if(userAllInfo == null  ){
             throw new CustomException(UserExceptionEnum.USER_NOT_EXIST);
         }
 		UserAccount record = new UserAccount();
@@ -217,8 +217,8 @@ public class UserAccountDaoImpl implements UserAccountDao {
     }
 
     @Override
-    public List<UserAllInfo> syntheticalUserAllInfoList() throws Exception {
-        return userAccountMapper.syntheticalUserAllInfoList();
+    public List<UserAllInfo> getUserAllInfoList(UserAllInfo userAllInfo) throws Exception {
+        return userAccountMapper.getUserAllInfoList(userAllInfo);
     }
 
     @Override

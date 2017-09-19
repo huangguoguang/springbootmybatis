@@ -32,6 +32,7 @@ import com.github.pagehelper.PageInfo;
 import com.platform.common.domain.exception.CustomException;
 import com.platform.common.domain.to.PageTo;
 import com.platform.common.service.redis.util.JsonSerializerUtils;
+import org.apache.catalina.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -389,16 +390,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageInfo<UserAllInfo> getUserAllInfo(PageTo pageParam) throws Exception {
+    public PageInfo<UserAllInfo> getUserAllInfo(PageTo pageParam, UserAllInfo userAllInfo) throws Exception {
         Page<Object> page = PageHelper.startPage(pageParam.getPageNum(),pageParam.getPageSize());
-        userAccountDao.syntheticalUserAllInfoList();
+        userAccountDao.getUserAllInfoList(userAllInfo);
         PageInfo<UserAllInfo> pageInfo = new PageInfo(page);
         return pageInfo;
     }
 
     @Override
-    public List<UserAllInfo> getAllUserInfo() throws Exception {
-        return userAccountDao.syntheticalUserAllInfoList();
+    public List<UserAllInfo> getAllUserInfo(UserAllInfo userAllInfo) throws Exception {
+        return userAccountDao.getUserAllInfoList(userAllInfo);
     }
 
     @Override

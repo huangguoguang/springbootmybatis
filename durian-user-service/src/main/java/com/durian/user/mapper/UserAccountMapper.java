@@ -45,7 +45,7 @@ public interface UserAccountMapper {
     List<UserAllInfo> selectUserInfoList(UserAllInfo userAllInfo);
 
     @EnableDataSource("slave")
-    List<UserAllInfo> syntheticalUserAllInfoList();
+    List<UserAllInfo> getUserAllInfoList(UserAllInfo userAllInfo);
 
     @EnableDataSource("slave")
     Integer getUserRegisterCount(String startDate);

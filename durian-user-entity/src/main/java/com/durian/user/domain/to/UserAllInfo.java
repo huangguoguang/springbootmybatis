@@ -1,6 +1,7 @@
 package com.durian.user.domain.to;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * Created by hufeng on 2017/6/9.
@@ -66,6 +67,16 @@ public class UserAllInfo  implements Serializable{
 
     //返回地址
     private String returnUrl ;
+
+    private BigDecimal money ;
+
+    public BigDecimal getMoney() {
+        return money;
+    }
+
+    public void setMoney(BigDecimal money) {
+        this.money = money;
+    }
 
     public String getId() {
         return id;

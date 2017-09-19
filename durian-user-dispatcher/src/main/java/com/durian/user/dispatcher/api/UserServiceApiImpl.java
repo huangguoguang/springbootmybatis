@@ -249,12 +249,18 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
     }
 
     @Override
-    public ResultUserInfoPageStructTo getAllUserInfo(PageInfoTo pageInfoTo) throws TException {
+    public ResultUserInfoPageStructTo getAllUserInfo(PageInfoTo pageInfoTo, String id, int status, String mobile) throws TException {
         ResultUserInfoPageStructTo structTo = new ResultUserInfoPageStructTo();
         try {
             PageTo pageParam = new PageTo();
             BeanUtils.copyProperties(pageInfoTo, pageParam);
-            PageInfo<UserAllInfo> pageUserAllInfo = userService.getUserAllInfo(pageParam);
+            UserAllInfo userAllInfo = new UserAllInfo();
+            userAllInfo.setId(id);
+            if(status>0){
+                userAllInfo.setStatus(status);
+            }
+            userAllInfo.setMobile(mobile);
+            PageInfo<UserAllInfo> pageUserAllInfo = userService.getUserAllInfo(pageParam,userAllInfo);
             BeanUtils.copyProperties(pageUserAllInfo, pageInfoTo);
             List<SyntheticalUserAllInfoTo> syntheticalUserAllInfoToList = pageUserAllInfo.getList()
                     .parallelStream()
@@ -275,6 +281,8 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
         }
         return structTo;
     }
+
+
 
     @Override
     public int statisticsUserRegisterCount(String startDate) throws UserThriftException, TException {

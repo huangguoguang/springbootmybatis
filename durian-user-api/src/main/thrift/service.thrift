@@ -67,7 +67,7 @@ service UserServiceApi {
      */
     domain.UserAllInfoTo userInfoByAccessToken(1: required string accessToken) throws (1: domain.UserThriftException ex);
 
-    domain.ResultUserInfoPageStructTo getAllUserInfo( 1: required domain.PageInfoTo pageInfoTo);
+    domain.ResultUserInfoPageStructTo getAllUserInfo( 1: required domain.PageInfoTo pageInfoTo, 2: string id,3:i32 status ,4:string mobile);
 
 
     /**

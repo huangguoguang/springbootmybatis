@@ -11,7 +11,7 @@ import com.platform.common.domain.exception.CustomExceptionCode;
 public enum UserExceptionEnum implements CustomExceptionCode {
 
     USER_EXIST(600, "手机号已存在", 888),
-    USER_NOT_EXIST(600, "手机名不存在", 888),
+    USER_NOT_EXIST(600, "用户不存在", 888),
     USER_IMAGE_CODE(601, "图片验证码错误", 500),
     USER_MOBLLE_CODE_NULL(602, "手机短信验证码错误", 888),
     USER_NIKENAME_NULL(603, "昵称不能为空", 888),
@@ -19,7 +19,7 @@ public enum UserExceptionEnum implements CustomExceptionCode {
     USER_PASSWORD_NULL(604, "用户密码不能为空", 888),
     USER_MOBILE_FORMAT(605, "手机号码格式不正确", 888),
     USER_MOBILE_PASSWORD(606, "用户名或密码错误", 888),
-    USER_MOBILE_DISABLE(607, "用户名已经禁用", 888),
+    USER_MOBILE_DISABLE(607, "用户已经禁用", 888),
     USER_MOBILE_LOGINPASSWORDLIMITED(608, "登录次数受限制", 888),
     USER_ADDRESS_MAX(609, "绑定的收货地址已达上限", 888),
     USER_NICKICON_ERROR(610, "编辑图像失败", 888),

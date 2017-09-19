@@ -207,8 +207,4 @@ public class UserController {
         userService.test(levelAllot1,levelAllot2,levelAllot3);
     }
 
-    @RequestMapping(value = "userinfo",method = RequestMethod.GET)
-    public List<UserAllInfo> getAllUser() throws Exception{
-        return userService.getAllUserInfo();
-    }
 }
