@@ -32,7 +32,6 @@ import com.github.pagehelper.PageInfo;
 import com.platform.common.domain.exception.CustomException;
 import com.platform.common.domain.to.PageTo;
 import com.platform.common.service.redis.util.JsonSerializerUtils;
-import org.apache.catalina.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -279,6 +278,10 @@ public class UserServiceImpl implements UserService {
         }catch (SmsException e){
             //throw new CustomException(e.getMessage());
             throw new CustomException(UserExceptionEnum.USER_MOBLLE_CODE_NULL,e.getMessage());
+        }
+        UserAllInfo userAllInfo = userAccountDao.getUserInfoByMoblie(findPwd.getMobile());
+        if(userAllInfo == null ){
+            throw new CustomException(UserExceptionEnum.USER_NOT_EXIST);
         }
         userAccountDao.updatePwd(findPwd);
     }
