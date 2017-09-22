@@ -25,6 +25,7 @@ public enum UserExceptionEnum implements CustomExceptionCode {
     USER_NICKICON_ERROR(610, "编辑图像失败", 888),
     USER_ID_NULL(611,"用户Id为空",888),
     USER_PASSWORD_ERROR(612, "用户密码错误", 888),
+    USER_OLD_PASSWORD_ERROR(612, "旧密码错误", 888),
     MODIFY_PASSWORD_ERROR(613, "修改密码失败", 888),
     USER_YAOQING_CODE_NULL(614, "邀请码错误", 888),
     USER_SMS_CODE_ERROR(602, "发送短信验证码错误", 888),

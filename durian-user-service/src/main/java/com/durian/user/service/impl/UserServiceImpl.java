@@ -356,7 +356,7 @@ public class UserServiceImpl implements UserService {
         //获取要修改的用户敏感信息
         UserBusiness userBusiness = userBusinessDao.getUserBusinessByUserId(oldUserAllInfo.getId());
         if (!userBusiness.getPassword().equals(MD5Utils.sign(oldPwd, MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET))) {
-            throw new CustomException(UserExceptionEnum.USER_PASSWORD_ERROR);
+            throw new CustomException(UserExceptionEnum.USER_OLD_PASSWORD_ERROR);
         }
         userBusiness.setPassword(MD5Utils.sign(newPwd, MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET));
         int count = userBusinessDao.updateUserBusiness(userBusiness);
