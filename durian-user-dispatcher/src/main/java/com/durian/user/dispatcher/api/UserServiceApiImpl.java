@@ -142,7 +142,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             userService.registerMobileCode(registerUser);
         } catch (CustomException e) {
             LOGGER.error(e.getMessage(),e.fillInStackTrace());
-            throw new UserThriftException(e.getCode().getCode(),e.getMsg(),e.getCode().getHttpCode());
+            throw new UserThriftException(e.getCode().getCode(),e.getMessage(),e.getCode().getHttpCode());
         } catch (Exception e) {
             LOGGER.error(e.getMessage(),e.fillInStackTrace());
             throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
