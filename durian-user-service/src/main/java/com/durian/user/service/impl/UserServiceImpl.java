@@ -258,6 +258,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void resetPwd(FindPwd findPwd) throws Exception {
+        if(StringUtils.isBlank(findPwd.getPassword())){
+            throw new CustomException(UserExceptionEnum.USER_PASSWORD_NULL);
+        }
+        if(findPwd.getPassword().length() <6 || findPwd.getPassword().length()>16){
+            throw new CustomException(UserExceptionEnum.USER_PASSWORD_FORMAT_NULL);
+        }
         //判断手机短信
         try{
             SmsVerifyMessage smsVerifyMessage = new SmsVerifyMessage();
@@ -348,6 +354,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String modifyPwd(String userId, String oldPwd, String newPwd) throws Exception{
+        if(StringUtils.isBlank(oldPwd)){
+            throw new CustomException(UserExceptionEnum.USER_PASSWORD_NULL);
+        }
+        if(StringUtils.isBlank(newPwd)){
+            throw new CustomException(UserExceptionEnum.USER_PASSWORD_NULL);
+        }
+        if(oldPwd.length() <6 || oldPwd.length()>16){
+            throw new CustomException(UserExceptionEnum.USER_PASSWORD_FORMAT_NULL);
+        }
+        if(newPwd.length() <6 || newPwd.length()>16){
+            throw new CustomException(UserExceptionEnum.USER_PASSWORD_FORMAT_NULL);
+        }
         //从Redis中取UserAllInfo
         UserAllInfo oldUserAllInfo = userAccountDao.getUserInfoById(userId);
         if(oldUserAllInfo == null ){
