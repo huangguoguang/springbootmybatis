@@ -63,7 +63,7 @@ public class LoginServiceImpl implements LoginService {
         userLogin.setUserId(userAllInfo.getId());
         userLogin.setCreateTime(new Date().getTime());
         userLogin.setType(loginUser.getType());
-        LOGGER.info("用户登录数据:"+JSONObject.toJSONString(userAllInfo));
+        //LOGGER.info("用户登录数据:"+JSONObject.toJSONString(userAllInfo));
         if((!userAllInfo.getPassword().equals(MD5Utils.sign(loginUser.getPassword(), MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET))) ){
             userLogin.setStatus(1);
             userAccountDao.saveLogin(userLogin);

@@ -2,15 +2,12 @@ package com.durian.user.controller;
 
 import com.durian.user.capital.service.UserCapitalService;
 import com.durian.user.domain.annotation.NoLoginAuth;
-import com.durian.user.domain.enums.UserExceptionEnum;
 import com.durian.user.domain.po.UserLogin;
 import com.durian.user.domain.to.FindPwd;
 import com.durian.user.domain.to.UserAllInfo;
 import com.durian.user.service.UserService;
 import com.durian.user.utils.code.RandomValidateCode;
 import com.durian.user.utils.image.ImageUtil;
-import com.platform.common.domain.exception.CustomException;
-import com.platform.common.util.tfsclient.TfsClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +32,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
+/*
     @Autowired
-    private TfsClientService tfsClientService;
+    private TfsClientService tfsClientService;*/
 
     @Autowired
     private UserCapitalService userCapitalService;
@@ -176,12 +173,12 @@ public class UserController {
         LOGGER.info("设置修改个人信息：" + userId);
         if (file != null) {
             String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-            String nickIcon = tfsClientService.saveFile(file.getBytes(), null, suffix);
+            /*String nickIcon = tfsClientService.saveFile(file.getBytes(), null, suffix);
             if (nickIcon != null) {
                 userAllInfo.setNickIcon(nickIcon + suffix);
             } else {
                 throw new CustomException(UserExceptionEnum.USER_NICKICON_ERROR);
-            }
+            }*/
         }
         return () -> userService.updateUserInfo(userId, userAllInfo);
     }
