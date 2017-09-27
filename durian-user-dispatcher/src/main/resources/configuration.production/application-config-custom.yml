@@ -1,0 +1,22 @@
+# 服务端口
+server:
+  port: 51112
+
+# 注册中心
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://dev.eureka.durian.com:51100/eureka/
+
+# 短信
+sms:
+  voice:
+    url:
+    account:
+    password:
+    key:
+    showNumber:
+  text:
+    url: http://smssh1.253.com/msg/send/json
+    account: N213554_N7573544
+    password: 5mYiowrqORea1f

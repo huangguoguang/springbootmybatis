@@ -42,6 +42,4 @@
         <appender-ref ref="CONSOLE_APPENDER"/>
         <appender-ref ref="GLOBAL_APPENDER"/>
     </root>
-
-
 </configuration>
