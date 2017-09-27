@@ -6,7 +6,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://dev.eureka.durian.com:51100/eureka/
+      defaultZone: http://test.eureka.durian.com:51200/eureka/
 
 # 短信
 sms:
