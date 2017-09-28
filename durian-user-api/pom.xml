@@ -20,7 +20,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <thrift.exe.path>E:/developer/thrift/thrift.exe</thrift.exe.path>
     </properties>
 
     <dependencies>
