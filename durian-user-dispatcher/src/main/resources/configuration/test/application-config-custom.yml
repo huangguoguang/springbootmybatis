@@ -20,3 +20,29 @@ sms:
     url: http://smssh1.253.com/msg/send/json
     account: N213554_N7573544
     password: 5mYiowrqORea1f
+
+
+
+
+
+spring:
+  datasource:
+    master:
+      url: jdbc:mysql://192.168.0.71:3306/dev_guess?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
+      username: test
+      password: test
+    slave:
+      url: jdbc:mysql://192.168.0.70:3306/dev_guess?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
+      username: test
+      password: test
+  redis:
+    database: 2   # Redis数据库索引（默认为0）
+    host: 192.168.0.25   # Redis服务器连接端口
+    port: 8899
+    password: 123456
+
+redisson:
+    database: 2
+    url: redis://192.168.0.25:8899
+    password: 123456
+

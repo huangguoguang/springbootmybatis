@@ -72,7 +72,7 @@ public class MD5Utils {
         //String mb = "15172372537";
         //System.out.print(mb.substring(5));
         //System.out.println(sign("888888","anchol","UTF-8"));
-        System.out.println(MD5Utils.sign("013054", MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET));
+        System.out.println(MD5Utils.sign("888888", MD5Utils.PWD_KEY, MD5Utils.DEFAULT_UTF_8_INPUT_CHARSET));
     }
 
 }
