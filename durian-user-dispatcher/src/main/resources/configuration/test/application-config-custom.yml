@@ -28,11 +28,11 @@ sms:
 spring:
   datasource:
     master:
-      url: jdbc:mysql://192.168.0.71:3306/dev_guess?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
+      url: jdbc:mysql://192.168.0.71:3306/test_guess?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
       username: test
       password: test
     slave:
-      url: jdbc:mysql://192.168.0.70:3306/dev_guess?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
+      url: jdbc:mysql://192.168.0.70:3306/test_guess?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
       username: test
       password: test
   redis:
