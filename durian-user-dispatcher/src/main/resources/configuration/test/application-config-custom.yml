@@ -46,3 +46,8 @@ redisson:
     url: redis://192.168.0.25:8899
     password: 123456
 
+# 代理配置
+web:
+  common:
+    code: 9999
+    level: 3
