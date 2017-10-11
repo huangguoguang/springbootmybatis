@@ -44,3 +44,9 @@ sms:
     url: http://smssh1.253.com/msg/send/json
     account: N213554_N7573544
     password: 5mYiowrqORea1f
+
+# 代理配置
+web:
+  common:
+    code: 9999
+    level: 3
