@@ -12,7 +12,8 @@ public enum TokenExceptionEnum implements CustomExceptionCode {
 
     TOKEN_EXIST(600, "用户信息已过期", 401),
     TOKEN_NOT_EXIST(600, "用户信息已过期", 401),
-    TOKEN_EXPIRES_CODE(601, "用户信息已过期", 401)
+    TOKEN_EXPIRES_CODE(601, "用户信息已过期", 401),
+    USER_MOBILE_DISABLE(602, "用户已经禁用", 401),
     ;
 
     private Integer code;
