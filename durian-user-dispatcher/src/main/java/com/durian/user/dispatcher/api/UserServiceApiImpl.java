@@ -1,10 +1,12 @@
 package com.durian.user.dispatcher.api;
 
+import com.durian.user.domain.po.UserFeedback;
 import com.durian.user.domain.to.FindPwd;
 import com.durian.user.domain.to.LoginUser;
 import com.durian.user.domain.to.RegisterUser;
 import com.durian.user.domain.to.UserAllInfo;
 import com.durian.user.service.LoginService;
+import com.durian.user.service.UserFeedbackService;
 import com.durian.user.service.UserService;
 import com.durian.user.thrift.api.domain.*;
 import com.durian.user.thrift.api.service.UserServiceApi;
@@ -54,6 +56,9 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserFeedbackService userFeedbackService;
 
 
     @Override
@@ -314,6 +319,84 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
     public void loginout(String userId) throws UserThriftException, TException {
         try {
             userService.loginOut(userId);
+        } catch (CustomException e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
+        }
+    }
+
+    @Override
+    public ResultFeedbackPageStructTo getUserFeedbackList(PageInfoTo pageInfoTo, UserFeedbackTo userFeedbackTo) throws TException {
+        ResultFeedbackPageStructTo structTo = new ResultFeedbackPageStructTo();
+        try {
+            PageTo pageParam = new PageTo();
+            BeanUtils.copyProperties(pageInfoTo, pageParam);
+            UserFeedback userFeedback=new UserFeedback();
+            BeanUtils.copyProperties(userFeedbackTo, userFeedback);
+
+            PageInfo<UserFeedback> pageUserFeedback = userFeedbackService.userFeedbackList(pageParam,userFeedback);
+            BeanUtils.copyProperties(pageUserFeedback, pageInfoTo);
+            List<UserFeedbackTo> userFeedbackToList = pageUserFeedback.getList()
+                    .parallelStream()
+                    .map(item -> {
+                        UserFeedbackTo temp = new UserFeedbackTo();
+                        BeanUtils.copyProperties(item, temp);
+                        return temp;
+                    }).collect(Collectors.toList());
+            structTo.setUserFeedbackToList(userFeedbackToList);
+            structTo.setCode(200);
+            structTo.setPageInfoTo(pageInfoTo);
+            structTo.setMessage("获取信息成功");
+        } catch (Exception e) {
+            LOGGER.error("获取信息失败", e);
+            structTo.setCode(400);
+            structTo.setMessage("获取信息失败");
+            e.printStackTrace();
+        }
+        return structTo;
+    }
+
+
+    @Override
+    public void insertUserFeedback(UserFeedbackTo userFeedbackTo) throws TException {
+        try {
+            UserFeedback userFeedback=new UserFeedback();
+            BeanUtils.copyProperties(userFeedbackTo, userFeedback);
+            userFeedbackService.addUserFeedback(userFeedback);
+        } catch (CustomException e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
+        }
+    }
+
+    @Override
+    public void updateUserFeedback(UserFeedbackTo userFeedbackTo) throws TException {
+        try {
+            UserFeedback userFeedback=new UserFeedback();
+            BeanUtils.copyProperties(userFeedbackTo, userFeedback);
+            userFeedbackService.updateUserFeedback(userFeedback);
+        } catch (CustomException e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
+        }
+    }
+
+    @Override
+    public UserFeedbackTo userFeedbackInfo(String id) throws TException {
+        try {
+          UserFeedback userFeedback=  userFeedbackService.getUserFeedbackById(id);
+            UserFeedbackTo userFeedbackTo=new UserFeedbackTo();
+             BeanUtils.copyProperties(userFeedback, userFeedbackTo);
+             return  userFeedbackTo;
         } catch (CustomException e) {
             LOGGER.error(e.getMessage(),e.fillInStackTrace());
             throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());

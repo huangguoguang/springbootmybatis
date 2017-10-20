@@ -148,3 +148,22 @@ struct ResultBackendUserInfoPageStructTo {
     3: optional PageInfoTo pageInfoTo;
     4: optional list<BackendUserTo> backendUserToList;
 }
+
+
+struct UserFeedbackTo{
+    1: string id;
+    2: string keyword;
+    3: string description;
+    4: string type;
+    5: i64 createTime;
+    6: i64 updateTime;
+    7: string delTag;
+}
+
+
+struct ResultFeedbackPageStructTo{
+    1: optional i32 code;
+    2: optional string message;
+    3: optional PageInfoTo pageInfoTo;
+    4: optional list<UserFeedbackTo> userFeedbackToList;
+}
