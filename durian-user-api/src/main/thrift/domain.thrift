@@ -151,7 +151,7 @@ struct ResultBackendUserInfoPageStructTo {
 
 
 struct UserFeedbackTo{
-    1: string id;
+    1: i64 id;
     2: string keyword;
     3: string description;
     4: string type;
@@ -167,3 +167,4 @@ struct ResultFeedbackPageStructTo{
     3: optional PageInfoTo pageInfoTo;
     4: optional list<UserFeedbackTo> userFeedbackToList;
 }
+

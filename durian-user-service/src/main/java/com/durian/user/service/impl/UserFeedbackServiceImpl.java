@@ -1,6 +1,7 @@
 package com.durian.user.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import com.durian.user.dao.UserFeedbackDao;
 import com.durian.user.domain.po.UserFeedback;
@@ -55,6 +56,11 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
         userFeedback.setUpdateTime(new Date().getTime());
         int count = userFeedbackDao.updateUserFeedback(userFeedback);
         return count+"" ;
+    }
+
+    @Override
+    public List<UserFeedback> getCodeList(String type)throws Exception {
+        return userFeedbackDao.queryCode(type);
     }
 
 }

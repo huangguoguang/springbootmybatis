@@ -41,4 +41,11 @@ public interface UserFeedbackDao {
      * @return
      */
     List<UserFeedback> getUserFeedbackList (UserFeedback record);
+
+    /**
+     * 根据type查询微信二维码
+     * @param type
+     * @return
+     */
+    List<UserFeedback> queryCode (String type);
 }

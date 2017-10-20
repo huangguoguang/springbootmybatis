@@ -50,4 +50,11 @@ public interface UserFeedbackService {
      */
     String deleteUserFeedback(UserFeedback userFeedback) throws Exception;
 
+    /**
+     * 根据type查询微信二维码
+     * @param type
+     * @return
+     */
+    List<UserFeedback> getCodeList (String type)throws Exception;
+
 }

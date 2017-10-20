@@ -44,4 +44,9 @@ public class UserFeedbackDaoImpl implements UserFeedbackDao{
     public List<UserFeedback> getUserFeedbackList(UserFeedback record) {
         return userFeedbackMapper.selectByType(record);
     }
+
+    @Override
+    public List<UserFeedback> queryCode(String type) {
+        return userFeedbackMapper.queryCode(type);
+    }
 }

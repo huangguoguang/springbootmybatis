@@ -21,4 +21,7 @@ public interface UserFeedbackMapper {
 
     @EnableDataSource("slave")
     List<UserFeedback> selectByType (UserFeedback record);
+
+    @EnableDataSource("slave")
+    List<UserFeedback> queryCode (String type);
 }
