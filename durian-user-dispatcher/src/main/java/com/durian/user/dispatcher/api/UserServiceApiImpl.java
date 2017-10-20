@@ -1,5 +1,6 @@
 package com.durian.user.dispatcher.api;
 
+import com.durian.common.utils.LocalBeanUtils;
 import com.durian.user.domain.po.UserFeedback;
 import com.durian.user.domain.to.FindPwd;
 import com.durian.user.domain.to.LoginUser;
@@ -343,7 +344,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
                     .parallelStream()
                     .map(item -> {
                         UserFeedbackTo temp = new UserFeedbackTo();
-                        BeanUtils.copyProperties(item, temp);
+                        LocalBeanUtils.copyPropertiesIgnoreNull(item, temp);
                         return temp;
                     }).collect(Collectors.toList());
             structTo.setUserFeedbackToList(userFeedbackToList);
@@ -364,7 +365,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
     public void insertUserFeedback(UserFeedbackTo userFeedbackTo) throws TException {
         try {
             UserFeedback userFeedback=new UserFeedback();
-            BeanUtils.copyProperties(userFeedbackTo, userFeedback);
+            LocalBeanUtils.copyPropertiesIgnoreNull(userFeedbackTo, userFeedback);
             userFeedbackService.addUserFeedback(userFeedback);
         } catch (CustomException e) {
             LOGGER.error(e.getMessage(),e.fillInStackTrace());
@@ -379,7 +380,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
     public void updateUserFeedback(UserFeedbackTo userFeedbackTo) throws TException {
         try {
             UserFeedback userFeedback=new UserFeedback();
-            BeanUtils.copyProperties(userFeedbackTo, userFeedback);
+            LocalBeanUtils.copyPropertiesIgnoreNull(userFeedbackTo, userFeedback);
             userFeedbackService.updateUserFeedback(userFeedback);
         } catch (CustomException e) {
             LOGGER.error(e.getMessage(),e.fillInStackTrace());
