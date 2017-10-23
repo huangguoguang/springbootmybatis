@@ -2,7 +2,6 @@ package com.durian.user.dispatcher.api;
 
 import com.durian.common.utils.LocalBeanUtils;
 import com.durian.user.domain.enums.FeedbackTypeEnum;
-import com.durian.user.domain.po.DataList;
 import com.durian.user.domain.po.UserFeedback;
 import com.durian.user.domain.to.FindPwd;
 import com.durian.user.domain.to.LoginUser;
@@ -27,7 +26,10 @@ import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -344,7 +346,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
                     .parallelStream()
                     .map(item -> {
                         UserFeedbackTo temp = new UserFeedbackTo();
-                        BeanUtils.copyProperties(item, temp);
+                        LocalBeanUtils.copyPropertiesIgnoreNull(item, temp);
                         return temp;
                     }).collect(Collectors.toList());
             structTo.setUserFeedbackToList(userFeedbackToList);
