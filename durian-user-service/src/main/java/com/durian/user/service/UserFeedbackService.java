@@ -40,7 +40,7 @@ public interface UserFeedbackService {
      * @param id
      * @return
      */
-    UserFeedback getUserFeedbackById(String id) throws Exception;
+    UserFeedback getUserFeedbackById(Long id) throws Exception;
 
 
     /**

@@ -18,7 +18,7 @@ public class UserFeedbackDaoImpl implements UserFeedbackDao{
     private UserFeedbackMapper userFeedbackMapper;
 
     @Override
-    public UserFeedback getUserFeedBackById(Integer id) {
+    public UserFeedback getUserFeedBackById(Long id) {
         return userFeedbackMapper.selectByPrimaryKey(id);
     }
 
@@ -35,7 +35,7 @@ public class UserFeedbackDaoImpl implements UserFeedbackDao{
     }
 
     @Override
-    public int deleteUserFeedback(Integer id) {
+    public int deleteUserFeedback(Long id) {
         int count = userFeedbackMapper.deleteByPrimaryKey(id);
         return count;
     }

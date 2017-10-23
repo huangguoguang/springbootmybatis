@@ -3,7 +3,7 @@ package com.durian.user.domain.po;
 import java.util.Date;
 
 public class UserFeedback {
-    private Integer id;
+    private Long id;
 
     private String keyword;
 
@@ -17,11 +17,11 @@ public class UserFeedback {
 
     private String delTag;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

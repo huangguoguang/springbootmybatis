@@ -360,6 +360,22 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
         return structTo;
     }
 
+    @Override
+    public UserFeedbackTo userFeedbackInfo(long id) throws  TException {
+        try {
+            UserFeedback userFeedback=  userFeedbackService.getUserFeedbackById(id);
+            UserFeedbackTo userFeedbackTo=new UserFeedbackTo();
+            BeanUtils.copyProperties(userFeedback, userFeedbackTo);
+            return  userFeedbackTo;
+        } catch (CustomException e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(),e.fillInStackTrace());
+            throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
+        }
+    }
+
 
     @Override
     public void insertUserFeedback(UserFeedbackTo userFeedbackTo) throws TException {
@@ -391,8 +407,8 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
         }
     }
 
-    @Override
-    public UserFeedbackTo userFeedbackInfo(String id) throws TException {
+  /*  @Override
+    public UserFeedbackTo userFeedbackInfo(Long id) throws TException {
         try {
           UserFeedback userFeedback=  userFeedbackService.getUserFeedbackById(id);
             UserFeedbackTo userFeedbackTo=new UserFeedbackTo();
@@ -405,7 +421,7 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             LOGGER.error(e.getMessage(),e.fillInStackTrace());
             throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
         }
-    }
+    }*/
 
     /*@Override
     public List<UserFeedbackTo> getCodeList() throws TException {

@@ -89,7 +89,7 @@ service UserServiceApi {
 //查询意见反馈二维码列表
   domain.ResultFeedbackPageStructTo getUserFeedbackList( 1: required domain.PageInfoTo pageInfoTo,2: optional domain.UserFeedbackTo userFeedbackTo);
 //查询单个意见反馈二维码详细信息
-   domain.UserFeedbackTo userFeedbackInfo(1: required string id) throws (1: domain.UserThriftException ex);
+   domain.UserFeedbackTo userFeedbackInfo(1: required i64 id) throws (1: domain.UserThriftException ex);
 //新增意见反馈二维码信息
    void  insertUserFeedback(1: optional domain.UserFeedbackTo userFeedback) throws (1: domain.UserThriftException ex);
 //更新意见反馈二维码信息

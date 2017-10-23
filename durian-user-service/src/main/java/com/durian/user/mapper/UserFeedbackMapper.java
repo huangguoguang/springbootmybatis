@@ -11,9 +11,9 @@ import java.util.List;
 public interface UserFeedbackMapper {
 
     @EnableDataSource("slave")
-    UserFeedback selectByPrimaryKey(Integer id);
+    UserFeedback selectByPrimaryKey(Long id);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     int insertSelective(UserFeedback record);
 

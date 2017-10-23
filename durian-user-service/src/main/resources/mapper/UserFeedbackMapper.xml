@@ -102,9 +102,10 @@
         select
         <include refid="Base_Column_List" />
         from t_feedback
-        where type = #{type,jdbcType=CHAR}
+        where 1=1
+        <trim suffixOverrides=",">
         <if test="id != null">
-            id = #{id,jdbcType=BIGINT},
+         AND  id = #{id,jdbcType=BIGINT},
         </if>
         <if test="keyword != null">
           AND keyword = #{keyword,jdbcType=VARCHAR},
@@ -124,6 +125,7 @@
         <if test="delTag != null">
           AND del_tag = #{delTag,jdbcType=CHAR},
         </if>
+        </trim>
     </select>
 
     <select id="queryCode" parameterType="java.lang.String"  resultMap="BaseResultMap">

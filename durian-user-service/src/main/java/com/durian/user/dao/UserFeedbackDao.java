@@ -13,7 +13,7 @@ public interface UserFeedbackDao {
      * @param id
      * @return
      */
-    UserFeedback getUserFeedBackById(Integer id);
+    UserFeedback getUserFeedBackById(Long id);
 
     /**
      * 新增userFeedback信息
@@ -34,7 +34,7 @@ public interface UserFeedbackDao {
      * @param id
      * @return
      */
-    int deleteUserFeedback(Integer id);
+    int deleteUserFeedback(Long id);
     /**
      * 根据type查询意见反馈或者微信二维码
      * @param record

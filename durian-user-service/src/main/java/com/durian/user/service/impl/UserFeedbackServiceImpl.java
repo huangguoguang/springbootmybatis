@@ -46,8 +46,8 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
     }
 
     @Override
-    public UserFeedback getUserFeedbackById(String id) throws Exception {
-         return userFeedbackDao.getUserFeedBackById(Integer.valueOf(id));
+    public UserFeedback getUserFeedbackById(Long id) throws Exception {
+         return userFeedbackDao.getUserFeedBackById(id);
     }
 
     @Override
