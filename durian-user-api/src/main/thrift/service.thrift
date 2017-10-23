@@ -95,7 +95,7 @@ service UserServiceApi {
 //更新意见反馈二维码信息
    void  updateUserFeedback(1: optional domain.UserFeedbackTo userFeedback) throws (1: domain.UserThriftException ex);
 //查询二维码列表
-   list<domain.UserFeedbackTo> getCodeList()throws (1: domain.UserThriftException ex);
+   list<domain.codeTo> getCodeList()throws (1: domain.UserThriftException ex);
 
 }
 

@@ -1,5 +1,7 @@
 package com.durian.user.dispatcher.api;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.durian.common.utils.LocalBeanUtils;
 import com.durian.user.domain.enums.FeedbackTypeEnum;
 import com.durian.user.domain.po.DataList;
@@ -441,19 +443,18 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
         }
     }*/
     @Override
-    public List<UserFeedbackTo> getCodeList()throws TException {
-
-        List<UserFeedbackTo> userFeedbackToList=new ArrayList<>();
+    public List<codeTo>  getCodeList()throws TException {
+       List<codeTo> codes=new ArrayList<>();
         try {
             List<UserFeedback> codeList=userFeedbackService.getCodeList(FeedbackTypeEnum.CODE.getCode());
-
             if(codeList.size()!=0){
-               for(int i=0;i<codeList.size();i++){
-                   UserFeedbackTo userFeedbackTo=new UserFeedbackTo();
-                   LocalBeanUtils.copyPropertiesIgnoreNull(codeList.get(i), userFeedbackTo);
-                   userFeedbackToList.add(userFeedbackTo);
-               }
+                for(int i=0;i<codeList.size();i++) {
+                    codeTo codeTo=new codeTo();
+                    codeTo.setQrcode(codeList.get(i).getDescription());
+                    codes.add(codeTo);
+                }
             }
+
         } catch (CustomException e) {
             LOGGER.error(e.getMessage(),e.fillInStackTrace());
             throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
@@ -461,6 +462,6 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             LOGGER.error(e.getMessage(),e.fillInStackTrace());
             throw new UserThriftException(ExceptionCodeEnums.SYSTEM_ERROR.getCode(),ExceptionCodeEnums.SYSTEM_ERROR.getMsg(),ExceptionCodeEnums.SYSTEM_ERROR.getHttpCode());
         }
-        return userFeedbackToList;
+        return codes;
     }
 }

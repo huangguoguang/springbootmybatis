@@ -5,7 +5,9 @@ package com.durian.user.domain.enums;
  */
 public enum FeedbackTypeEnum {
     CODE("1","二维码"),
-    FEEDBACK("2","意见反馈");
+    FEEDBACK("2","意见反馈"),
+    USE("0","可用"),
+    NOUSE("1","不可用");
 
     private String code;
 

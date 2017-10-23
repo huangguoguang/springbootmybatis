@@ -168,3 +168,7 @@ struct ResultFeedbackPageStructTo{
     4: optional list<UserFeedbackTo> userFeedbackToList;
 }
 
+
+struct codeTo{
+1: optional string qrcode;
+}
