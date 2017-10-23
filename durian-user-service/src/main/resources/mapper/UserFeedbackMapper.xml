@@ -103,8 +103,23 @@
         <include refid="Base_Column_List" />
         from t_feedback
         where type = #{type,jdbcType=CHAR}
+        <if test="keyword != null">
+          AND keyword = #{keyword,jdbcType=VARCHAR},
+        </if>
+        <if test="description != null">
+          AND description = #{description,jdbcType=VARCHAR},
+        </if>
+        <if test="type != null">
+          AND type = #{type,jdbcType=CHAR},
+        </if>
+        <if test="createTime != null">
+          AND create_time = #{createTime,jdbcType=BIGINT},
+        </if>
+        <if test="updateTime != null">
+          AND update_time = #{updateTime,jdbcType=BIGINT},
+        </if>
         <if test="delTag != null">
-           AND del_tag = #{delTag,jdbcType=CHAR},
+          AND del_tag = #{delTag,jdbcType=CHAR},
         </if>
     </select>
 
