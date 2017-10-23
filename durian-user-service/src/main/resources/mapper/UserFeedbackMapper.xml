@@ -76,9 +76,6 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.durian.user.domain.po.UserFeedback">
         update t_feedback
         <set>
-            <if test="id != null">
-                id = #{id,jdbcType=BIGINT},
-            </if>
             <if test="keyword != null">
                 keyword = #{keyword,jdbcType=VARCHAR},
             </if>
@@ -106,6 +103,9 @@
         <include refid="Base_Column_List" />
         from t_feedback
         where type = #{type,jdbcType=CHAR}
+        <if test="id != null">
+            id = #{id,jdbcType=BIGINT},
+        </if>
         <if test="keyword != null">
           AND keyword = #{keyword,jdbcType=VARCHAR},
         </if>
