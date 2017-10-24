@@ -134,4 +134,14 @@
         from t_feedback
         where type = #{type,jdbcType=CHAR} AND del_tag="0"
     </select>
+
+    <update id="updateCodeStatus" parameterType="com.durian.user.domain.po.UserFeedback">
+        update t_feedback
+        <set>
+            <if test="delTag != null">
+                del_tag = #{delTag,jdbcType=CHAR},
+            </if>
+        </set>
+        where id != #{id,jdbcType=BIGINT} and type = #{type,jdbcType=CHAR}
+    </update>
 </mapper>

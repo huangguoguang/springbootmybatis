@@ -48,4 +48,12 @@ public interface UserFeedbackDao {
      * @return
      */
     List<UserFeedback> queryCode (String type);
+
+    /**
+     * 更新二维码状态
+     * @param record
+     * @return
+     * @throws Exception
+     */
+    String updateCodeStatus(UserFeedback record) throws Exception ;
 }

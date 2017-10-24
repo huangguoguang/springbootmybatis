@@ -63,4 +63,9 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
         return userFeedbackDao.queryCode(type);
     }
 
+    @Override
+    public String updateCodeStatus(UserFeedback userFeedback) throws Exception {
+        return userFeedbackDao.updateCodeStatus(userFeedback);
+    }
+
 }

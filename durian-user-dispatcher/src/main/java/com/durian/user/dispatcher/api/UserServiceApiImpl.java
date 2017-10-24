@@ -387,6 +387,11 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             UserFeedback userFeedback=new UserFeedback();
             BeanUtils.copyProperties(userFeedbackTo, userFeedback);
             userFeedbackService.addUserFeedback(userFeedback);
+            //如果是修改二维码配置  如果是将deltag设置为0 则其他的需要改为1
+            if(userFeedback.getType().equals(FeedbackTypeEnum.CODE) && userFeedback.getDelTag().equals("0")){
+                userFeedback.setType(FeedbackTypeEnum.CODE.getCode());
+                userFeedback.setDelTag(FeedbackTypeEnum.NOUSE.getCode());
+            }
         } catch (CustomException e) {
             LOGGER.error(e.getMessage(),e.fillInStackTrace());
             throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());
@@ -402,6 +407,11 @@ public class UserServiceApiImpl implements UserServiceApi.Iface{
             UserFeedback userFeedback=new UserFeedback();
             BeanUtils.copyProperties(userFeedbackTo, userFeedback);
             userFeedbackService.updateUserFeedback(userFeedback);
+            //如果是修改二维码配置  如果是将deltag设置为0 则其他的需要改为1
+            if(userFeedback.getType().equals(FeedbackTypeEnum.CODE) && userFeedback.getDelTag().equals("0")){
+                userFeedback.setType(FeedbackTypeEnum.CODE.getCode());
+                userFeedback.setDelTag(FeedbackTypeEnum.NOUSE.getCode());
+            }
         } catch (CustomException e) {
             LOGGER.error(e.getMessage(),e.fillInStackTrace());
             throw new UserThriftException(e.getCode().getCode(),e.getCode().getMsg(),e.getCode().getHttpCode());

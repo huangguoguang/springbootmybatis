@@ -57,4 +57,13 @@ public interface UserFeedbackService {
      */
     List<UserFeedback> getCodeList (String type)throws Exception;
 
+
+ /**
+  * 更新二维码状态
+  * @param userFeedback
+  * @return
+  * @throws Exception
+  */
+ String updateCodeStatus(UserFeedback userFeedback) throws Exception ;
+
 }

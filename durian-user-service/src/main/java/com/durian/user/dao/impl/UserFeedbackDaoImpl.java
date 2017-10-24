@@ -49,4 +49,9 @@ public class UserFeedbackDaoImpl implements UserFeedbackDao{
     public List<UserFeedback> queryCode(String type) {
         return userFeedbackMapper.queryCode(type);
     }
+
+    @Override
+    public String updateCodeStatus(UserFeedback record) throws Exception {
+        return userFeedbackMapper.updateCodeStatus(record);
+    }
 }
