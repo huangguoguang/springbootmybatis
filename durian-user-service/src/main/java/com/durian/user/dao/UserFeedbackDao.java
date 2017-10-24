@@ -55,5 +55,5 @@ public interface UserFeedbackDao {
      * @return
      * @throws Exception
      */
-    String updateCodeStatus(UserFeedback record) throws Exception ;
+    int updateCodeStatus(UserFeedback record) throws Exception ;
 }

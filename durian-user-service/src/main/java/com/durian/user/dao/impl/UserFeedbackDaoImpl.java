@@ -51,7 +51,7 @@ public class UserFeedbackDaoImpl implements UserFeedbackDao{
     }
 
     @Override
-    public String updateCodeStatus(UserFeedback record) throws Exception {
+    public int updateCodeStatus(UserFeedback record) throws Exception {
         return userFeedbackMapper.updateCodeStatus(record);
     }
 }

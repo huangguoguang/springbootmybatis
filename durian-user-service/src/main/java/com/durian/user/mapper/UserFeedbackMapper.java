@@ -25,5 +25,5 @@ public interface UserFeedbackMapper {
     @EnableDataSource("slave")
     List<UserFeedback> queryCode (String type);
 
-    String updateCodeStatus(UserFeedback record) throws Exception ;
+    int updateCodeStatus(UserFeedback record) throws Exception ;
 }

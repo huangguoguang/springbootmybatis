@@ -64,6 +64,6 @@ public interface UserFeedbackService {
   * @return
   * @throws Exception
   */
- String updateCodeStatus(UserFeedback userFeedback) throws Exception ;
+ int updateCodeStatus(UserFeedback userFeedback) throws Exception ;
 
 }

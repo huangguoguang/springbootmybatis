@@ -24,7 +24,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insertSelective" parameterType="com.durian.user.domain.po.UserFeedback">
+    <insert id="insertSelective" parameterType="com.durian.user.domain.po.UserFeedback" useGeneratedKeys="true" keyProperty="id">
         insert into t_feedback
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null and id != 0">
@@ -51,7 +51,7 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null and id != 0">
-                #{id,jdbcType=INTEGER},
+                #{id,jdbcType=BIGINT},
             </if>
             <if test="keyword != null">
                 #{keyword,jdbcType=VARCHAR},

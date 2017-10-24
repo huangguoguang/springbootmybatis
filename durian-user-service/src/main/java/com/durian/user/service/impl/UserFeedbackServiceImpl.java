@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.durian.user.dao.UserFeedbackDao;
+import com.durian.user.domain.enums.FeedbackTypeEnum;
 import com.durian.user.domain.po.UserFeedback;
 import com.durian.user.service.UserFeedbackService;
 import com.github.pagehelper.Page;
@@ -35,6 +36,14 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
     public String addUserFeedback(UserFeedback userFeedback) throws Exception {
         userFeedback.setCreateTime(new Date().getTime());
         int count = userFeedbackDao.saveUserFeedback(userFeedback) ;
+        //如果是修改二维码配置  如果是将deltag设置为0 则其他的需要改为1
+        if(userFeedback.getType().equals(FeedbackTypeEnum.CODE.getCode()) && userFeedback.getDelTag().equals("0")){
+            UserFeedback newF=new UserFeedback();
+            newF.setType(FeedbackTypeEnum.CODE.getCode());
+            newF.setDelTag(FeedbackTypeEnum.NOUSE.getCode());
+            newF.setId(userFeedback.getId());
+            userFeedbackDao.updateCodeStatus(newF);
+        }
         return count+"" ;
     }
 
@@ -42,6 +51,14 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
     public String updateUserFeedback(UserFeedback userFeedback) throws Exception {
         userFeedback.setUpdateTime(new Date().getTime());
         int count = userFeedbackDao.updateUserFeedback(userFeedback);
+        //如果是修改二维码配置  如果是将deltag设置为0 则其他的需要改为1
+        if(userFeedback.getType().equals(FeedbackTypeEnum.CODE.getCode()) && userFeedback.getDelTag().equals("0")){
+            UserFeedback newF=new UserFeedback();
+            newF.setType(FeedbackTypeEnum.CODE.getCode());
+            newF.setDelTag(FeedbackTypeEnum.NOUSE.getCode());
+            newF.setId(userFeedback.getId());
+            userFeedbackDao.updateCodeStatus(newF);
+        }
         return count+"" ;
     }
 
@@ -52,7 +69,7 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
 
     @Override
     public String deleteUserFeedback(UserFeedback userFeedback) throws Exception{
-        userFeedback.setDelTag("0");
+        userFeedback.setDelTag(FeedbackTypeEnum.NOUSE.getCode());
         userFeedback.setUpdateTime(new Date().getTime());
         int count = userFeedbackDao.updateUserFeedback(userFeedback);
         return count+"" ;
@@ -64,7 +81,7 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
     }
 
     @Override
-    public String updateCodeStatus(UserFeedback userFeedback) throws Exception {
+    public int updateCodeStatus(UserFeedback userFeedback) throws Exception {
         return userFeedbackDao.updateCodeStatus(userFeedback);
     }
 
