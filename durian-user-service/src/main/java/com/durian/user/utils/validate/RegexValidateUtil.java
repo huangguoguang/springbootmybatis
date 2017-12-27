@@ -57,7 +57,7 @@ public class RegexValidateUtil {
 	 * @return
 	 */
 	public static boolean checkCellphone(String cellphone) {
-		String regex = "^((13[0-9])|(17[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
+		String regex = "^((13[0-9])|(17[0-9])|(14[5|7])|(15([0-9]))|(18[0-9]))\\d{8}$";
 		return check(cellphone, regex);
 	}
 
@@ -73,7 +73,7 @@ public class RegexValidateUtil {
 	 * @return
 	 */
 	public static boolean checkMobile(String cellphone) {
-		String regex = "^((13[0-9])|(17[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
+		String regex = "^((13[0-9])|(17[0-9])|(14[5|7])|(15([0-9]))|(18[0-9]))\\d{8}$";
 		return check(cellphone, regex);
 	}
 	/**
@@ -111,5 +111,6 @@ public class RegexValidateUtil {
 	
 	public static void main(String[] args) {
 		System.out.println(checkCellphone("17727038327"));
+		System.out.println(RegexValidateUtil.checkMobile("16312341234"));
 	}
 }
